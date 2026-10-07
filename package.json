@@ -1,0 +1,10 @@
+{
+  "name": "sluggers-league",
+  "private": true,
+  "type": "module",
+  "description": "Stat tracking site for a CPU vs CPU Mario Super Sluggers league. Static files only, no dependencies.",
+  "scripts": {
+    "start": "node tools/serve.js",
+    "add-game": "node tools/add-game.js"
+  }
+}

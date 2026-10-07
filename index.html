@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Sluggers CPU League</title>
+  <meta name="description" content="Standings, box scores and every stat from a CPU vs CPU Mario Super Sluggers league.">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Ccircle cx='16' cy='16' r='14' fill='%23fffcf1' stroke='%2316213f' stroke-width='2.5'/%3E%3Cpath d='M9 5c4 6 4 16 0 22M23 5c-4 6-4 16 0 22' fill='none' stroke='%23d63a2f' stroke-width='2' stroke-dasharray='2 2'/%3E%3C/svg%3E">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=Bowlby+One&family=Yellowtail&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/site.css">
+</head>
+<body>
+  <header class="mast">
+    <div class="mast__in">
+      <a class="brand" href="#/">
+        <span class="brand__ball" aria-hidden="true"></span>
+        <span class="brand__text">
+          <span class="brand__name" data-league-name>Sluggers CPU League</span>
+          <span class="brand__tag" data-league-tag></span>
+        </span>
+      </a>
+      <label class="season-pick" hidden><span>Season</span><select data-season></select></label>
+      <nav class="nav" aria-label="Main">
+        <a href="#/" data-nav="home"><span>Home</span></a>
+        <a href="#/teams" data-nav="teams"><span>Teams</span></a>
+        <a href="#/players" data-nav="players"><span>Players</span></a>
+        <a href="#/stats" data-nav="stats"><span>Stats</span></a>
+        <a href="#/games" data-nav="games"><span>Scores</span></a>
+        <a href="#/news" data-nav="news"><span>News</span></a>
+      </nav>
+    </div>
+  </header>
+  <div class="ticker" data-ticker hidden></div>
+  <div class="stitch" aria-hidden="true"></div>
+
+  <main id="view" class="wrap"><p class="loading">Warming up in the bullpen...</p></main>
+
+  <footer class="foot">
+    <div class="stitch" aria-hidden="true"></div>
+    <div class="foot__in">
+      <b data-league-name>Sluggers CPU League</b>
+      <span>A fan project. Not affiliated with Nintendo. Mario Super Sluggers and its characters belong to Nintendo.</span>
+    </div>
+  </footer>
+
+  <script type="module" src="js/site/app.js"></script>
+</body>
+</html>

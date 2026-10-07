@@ -1,0 +1,28 @@
+[
+  {
+    "id": "mario-fireballs",
+    "name": "Mario Fireballs",
+    "abbr": "FIR",
+    "gm": "",
+    "colors": [
+      "#d63a2f",
+      "#fffcf1"
+    ],
+    "aliases": [
+      "Fireballs"
+    ]
+  },
+  {
+    "id": "jr-rookies",
+    "name": "Jr. Rookies",
+    "abbr": "ROO",
+    "gm": "",
+    "colors": [
+      "#2f6fd0",
+      "#f5b326"
+    ],
+    "aliases": [
+      "Rookies"
+    ]
+  }
+]

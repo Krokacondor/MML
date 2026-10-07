@@ -1,0 +1,10 @@
+[
+  {
+    "id": "welcome-to-the-league",
+    "title": "Welcome to the League",
+    "date": "2026-10-07",
+    "author": "League Office",
+    "summary": "The site is live. Here is what you will find on it.",
+    "body": "This is a placeholder story so the Press Box is not empty. Edit or delete it in the Dugout.\n\nEvery game the CPUs play gets uploaded here, and the site does the rest: standings, leader boards, box scores, and a page for every team and player.\n\n## Where to look\n\n- **Stats** has every number from the current season, sortable by any column.\n- **Teams** shows each roster, its totals, and who is running the front office.\n- **Players** keeps a card for everyone who has taken the field, with their history.\n\nStories like this one are written in *Markdown*, so headings, lists, links and pictures all work."
+  }
+]

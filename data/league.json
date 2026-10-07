@@ -1,0 +1,19 @@
+{
+  "name": "Sluggers CPU League",
+  "tagline": "No controllers. No mercy. Just the box scores.",
+  "currentSeason": "s1",
+  "seasons": [
+    { "id": "s1", "name": "Season 1" }
+  ],
+  "leadersCount": 5,
+  "eraInnings": 9,
+  "qualifiers": {
+    "paPerTeamGame": 1,
+    "ipPerTeamGame": 1
+  },
+  "repo": {
+    "owner": "",
+    "name": "",
+    "branch": "main"
+  }
+}

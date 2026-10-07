@@ -1,0 +1,94 @@
+import { html } from '../lib/html.js';
+import { leaderCats } from '../lib/statdefs.js';
+import { isQualified } from '../lib/aggregate.js';
+import { mug, pennant, teamVars, standings, scoreCard, clip } from './ui.js';
+
+// The top players in one category, best first.
+function topPlayers(ctx, cat, count) {
+  const S = ctx.season.reg;
+  const pit = cat.col.id.startsWith('p_');
+  const volume = (p) => (pit ? p.pit.outs || 0 : p.bat.pa || 0);
+  let pool = [...S.players.values()].filter((p) => (pit ? p.gp > 0 : volume(p) > 0));
+  if (cat.col.rate) {
+    // Rate stats only count players with enough playing time, once anyone has it.
+    const qualified = pool.filter((p) => isQualified(p, S, ctx.league, pit ? 'pit' : 'bat'));
+    if (qualified.length) pool = qualified;
+  } else {
+    pool = pool.filter((p) => cat.col.val(p) > 0);
+  }
+  const sign = cat.col.asc ? 1 : -1;
+  return pool
+    .map((p) => ({ p, v: cat.col.val(p) }))
+    .filter((x) => x.v != null)
+    .sort((a, b) => sign * (a.v - b.v) || volume(b.p) - volume(a.p) || a.p.name.localeCompare(b.p.name))
+    .slice(0, count);
+}
+
+function leaderBoard(ctx, cat) {
+  const rows = topPlayers(ctx, cat, ctx.league.leadersCount || 5);
+  if (!rows.length) return html`<p class="empty empty--hero">Nobody is on this board yet. Check back after the next game.</p>`;
+  const card = ({ p, v }, rank, top) => {
+    const team = ctx.model.team(p.teamId);
+    return html`<a class="leader ${top ? 'leader--top' : ''}" href="#/player/${p.slug}" style="${teamVars(team)}">
+      <span class="plate"><b>${rank}</b></span>
+      ${mug(p.name, { size: top ? 100 : 50, plate: true })}
+      <span class="leader__who"><span class="leader__name">${p.name}</span><span class="leader__team">${pennant(team)}${team.name}</span></span>
+      <span class="leader__val">${cat.col.fmt(v)}<small>${cat.col.label}</small></span>
+    </a>`;
+  };
+  return html`<div class="leaders">${card(rows[0], 1, true)}<div class="leaders__rest">${rows.slice(1).map((r, i) => card(r, i + 2, false))}</div></div>`;
+}
+
+export function home(ctx) {
+  const { model, season, league } = ctx;
+  const cats = leaderCats(league);
+  const latest = [...season.games].reverse().slice(0, 4);
+  const stories = model.articles.slice(0, 3);
+
+  return {
+    title: null,
+    html: html`
+      <section class="hero">
+        <div class="hero__head">
+          <div>
+            <p class="script">${season.name}</p>
+            <h1>League Leaders</h1>
+          </div>
+          <div class="chips">${cats.map((c, i) => html`<button type="button" class="chip ${i ? '' : 'is-on'}" data-cat="${c.id}" title="${c.name}">${c.col.label}</button>`)}</div>
+        </div>
+        <h2 class="hero__stat" data-cat-name>${cats[0].name}</h2>
+        <div data-leaders>${leaderBoard(ctx, cats[0])}</div>
+      </section>
+
+      <div class="split">
+        <section class="panel">
+          <h2 class="panel__tab"><span>Standings</span></h2>
+          ${standings(ctx)}
+          <p class="more"><a href="#/teams">All teams</a></p>
+        </section>
+        <section class="panel">
+          <h2 class="panel__tab"><span>Latest Scores</span></h2>
+          ${latest.length
+            ? html`<div class="scores">${latest.map((g) => scoreCard(g, model))}</div><p class="more"><a href="#/games">Every game</a></p>`
+            : html`<p class="empty">No games have been played in ${season.name} yet.</p>`}
+        </section>
+      </div>
+
+      <section class="press">
+        <div class="press__head"><p class="script">From the</p><h2>Press Box</h2></div>
+        ${stories.length
+          ? html`<div class="clips">${stories.map(clip)}</div><p class="more"><a href="#/news">All stories</a></p>`
+          : html`<p class="empty">The press box is quiet. Stories show up here once they are written.</p>`}
+      </section>`,
+    mount(root) {
+      root.querySelector('.chips').onclick = (e) => {
+        const btn = e.target.closest('[data-cat]');
+        if (!btn) return;
+        const cat = cats.find((c) => c.id === btn.dataset.cat);
+        for (const b of root.querySelectorAll('[data-cat]')) b.classList.toggle('is-on', b === btn);
+        root.querySelector('[data-cat-name]').textContent = cat.name;
+        root.querySelector('[data-leaders]').innerHTML = leaderBoard(ctx, cat);
+      };
+    },
+  };
+}
