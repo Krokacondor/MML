@@ -1,14 +1,28 @@
 // Building blocks shared by the pages: mugshots, team ribbons, the scoreboard,
 // standings and the sortable stat tables.
 
-import { html, slug } from '../lib/html.js';
-import { COLSETS, RATES, fmtAvg } from '../lib/statdefs.js';
+import { html, slug, raw, esc } from '../lib/html.js';
+import { COLSETS, RATES, fmtAvg, colsFor, viewsFor } from '../lib/statdefs.js';
+import { teamsIn, scheduleProgress } from '../lib/aggregate.js';
 import { excerpt } from '../lib/markdown.js';
+import { spoil, eye } from './spoilers.js';
 
 export const fmtDate = (iso, opts = { month: 'short', day: 'numeric', year: 'numeric' }) => {
   const m = /^(\d{4})-(\d{2})-(\d{2})/.exec(iso || '');
   return m ? new Date(+m[1], +m[2] - 1, +m[3]).toLocaleDateString('en-US', opts) : iso || '';
 };
+
+// When a game was played: its date, or its week and place in the series for
+// games recorded without one.
+export const gameWhen = (game, opts, short = false) => {
+  if (game.date) return fmtDate(game.date, opts);
+  const parts = [short ? '' : game.round || '', game.week ? (short ? `Wk ${game.week}` : `Week ${game.week}`) : '', game.n ? (short ? `G${game.n}` : `Game ${game.n}`) : ''];
+  return parts.filter(Boolean).join(short ? ' ' : ', ');
+};
+
+// The chosen season if it passes the test, otherwise the most recent season
+// that does. Lets pages show last season's picture before a new one starts.
+export const lastSeasonWith = (model, season, test) => (test(season) ? season : [...model.seasons].reverse().find(test) || season);
 
 // ---- Team colors ----------------------------------------------------------
 
@@ -31,21 +45,42 @@ export const pennant = (team) =>
   html`<span class="pennant" style="${teamVars(team)}" title="${team.name}">${team.abbr || team.name.slice(0, 3).toUpperCase()}</span>`;
 
 // ---- Mugshots -------------------------------------------------------------
-// A mugshot is assets/mugshots/<player-slug>.png. Characters whose default
-// color is spelled out in the game file share the plain-named picture.
+// A mugshot is assets/mugshots/<player-slug>.png. Game characters use the
+// left-facing side-view sprite from the character select screen; Miis use a
+// picture the league supplies. Anyone with no picture yet gets the stand-in
+// _mii.png, and their initials if even that is missing. This table covers the
+// other names the league and the game use for the same character.
 
 const MUG_ALIAS = {
-  'blue-noki': 'noki', 'blue-pianta': 'pianta', 'green-koopa-troopa': 'koopa-troopa', 'red-paratroopa': 'paratroopa',
-  'blue-magikoopa': 'magikoopa', 'red-shy-guy': 'shy-guy', 'red-toad': 'toad', 'green-yoshi': 'yoshi',
-  'gray-dry-bones': 'dry-bones', 'grey-dry-bones': 'dry-bones', 'pink-birdo': 'birdo',
+  'baby-dk': 'baby-donkey-kong',
+  'gray-dry-bones': 'dry-bones', 'grey-dry-bones': 'dry-bones', 'red-dry-bones': 'dark-bones',
+  'green-koopa': 'green-koopa-troopa', 'koopa-troopa': 'green-koopa-troopa', 'koopa': 'green-koopa-troopa', 'red-koopa': 'red-koopa-troopa',
+  'red-paratroopa': 'red-koopa-paratroopa', 'paratroopa': 'red-koopa-paratroopa', 'green-paratroopa': 'green-koopa-paratroopa',
+  'kritter': 'green-kritter', 'magikoopa': 'blue-magikoopa', 'shy-guy': 'red-shy-guy', 'black-shy-guy': 'gray-shy-guy', 'grey-shy-guy': 'gray-shy-guy',
+  'pianta': 'blue-pianta', 'noki': 'blue-noki', 'toad': 'red-toad', 'green-yoshi': 'yoshi',
+  'princess-peach': 'peach', 'princess-daisy': 'daisy', 'k-rool': 'king-k-rool',
 };
 
+// Every spot uses the xBR-enlarged icon (or the Mii's picture); anyone with no
+// picture ends on the stand-in.
 export function mug(name, { size = 40, plate = false } = {}) {
   const s = slug(name);
+  const file = MUG_ALIAS[s] || s;
   const initials = name.split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
+  const tries = [`assets/mugshots/${file}.png`, 'assets/mugshots/_mii.png'];
   return html`<span class="mug ${plate ? 'mug--plate' : 'mug--chip'}" style="--s:${size}px"><i>${initials}</i><img
-    src="assets/mugshots/${MUG_ALIAS[s] || s}.png" alt="" width="${size}" height="${size}"
-    onload="this.parentNode.classList.add('is-loaded')" onerror="this.remove()"></span>`;
+    src="${tries[0]}" data-next="${tries.slice(1).join('|')}" alt=""
+    onload="this.parentNode.classList.add('is-loaded');if(this.naturalWidth>64)this.classList.add('is-photo')"
+    onerror="const n=this.dataset.next.split('|').filter(Boolean);if(n.length){this.dataset.next=n.slice(1).join('|');this.src=n[0]}else{this.remove()}"></span>`;
+}
+
+// The big picture of a player, for the spots where a 48-pixel sprite would have
+// to be stretched: a full-body image from assets/fullbody/<player-slug>.png when
+// the league has supplied one, otherwise the usual mugshot on its plate.
+export function portrait(name, size = 96) {
+  const s = slug(name);
+  return html`<span class="portrait" style="--s:${size}px"><img class="portrait__full" src="assets/fullbody/${MUG_ALIAS[s] || s}.png" alt=""
+    onload="this.parentNode.classList.add('has-full')" onerror="this.remove()">${mug(name, { size, plate: true })}</span>`;
 }
 
 export const playerCell = (name, extra = '') =>
@@ -55,19 +90,36 @@ export const teamCell = (team) => html`<a class="tcell" href="#/team/${team.id}"
 
 // ---- Scoreboard -----------------------------------------------------------
 
+// A side's runs, or X for a playoff slot the series never needed.
+export const runs = (side) => side.score ?? 'X';
+
+// "Final" while a game is hidden. An unneeded slot says "Not played" only once
+// uncovered, so a hidden slot looks exactly like a real game.
+export const finalWord = (game) =>
+  game.notPlayed ? html`<i class="only-hidden">Final</i><i class="only-shown">Not played</i>` : 'Final';
+
 export function lineScore(game, model) {
   const innings = Math.max(game.away.line?.length || 0, game.home.line?.length || 0);
-  const hits = (t) => (game.batting || []).filter((r) => r.t === t).reduce((n, r) => n + (r.h || 0), 0);
+  // Hits come from the box score. A game recorded as a result only shows the
+  // total written down with it ("h" on that side), or nothing.
+  const hits = (t) => {
+    const rows = (game.batting || []).filter((r) => r.t === t);
+    return rows.length ? rows.reduce((n, r) => n + (r.h || 0), 0) : (t === 'a' ? game.away : game.home).h ?? '';
+  };
+  // No H column at all when neither team's hits are known.
+  const showHits = hits('a') !== '' || hits('h') !== '';
+  // An inning the league has no record of is kept as null and shown as "?".
+  const inning = (line = [], i) => (i < line.length && line[i] == null ? '?' : line[i] ?? '');
   const row = (side, other, t) => {
     const team = model.team(side.team);
     return html`<tr class="${side.score > other.score ? 'is-win' : ''}">
       <td class="t"><a href="#/team/${team.id}">${team.name}</a></td>
-      ${Array.from({ length: innings }, (_, i) => html`<td class="n">${side.line?.[i] ?? ''}</td>`)}
-      <td class="n tot">${side.score}</td><td class="n tot">${hits(t)}</td>
+      ${Array.from({ length: innings }, (_, i) => html`<td class="n inn">${inning(side.line, i)}</td>`)}
+      <td class="n tot">${runs(side)}</td>${showHits ? html`<td class="n tot">${hits(t)}</td>` : ''}
     </tr>`;
   };
   return html`<div class="board"><div class="board__scroll"><table class="ls">
-    <thead><tr><th></th>${Array.from({ length: innings }, (_, i) => html`<th>${i + 1}</th>`)}<th>R</th><th>H</th></tr></thead>
+    <thead><tr><th></th>${Array.from({ length: innings }, (_, i) => html`<th class="inn">${i + 1}</th>`)}<th>R</th>${showHits ? html`<th>H</th>` : ''}</tr></thead>
     <tbody>${row(game.away, game.home, 'a')}${row(game.home, game.away, 'h')}</tbody>
   </table></div></div>`;
 }
@@ -75,12 +127,13 @@ export function lineScore(game, model) {
 export function scoreCard(game, model) {
   const row = (side, other) => {
     const team = model.team(side.team);
-    return html`<span class="score__row ${side.score > other.score ? 'is-win' : ''}">${pennant(team)}<span class="score__name">${team.name}</span><b>${side.score}</b></span>`;
+    return html`<span class="score__row ${side.score > other.score ? 'is-win' : ''}">${pennant(team)}<span class="score__name">${team.name}</span><b class="sp">${runs(side)}</b></span>`;
   };
-  return html`<a class="score" href="#/game/${game.id}">
-    <span class="score__meta">${fmtDate(game.date, { weekday: 'short', month: 'short', day: 'numeric' })}${game.type === 'playoffs' ? html` <i>Playoffs</i>` : ''}<em>Final</em></span>
+  // The scores stay hidden until the card's eye is clicked (see spoilers.js).
+  return html`<div class="score ${spoil(game.id)}" data-spoil="${game.id}"><a class="score__link" href="#/game/${game.id}">
+    <span class="score__meta">${gameWhen({ ...game, round: null }, { weekday: 'short', month: 'short', day: 'numeric' })}${game.type === 'playoffs' ? html` <i>Playoffs</i>` : ''}<em>${finalWord(game)}</em></span>
     ${row(game.away, game.home)}${row(game.home, game.away)}
-  </a>`;
+  </a>${eye(game.id)}</div>`;
 }
 
 // ---- Standings ------------------------------------------------------------
@@ -93,16 +146,13 @@ export function streakOf(results) {
   return last + n;
 }
 
-export function standingsRows(ctx) {
+// A season's teams with their records, best first.
+export function standingsRows(ctx, teams = teamsIn(ctx.model, ctx.season)) {
   const S = ctx.season.reg;
-  const ids = new Set(S.teams.keys());
-  // In the current season, teams that have not played yet still belong on the board.
-  if (ctx.season.id === ctx.league.currentSeason) {
-    for (const t of ctx.model.teams.values()) if (t.active !== false) ids.add(t.id);
-  }
-  const rows = [...ids].map((id) => {
-    const t = S.teams.get(id) || { g: 0, w: 0, l: 0, t: 0, rs: 0, ra: 0, results: [] };
-    return { ...t, team: ctx.model.team(id), pct: t.g ? (t.w + t.t / 2) / t.g : null, diff: t.rs - t.ra, streak: streakOf(t.results) };
+  const rows = teams.map((team) => {
+    const t = S.teams.get(team.id) || { w: 0, l: 0, t: 0, rs: 0, ra: 0, results: [] };
+    const g = t.w + t.l + t.t;
+    return { ...t, g, team, pct: g ? (t.w + t.t / 2) / g : null, diff: t.rs - t.ra, streak: streakOf(t.results) };
   });
   rows.sort((a, b) => b.w - b.l - (a.w - a.l) || (b.pct ?? 0) - (a.pct ?? 0) || b.diff - a.diff || a.team.name.localeCompare(b.team.name));
   const top = rows[0];
@@ -110,19 +160,58 @@ export function standingsRows(ctx) {
   return rows;
 }
 
+// A season's teams split by conference: [{ conf, teams }]. Leagues without
+// conferences, and teams without one, land in a single unnamed group.
+export function byConference(ctx, teams = teamsIn(ctx.model, ctx.season)) {
+  const sorted = [...teams].sort((a, b) => a.name.localeCompare(b.name));
+  const groups = (ctx.league.conferences || []).map((conf) => ({ conf, teams: sorted.filter((t) => t.conference === conf.id) }));
+  const rest = sorted.filter((t) => !groups.some((g) => g.teams.includes(t)));
+  return [...groups.filter((g) => g.teams.length), ...(rest.length ? [{ conf: null, teams: rest }] : [])];
+}
+
+export const confHead = (conf) =>
+  conf ? html`<h3 class="confhead">${conf.logo ? html`<img src="${conf.logo}" alt="">` : ''}<span>${conf.name}</span></h3>` : '';
+
 export function standings(ctx) {
-  const rows = standingsRows(ctx);
-  if (!rows.length) return html`<p class="empty">No teams yet. They appear here after the first game is uploaded.</p>`;
-  return html`<div class="board"><div class="board__scroll"><table class="stand">
+  const groups = byConference(ctx);
+  if (!groups.length) return html`<p class="empty">No teams yet. They appear here after the first game is uploaded.</p>`;
+  return html`${progressNote(ctx.season)}${groups.map(({ conf, teams }) => html`${confHead(conf)}<div class="board"><div class="board__scroll"><table class="stand">
     <thead><tr><th></th><th class="l">Team</th><th>W</th><th>L</th><th>PCT</th><th>GB</th><th>RS</th><th>RA</th><th>DIFF</th><th>STRK</th></tr></thead>
-    <tbody>${rows.map((r, i) => html`<tr>
+    <tbody>${standingsRows(ctx, teams).map((r, i) => html`<tr>
       <td class="pos">${i + 1}</td>
       <td class="l">${teamCell(r.team)}</td>
       <td class="n">${r.w}</td><td class="n">${r.l}</td>
       <td>${fmtAvg(r.pct)}</td><td>${r.gb ? r.gb : '-'}</td>
       <td>${r.rs}</td><td>${r.ra}</td><td>${r.diff > 0 ? '+' + r.diff : r.diff}</td><td>${r.streak}</td>
     </tr>`)}</tbody>
-  </table></div></div>`;
+  </table></div></div>`)}`;
+}
+
+// Says how far the results go when a season's schedule is not all in yet. A
+// totals season is over, so there the gap is games still to be entered.
+export function progressNote(season) {
+  const { played, scheduled, partial } = scheduleProgress(season);
+  if (!partial) return '';
+  return html`<p class="note">${season.tracked
+    ? `Results are still being entered: ${played} of ${scheduled} games so far. Records and runs cover those games only.`
+    : `Through ${played} of ${scheduled} scheduled games.`}</p>`;
+}
+
+// A team's logo, or its short name on a base-shaped plate when it has none.
+export const teamLogo = (team) =>
+  team.logo
+    ? html`<span class="tlogo"><img src="${team.logo}" alt="${team.name} logo"></span>`
+    : html`<span class="tlogo tlogo--none" style="${teamVars(team)}"><b>${team.abbr}</b></span>`;
+
+// The card used wherever teams are listed.
+export function teamCard(ctx, team) {
+  const rec = ctx.season.reg.teams.get(team.id);
+  return html`<a class="teamcard" href="#/team/${team.id}" style="${teamVars(team)}">
+    ${teamLogo(team)}
+    <span class="teamcard__name">${team.name}</span>
+    ${team.gm ? html`<span class="teamcard__gm">GM <b>${team.gm}</b></span>` : ''}
+    ${ctx.season.reg.hasResults && rec ? html`<span class="teamcard__rec">${rec.w}-${rec.l}</span>` : ''}
+  </a>`;
 }
 
 // ---- Press clippings ------------------------------------------------------
@@ -175,7 +264,7 @@ export function renderTable(el, spec) {
         : html`<th class="${cls}">${c.label}</th>`;
     el.innerHTML = html`<div class="tbl"><table class="st">
       <thead><tr>${spec.rank ? html`<th class="rk">#</th>` : ''}${lead.map((c, i) => th(c, i ? 'lead' : 'lead pin'))}${spec.cols.map((c) => th(c, ''))}</tr></thead>
-      <tbody>${rows.map((r, n) => html`<tr class="${r.rowClass || ''}">
+      <tbody>${rows.map((r, n) => html`<tr class="${r.rowClass || ''}"${r.spoilId ? raw(` data-spoil="${esc(r.spoilId)}"`) : ''}>
         ${spec.rank ? html`<td class="rk">${n + 1}</td>` : ''}
         ${lead.map((c, i) => html`<td class="${i ? 'lead' : 'lead pin'} ${on(c)}">${c.cell(r)}</td>`)}
         ${spec.cols.map((c) => html`<td class="${on(c)}">${c.fmt(c.val(r))}</td>`)}
@@ -200,8 +289,13 @@ export function renderTable(el, spec) {
 }
 
 // A stat table with Batting / Star & Power / Fielding / Pitching tabs.
-// rows, lead and foot are functions of the chosen view.
-export function tabbedStats(el, { views = Object.keys(COLSETS), rows, lead, foot, hideGames = false, sortBy = {}, rank = false, empty }) {
+// rows, lead and foot are functions of the chosen view. Pass a season's
+// "tracked" list to drop the views and columns that season never recorded.
+export function tabbedStats(el, { tracked = null, views = viewsFor(tracked), rows, lead, foot, hideGames = false, sortBy = {}, rank = false, empty }) {
+  if (!views.length) {
+    el.innerHTML = html`<p class="empty">${empty || 'Nothing on the books yet.'}</p>`;
+    return;
+  }
   let view = views[0];
   el.innerHTML = html`<div class="tabs" ${views.length < 2 ? 'hidden' : ''}>${views.map(
     (v) => html`<button type="button" data-view="${v}">${COLSETS[v].label}</button>`,
@@ -209,8 +303,7 @@ export function tabbedStats(el, { views = Object.keys(COLSETS), rows, lead, foot
   const body = el.querySelector('.tabs__body');
   const draw = () => {
     for (const btn of el.querySelectorAll('[data-view]')) btn.classList.toggle('is-on', btn.dataset.view === view);
-    const cols = COLSETS[view].cols.filter((c) => !hideGames || (c.id !== 'g' && c.id !== 'gp'));
-    renderTable(body, { lead: lead(view), cols, rows: rows(view), foot: foot?.(view), sort: sortBy[view] ?? null, rank, empty });
+    renderTable(body, { lead: lead(view), cols: colsFor(view, tracked, hideGames), rows: rows(view), foot: foot?.(view), sort: sortBy[view] ?? null, rank, empty });
   };
   el.querySelector('.tabs').onclick = (e) => {
     const btn = e.target.closest('[data-view]');

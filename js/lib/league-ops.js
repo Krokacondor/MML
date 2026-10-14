@@ -53,9 +53,9 @@ export function nextGameId(season) {
 }
 
 // A parsed game plus the uploader's choices -> the record kept in the season file.
-export function toStoredGame(parsed, { id, date, type, awayTeam, homeTeam }) {
+export function toStoredGame(parsed, { id, date, week, type, awayTeam, homeTeam }) {
   const side = (s, team) => ({ team, score: s.score, ...(s.user ? { user: s.user } : {}), line: s.line });
-  const game = { id, date, type: type || 'regular' };
+  const game = { id, date, ...(Number(week) > 0 ? { week: Number(week) } : {}), type: type || 'regular' };
   if (parsed.stadium) game.stadium = parsed.stadium;
   if (parsed.settings && Object.keys(parsed.settings).length) game.settings = parsed.settings;
   return {
@@ -70,13 +70,15 @@ export function toStoredGame(parsed, { id, date, type, awayTeam, homeTeam }) {
 
 export const pretty = (data) => JSON.stringify(data, null, 2) + '\n';
 
-// Season files keep one game per line so the file stays readable and changes
-// show up cleanly in the repository history.
+// Season files keep one game (or one player's season line) per row of text, so
+// the file stays readable and changes show up cleanly in the repository history.
 export function serializeSeason(season) {
-  const { games = [], ...meta } = season;
-  const head = JSON.stringify(meta, null, 2).replace(/\n}$/, '');
-  const body = games.map((g) => '    ' + JSON.stringify(g)).join(',\n');
-  return `${head},\n  "games": [${games.length ? `\n${body}\n  ` : ''}]\n}\n`;
+  const { schedule, totals, games = [], ...meta } = season;
+  const rows = (list) => (list.length ? `\n${list.map((item) => '    ' + JSON.stringify(item)).join(',\n')}\n  ` : '');
+  let out = JSON.stringify(meta, null, 2).replace(/\n}$/, '');
+  if (schedule) out += `,\n  "schedule": [${rows(schedule)}]`; // one week per line
+  if (totals) out += `,\n  "totals": [${rows(totals)}]`;
+  return `${out},\n  "games": [${rows(games)}]\n}\n`;
 }
 
 export const todayISO = () => {

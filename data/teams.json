@@ -1,28 +1,90 @@
 [
   {
-    "id": "mario-fireballs",
-    "name": "Mario Fireballs",
-    "abbr": "FIR",
-    "gm": "",
-    "colors": [
-      "#d63a2f",
-      "#fffcf1"
-    ],
-    "aliases": [
-      "Fireballs"
-    ]
+    "id": "star-road-superstars",
+    "name": "Star Road Superstars",
+    "abbr": "SRS",
+    "gm": "Rory Dawn",
+    "conference": "mk",
+    "colors": ["#19708e", "#f2c14b"],
+    "logo": "assets/teams/star-road-superstars.png",
+    "seasons": ["s2"],
+    "aliases": []
   },
   {
-    "id": "jr-rookies",
-    "name": "Jr. Rookies",
-    "abbr": "ROO",
-    "gm": "",
-    "colors": [
-      "#2f6fd0",
-      "#f5b326"
-    ],
-    "aliases": [
-      "Rookies"
-    ]
+    "id": "new-new-new-york-mets",
+    "name": "NEW NEW New York Mets",
+    "abbr": "NNNYM",
+    "gm": "Krokacondor",
+    "conference": "mk",
+    "colors": ["#ec6f2d", "#002d72"],
+    "logo": "assets/teams/new-new-new-york-mets.png",
+    "seasons": ["s2"],
+    "aliases": ["NNNYM"]
+  },
+  {
+    "id": "pi-illo-island-dreamers",
+    "name": "Pi'illo Island Dreamers",
+    "abbr": "PID",
+    "gm": "Daffy",
+    "conference": "mk",
+    "colors": ["#f93b3a", "#7df2ab"],
+    "logo": "assets/teams/pi-illo-island-dreamers.png",
+    "seasons": ["s2"],
+    "aliases": ["Piillo Island Dreamers"]
+  },
+  {
+    "id": "sarasaland-sandstorm",
+    "name": "Sarasaland Sandstorm",
+    "abbr": "SS",
+    "gm": "J-Ray",
+    "conference": "mk",
+    "colors": ["#e2b838", "#ea7206"],
+    "logo": "assets/teams/sarasaland-sandstorm.png",
+    "seasons": ["s2"],
+    "aliases": []
+  },
+  {
+    "id": "glitzville-glamours",
+    "name": "Glitzville Glamours",
+    "abbr": "GG",
+    "gm": "froggydojo",
+    "conference": "bk",
+    "colors": ["#f783b3", "#ffe94d"],
+    "logo": "assets/teams/glitzville-glamours.png",
+    "seasons": ["s2"],
+    "aliases": []
+  },
+  {
+    "id": "wild-woods-1-uppers",
+    "name": "Wild Woods 1-Uppers",
+    "abbr": "WW",
+    "gm": "Typh",
+    "conference": "bk",
+    "colors": ["#66c475", "#063168"],
+    "logo": "assets/teams/wild-woods-1-uppers.png",
+    "seasons": ["s2"],
+    "aliases": []
+  },
+  {
+    "id": "ohio",
+    "name": "OHIO",
+    "abbr": "OHIO",
+    "gm": "nima74",
+    "conference": "bk",
+    "colors": ["#ad533b", "#f7c57a"],
+    "logo": "assets/teams/ohio.png",
+    "seasons": ["s2"],
+    "aliases": []
+  },
+  {
+    "id": "goon-squad",
+    "name": "Goon Squad",
+    "abbr": "GS",
+    "gm": "Pizano",
+    "conference": "bk",
+    "colors": ["#0ea4e3", "#87d3ea"],
+    "logo": "assets/teams/goon-squad.png",
+    "seasons": ["s2"],
+    "aliases": []
   }
 ]

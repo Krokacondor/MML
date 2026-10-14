@@ -1,14 +1,15 @@
 import { html } from '../lib/html.js';
 import { leaderCats } from '../lib/statdefs.js';
-import { isQualified } from '../lib/aggregate.js';
-import { mug, pennant, teamVars, standings, scoreCard, clip } from './ui.js';
+import { isQualified, pitched, teamsIn } from '../lib/aggregate.js';
+import { mug, portrait, pennant, teamVars, standings, scoreCard, clip, byConference, confHead, teamCard, lastSeasonWith } from './ui.js';
+import { awardCards } from './awards.js';
 
 // The top players in one category, best first.
 function topPlayers(ctx, cat, count) {
   const S = ctx.season.reg;
   const pit = cat.col.id.startsWith('p_');
   const volume = (p) => (pit ? p.pit.outs || 0 : p.bat.pa || 0);
-  let pool = [...S.players.values()].filter((p) => (pit ? p.gp > 0 : volume(p) > 0));
+  let pool = [...S.players.values()].filter((p) => (pit ? pitched(p) : volume(p) > 0));
   if (cat.col.rate) {
     // Rate stats only count players with enough playing time, once anyone has it.
     const qualified = pool.filter((p) => isQualified(p, S, ctx.league, pit ? 'pit' : 'bat'));
@@ -31,7 +32,7 @@ function leaderBoard(ctx, cat) {
     const team = ctx.model.team(p.teamId);
     return html`<a class="leader ${top ? 'leader--top' : ''}" href="#/player/${p.slug}" style="${teamVars(team)}">
       <span class="plate"><b>${rank}</b></span>
-      ${mug(p.name, { size: top ? 100 : 50, plate: true })}
+      ${top ? portrait(p.name, 96) : mug(p.name, { size: 48, plate: true })}
       <span class="leader__who"><span class="leader__name">${p.name}</span><span class="leader__team">${pennant(team)}${team.name}</span></span>
       <span class="leader__val">${cat.col.fmt(v)}<small>${cat.col.label}</small></span>
     </a>`;
@@ -41,38 +42,59 @@ function leaderBoard(ctx, cat) {
 
 export function home(ctx) {
   const { model, season, league } = ctx;
-  const cats = leaderCats(league);
+  // Before a season's first game, the page shows how the last one ended.
+  const shown = lastSeasonWith(model, season, (s) => s.reg.players.size > 0);
+  const waiting = shown !== season;
+  const sctx = { ...ctx, season: shown };
+  const cats = leaderCats(league).filter((c) => topPlayers(sctx, c, 1).length);
   const latest = [...season.games].reverse().slice(0, 4);
   const stories = model.articles.slice(0, 3);
+  const clubs = byConference(sctx, teamsIn(model, shown));
 
   return {
     title: null,
     html: html`
+      ${waiting ? html`<p class="banner"><b>${season.name} is on deck.</b> No games have been played yet, so this page shows how ${shown.name} finished.</p>` : ''}
       <section class="hero">
         <div class="hero__head">
           <div>
-            <p class="script">${season.name}</p>
+            <p class="script">${shown.name}${waiting ? ' final' : ''}</p>
             <h1>League Leaders</h1>
           </div>
           <div class="chips">${cats.map((c, i) => html`<button type="button" class="chip ${i ? '' : 'is-on'}" data-cat="${c.id}" title="${c.name}">${c.col.label}</button>`)}</div>
         </div>
-        <h2 class="hero__stat" data-cat-name>${cats[0].name}</h2>
-        <div data-leaders>${leaderBoard(ctx, cats[0])}</div>
+        ${cats.length
+          ? html`<h2 class="hero__stat" data-cat-name>${cats[0].name}</h2><div data-leaders>${leaderBoard(sctx, cats[0])}</div>`
+          : html`<p class="empty empty--hero">No stats yet. The leaders appear here after the first game is uploaded.</p>`}
       </section>
 
-      <div class="split">
-        <section class="panel">
-          <h2 class="panel__tab"><span>Standings</span></h2>
-          ${standings(ctx)}
-          <p class="more"><a href="#/teams">All teams</a></p>
-        </section>
-        <section class="panel">
-          <h2 class="panel__tab"><span>Latest Scores</span></h2>
-          ${latest.length
-            ? html`<div class="scores">${latest.map((g) => scoreCard(g, model))}</div><p class="more"><a href="#/games">Every game</a></p>`
-            : html`<p class="empty">No games have been played in ${season.name} yet.</p>`}
-        </section>
-      </div>
+      ${season.reg.hasResults || season.post.hasResults
+        ? html`<div class="split">
+            <section class="panel">
+              <h2 class="panel__tab"><span>Standings</span></h2>
+              ${standings(ctx)}
+              <p class="more"><a href="#/teams">All teams</a></p>
+            </section>
+            <section class="panel">
+              <h2 class="panel__tab"><span>Latest Scores</span></h2>
+              <div class="scores">${latest.map((g) => scoreCard(g, model))}</div>
+              <p class="more"><a href="#/games">Every game</a></p>
+            </section>
+          </div>`
+        : html`
+          ${clubs.length
+            ? html`<section class="panel">
+                <h2 class="panel__tab"><span>${shown.name} Clubs</span></h2>
+                ${clubs.map(({ conf, teams }) => html`${confHead(conf)}<div class="teamgrid">${teams.map((t) => teamCard(sctx, t))}</div>`)}
+              </section>`
+            : ''}
+          ${shown.awards.length
+            ? html`<section class="panel">
+                <h2 class="panel__tab"><span>${shown.name} Awards</span></h2>
+                ${awardCards(sctx)}
+                <p class="more"><a href="#/awards">${shown.allStars ? 'Awards and All-Stars' : 'All awards'}</a></p>
+              </section>`
+            : ''}`}
 
       <section class="press">
         <div class="press__head"><p class="script">From the</p><h2>Press Box</h2></div>
@@ -81,13 +103,15 @@ export function home(ctx) {
           : html`<p class="empty">The press box is quiet. Stories show up here once they are written.</p>`}
       </section>`,
     mount(root) {
-      root.querySelector('.chips').onclick = (e) => {
+      const chips = root.querySelector('.chips');
+      if (!chips) return;
+      chips.onclick = (e) => {
         const btn = e.target.closest('[data-cat]');
         if (!btn) return;
         const cat = cats.find((c) => c.id === btn.dataset.cat);
         for (const b of root.querySelectorAll('[data-cat]')) b.classList.toggle('is-on', b === btn);
         root.querySelector('[data-cat-name]').textContent = cat.name;
-        root.querySelector('[data-leaders]').innerHTML = leaderBoard(ctx, cat);
+        root.querySelector('[data-leaders]').innerHTML = leaderBoard(sctx, cat);
       };
     },
   };

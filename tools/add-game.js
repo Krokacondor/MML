@@ -30,6 +30,7 @@ const readJson = async (rel, fallback) => {
 
 const date = opt('date', todayISO());
 const type = opt('type', 'regular');
+const week = opt('week');
 const force = args.includes('--force') && args.splice(args.indexOf('--force'), 1);
 const league = await readJson('data/league.json');
 const seasonId = opt('season', league.currentSeason);
@@ -68,7 +69,7 @@ if (season.games.some((g) => g.fp === parsed.fp) && !force) {
   console.error('This game is already in the season (same teams, score and stats). Use --force to add it anyway.');
   process.exit(1);
 }
-const game = toStoredGame(parsed, { id: nextGameId(season), date, type, awayTeam: away.id, homeTeam: home.id });
+const game = toStoredGame(parsed, { id: nextGameId(season), date, week, type, awayTeam: away.id, homeTeam: home.id });
 season.games.push(game);
 
 await fs.writeFile(path.join(ROOT, 'data/teams.json'), pretty(teams));

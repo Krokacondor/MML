@@ -1,13 +1,15 @@
 import { html } from '../lib/html.js';
-import { COLSETS } from '../lib/statdefs.js';
-import { isQualified, positions } from '../lib/aggregate.js';
+import { COLSETS, viewsFor, colsFor } from '../lib/statdefs.js';
+import { isQualified, pitched, positions } from '../lib/aggregate.js';
 import { playerCell, teamCell, pennant, renderTable } from './ui.js';
 
 export function statsView(ctx) {
   const { model, season, league, q } = ctx;
   const hasPost = season.post.games.length > 0;
+  // A season recorded as totals only offers the views it has numbers for.
+  const views = viewsFor(season.tracked);
   const st = {
-    view: COLSETS[q.view] ? q.view : 'batting',
+    view: views.includes(q.view) ? q.view : views[0],
     scope: q.scope === 'teams' ? 'teams' : 'players',
     part: q.part === 'post' && hasPost ? 'post' : 'reg',
     team: model.teams.has(q.team) ? q.team : '',
@@ -20,12 +22,21 @@ export function statsView(ctx) {
   const seg = (name, options) =>
     html`<div class="seg" data-seg="${name}">${options.map(([value, label]) => html`<button type="button" data-value="${value}">${label}</button>`)}</div>`;
 
+  if (!season.reg.players.size && !season.post.players.size) {
+    return {
+      title: 'Stats',
+      html: html`
+        <header class="pagehead"><p class="script">${season.name}</p><h1>Stats</h1></header>
+        <p class="banner"><b>${season.name} has no stats yet.</b> They appear after the first game is uploaded. Earlier seasons are in the season menu at the top of the page.</p>`,
+    };
+  }
+
   return {
     title: 'Stats',
     html: html`
       <header class="pagehead"><p class="script">${season.name}</p><h1>Stats</h1></header>
       <div class="toolbar">
-        ${seg('view', Object.entries(COLSETS).map(([id, set]) => [id, set.label]))}
+        ${seg('view', views.map((id) => [id, COLSETS[id].label]))}
         ${seg('scope', [['players', 'Players'], ['teams', 'Teams']])}
         ${hasPost ? seg('part', [['reg', 'Regular season'], ['post', 'Playoffs']]) : ''}
         <select data-team aria-label="Team">
@@ -37,6 +48,7 @@ export function statsView(ctx) {
       </div>
       <p class="note" data-note></p>
       <div data-table></div>
+      ${season.note ? html`<p class="note">${season.note}</p>` : ''}
       <details class="gloss"><summary>What do these columns mean?</summary><dl data-gloss></dl></details>`,
     mount(root) {
       const $ = (sel) => root.querySelector(sel);
@@ -51,7 +63,7 @@ export function statsView(ctx) {
         rows = st.team
           ? rows.filter((p) => p.byTeam.has(st.team)).map((p) => ({ ...p.byTeam.get(st.team), name: p.name, slug: p.slug, teams: [st.team] }))
           : rows;
-        if (pit) rows = rows.filter((r) => r.gp > 0);
+        if (pit) rows = rows.filter(pitched);
         if (st.find) rows = rows.filter((r) => r.name.toLowerCase().includes(st.find));
         return rows.sort((a, b) => a.name.localeCompare(b.name));
       };
@@ -80,26 +92,28 @@ export function statsView(ctx) {
         $('[data-find]').hidden = !players;
         $('.check').hidden = !players;
         const set = COLSETS[st.view];
-        const q = league.qualifiers || {};
-        $('[data-note]').textContent =
-          players && st.qual
-            ? st.view === 'pitching'
-              ? `Qualified: at least ${q.ipPerTeamGame ?? 1} inning(s) pitched per team game.`
-              : `Qualified: at least ${q.paPerTeamGame ?? 1} plate appearance(s) per team game.`
-            : 'Click any column heading to sort by it.';
+        const cols = colsFor(st.view, season.tracked, !season[st.part].countsGames);
+        const quals = league.qualifiers || {};
+        const rule = !season[st.part].countsGames
+          ? 'at least half as many plate appearances as the league leader'
+          : st.view === 'pitching'
+            ? `at least ${quals.ipPerTeamGame ?? 1} inning(s) pitched per team game`
+            : `at least ${quals.paPerTeamGame ?? 1} plate appearance(s) per team game`;
+        $('[data-note]').textContent = players && st.qual ? `Qualified: ${rule}.` : 'Click any column heading to sort by it.';
         renderTable($('[data-table]'), {
           lead: leadFor(),
-          cols: set.cols,
+          cols,
           rows: rowsFor(),
-          sort: set.sort,
+          // Sort by the view's usual column, or its first stat if this season did not keep that one.
+          sort: cols.some((c) => c.id === set.sort) ? set.sort : cols[0]?.id,
           rank: true,
           empty: st.part === 'post' ? 'No playoff stats yet.' : `No ${set.label.toLowerCase()} stats match.`,
         });
-        $('[data-gloss]').innerHTML = html`${set.cols.map((c) => html`<div><dt>${c.label}</dt><dd>${c.title}</dd></div>`)}`;
+        $('[data-gloss]').innerHTML = html`${cols.map((c) => html`<div><dt>${c.label}</dt><dd>${c.title}</dd></div>`)}`;
 
         // Keep the address bar in step so a view can be bookmarked or shared.
         const params = new URLSearchParams();
-        if (st.view !== 'batting') params.set('view', st.view);
+        if (st.view !== views[0]) params.set('view', st.view);
         if (st.scope !== 'players') params.set('scope', st.scope);
         if (st.part !== 'reg') params.set('part', st.part);
         if (st.team) params.set('team', st.team);

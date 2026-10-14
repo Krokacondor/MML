@@ -1,10 +1,17 @@
 {
-  "name": "Sluggers CPU League",
-  "tagline": "No controllers. No mercy. Just the box scores.",
-  "currentSeason": "s1",
+  "name": "Mario Mania League",
+  "short": "MML",
+  "tagline": "CPU vs CPU Mario Super Sluggers",
+  "currentSeason": "s3",
   "seasons": [
-    { "id": "s1", "name": "Season 1" }
+    { "id": "s2", "name": "Season 2", "logo": "assets/league/mml-s2.png" },
+    { "id": "s3", "name": "Season 3" }
   ],
+  "conferences": [
+    { "id": "mk", "name": "Mushroom League", "logo": "assets/conferences/mushroom-kingdom.png" },
+    { "id": "bk", "name": "Bowser League", "logo": "assets/conferences/bowser-kingdom.png" }
+  ],
+  "playerAliases": {},
   "leadersCount": 5,
   "eraInnings": 9,
   "qualifiers": {
@@ -12,8 +19,8 @@
     "ipPerTeamGame": 1
   },
   "repo": {
-    "owner": "",
-    "name": "",
+    "owner": "Krokacondor",
+    "name": "MML",
     "branch": "main"
   }
 }

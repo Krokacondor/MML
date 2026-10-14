@@ -72,17 +72,33 @@ export const fmtIP = (outs) => `${Math.floor(z(outs) / 3)}.${z(outs) % 3}`;
 
 // ---- Display columns ------------------------------------------------------
 // A column reads from a record shaped { g, gp, bat: {...}, pit: {...} }.
+//
+// A record from a season that only kept some stats also carries
+// tracked = { bat: [keys], pit: [keys] }. Anything not on that list shows as
+// "-" (unknown) instead of a 0 that was never actually counted.
 
-const count = (src, id, label, title, key = id) => ({ id, label, title, val: (r) => z(r[src]?.[key]), fmt: fmtInt });
+const kept = (r, src, keys) => !r.tracked || keys.every((k) => r.tracked[src]?.includes(k));
+
+// What each rate stat needs to have been recorded before it means anything.
+const NEEDS = {
+  avg: ['h', 'ab'], obp: ['h', 'bb', 'pa'], slg: ['tb', 'ab'], ops: ['h', 'bb', 'pa', 'tb', 'ab'], starSlg: ['sbh', 'su'],
+  p_era7: ['er', 'outs'], p_era9: ['er', 'outs'], p_whip: ['bb', 'h', 'outs'], p_baa: ['h', 'aba'],
+  p_obpa: ['h', 'bb', 'bf'], p_slga: ['tba', 'aba'], p_opsa: ['h', 'bb', 'bf', 'tba', 'aba'],
+};
+
+const count = (src, id, label, title, key = id) => ({
+  id, label, title, src, needs: [key], val: (r) => (kept(r, src, [key]) ? z(r[src]?.[key]) : null), fmt: fmtInt,
+});
 const rate = (src, id, label, title, fn, o = {}) => ({
-  id, label, title, val: (r) => fn(r[src] || {}), fmt: fmtAvg, rate: src, ...o,
+  id, label, title, src, needs: NEEDS[id], val: (r) => (kept(r, src, NEEDS[id]) ? fn(r[src] || {}) : null), fmt: fmtAvg, rate: src, ...o,
 });
 const b = (id, label, title) => count('bat', id, label, title);
 const p = (key, label, title) => count('pit', 'p_' + key, label, title, key);
 
 export const C = {
-  g: { id: 'g', label: 'G', title: 'Games played', val: (r) => z(r.g), fmt: fmtInt },
-  gp: { id: 'gp', label: 'G', title: 'Games pitched', val: (r) => z(r.gp), fmt: fmtInt },
+  // Games are null (shown as "-") for seasons recorded as totals, where nobody counted them.
+  g: { id: 'g', label: 'G', title: 'Games played', val: (r) => r.g ?? null, fmt: fmtInt },
+  gp: { id: 'gp', label: 'G', title: 'Games pitched', val: (r) => r.gp ?? null, fmt: fmtInt },
 
   pa: b('pa', 'PA', 'Plate appearances'),
   ab: b('ab', 'AB', 'At-bats'),
@@ -128,7 +144,7 @@ export const C = {
   bja: b('bja', 'BJA', 'Buddy jump attempts'),
   bob: b('bob', 'BOB', 'Bobbles'),
 
-  p_ip: { id: 'p_ip', label: 'IP', title: 'Innings pitched', val: (r) => z(r.pit?.outs), fmt: fmtIP },
+  p_ip: { ...count('pit', 'p_ip', 'IP', 'Innings pitched', 'outs'), fmt: (v) => (v == null ? '-' : fmtIP(v)) },
   p_bf: p('bf', 'BF', 'Batters faced'),
   p_np: p('np', 'NP', 'Pitches thrown'),
   p_str: p('str', 'STR', 'Strikes'),
@@ -159,30 +175,53 @@ export const C = {
 
 const pick = (ids) => ids.split(' ').map((id) => C[id]);
 
+// "core" is the stat a season must have kept for the view to be worth showing.
 export const COLSETS = {
   batting: {
     label: 'Batting',
     sort: 'h',
+    core: ['bat', 'ab'],
     cols: pick('g pa ab r h b1 b2 b3 hr rbi bb so hbp sf tb sb cs sba avg obp slg ops'),
   },
   sluggers: {
     label: 'Star & Power',
     sort: 'hr',
+    core: ['bat', 'ssw'],
     cols: pick('g hr hr1 hr2 hr3 gs itphr tb ssw sh su sbh starSlg gidp gitp bjhi'),
   },
   fielding: {
     label: 'Fielding',
     sort: 'po',
+    core: ['bat', 'po'],
     cols: pick('g po a dp tp bjpo bja bob'),
   },
   pitching: {
     label: 'Pitching',
     sort: 'p_ip',
+    core: ['pit', null],
     cols: pick(
       'gp p_ip p_bf p_np p_str p_ball p_k p_bb p_hb p_h p_r p_er p_ir p_b1 p_b2 p_b3 p_hr p_sp p_su p_pk p_pka p_era7 p_era9 p_whip p_baa p_obpa p_slga p_opsa',
     ),
   },
 };
+
+// The views a season can fill. tracked is null for seasons with full game files.
+export function viewsFor(tracked) {
+  return Object.keys(COLSETS).filter((view) => {
+    if (!tracked) return true;
+    const [src, key] = COLSETS[view].core;
+    const list = tracked[src] || [];
+    return key ? list.includes(key) : list.length > 0;
+  });
+}
+
+// The columns of a view that the season actually kept. Pass tracked = null to keep them all.
+export function colsFor(view, tracked, hideGames = false) {
+  return COLSETS[view].cols.filter((c) => {
+    if (c.id === 'g' || c.id === 'gp') return !hideGames;
+    return !tracked || c.needs.every((k) => (tracked[c.src] || []).includes(k));
+  });
+}
 
 // Categories offered on the home page leader board.
 export function leaderCats(league) {

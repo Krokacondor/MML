@@ -19,7 +19,7 @@
 .dtabs button.is-on { background: var(--ink); color: var(--sun); }
 .dpage { padding-top: 24px; }
 
-.card { display: grid; gap: 14px; margin: 0 0 20px; padding: 20px; background: #fbf4df; border: var(--edge); box-shadow: var(--drop); min-width: 0; }
+.card { display: grid; gap: 14px; margin: 0 0 20px; padding: 20px; background: #fff4d6; border: var(--edge); box-shadow: var(--drop); min-width: 0; }
 fieldset.card { box-shadow: 4px 4px 0 var(--ink); }
 .card legend { padding: 4px 10px 3px; font: 400 17px/1 var(--display); text-transform: uppercase; background: var(--ink); color: var(--chalk); }
 .signin { max-width: 520px; margin: 30px auto; }
@@ -79,7 +79,7 @@ fieldset.card { box-shadow: 4px 4px 0 var(--ink); }
 .list button.is-on { background: var(--sun); }
 .list--plain { max-width: 420px; margin: 0 0 20px; }
 .list--plain li { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 8px 10px; font: 700 18px/1 var(--cond); background: var(--chalk); border: 2px solid var(--ink); }
-.preview { padding: 14px 16px; font-size: 16px; background: #fffdf6; border: 2px dashed var(--ink); }
+.preview { padding: 14px 16px; font-size: 16px; background: #fffbea; border: 2px dashed var(--ink); }
 .preview:empty { display: none; }
 
 @media (max-width: 760px) {

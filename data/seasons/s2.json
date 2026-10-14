@@ -1,0 +1,723 @@
+{
+  "id": "s2",
+  "name": "Season 2",
+  "note": "This season's player and team stats are season totals, which did not keep runs or fielding. Game results are entered separately, from the league's scoreboard pictures.",
+  "tracked": {
+    "bat": [
+      "ab",
+      "pa",
+      "h",
+      "b1",
+      "b2",
+      "b3",
+      "hr",
+      "tb",
+      "rbi",
+      "bb",
+      "so"
+    ],
+    "pit": [
+      "k",
+      "bb"
+    ]
+  },
+  "awards": [
+    {
+      "title": "MVP",
+      "winners": [
+        {
+          "p": "Petey Piranha"
+        }
+      ]
+    },
+    {
+      "title": "World Series MVP",
+      "winners": [
+        {
+          "p": "Petey Piranha"
+        }
+      ]
+    },
+    {
+      "title": "Ernie Balzwell Best Pitcher",
+      "winners": [
+        {
+          "p": "Wiggler"
+        }
+      ]
+    },
+    {
+      "title": "Best Slugger",
+      "winners": [
+        {
+          "p": "Bowser"
+        },
+        {
+          "p": "Blue Pianta"
+        }
+      ]
+    },
+    {
+      "title": "GM of the Year",
+      "winners": [
+        {
+          "gm": "Rory Dawn",
+          "team": "star-road-superstars"
+        }
+      ]
+    },
+    {
+      "title": "Gold Glove",
+      "winners": [
+        {
+          "p": "Brown Kritter"
+        },
+        {
+          "p": "Boomerang Bro"
+        },
+        {
+          "p": "Petey Piranha"
+        },
+        {
+          "p": "Fire Bro"
+        },
+        {
+          "p": "Blue Kritter"
+        }
+      ]
+    },
+    {
+      "title": "Best Mii",
+      "winners": [
+        {
+          "p": "Weird Al"
+        }
+      ]
+    }
+  ],
+  "format": "Each week was a three-game series against one opponent. Games were 5 innings, with a 10-run mercy rule applied at the end of an inning.",
+  "allStars": {
+    "ballots": 11,
+    "seats": 1,
+    "conferences": [
+      {
+        "id": "mk",
+        "name": "Mushroom League",
+        "picks": [
+          {
+            "pos": "1B",
+            "votes": [
+              {
+                "p": "Sans",
+                "team": "star-road-superstars",
+                "n": 5
+              },
+              {
+                "p": "Bowser Jr.",
+                "team": "pi-illo-island-dreamers",
+                "n": 4
+              },
+              {
+                "p": "Kukrushka",
+                "team": "new-new-new-york-mets",
+                "n": 2
+              }
+            ]
+          },
+          {
+            "pos": "2B",
+            "votes": [
+              {
+                "p": "Pablo Sanchez",
+                "team": "new-new-new-york-mets",
+                "n": 6
+              },
+              {
+                "p": "Blue Pianta",
+                "team": "star-road-superstars",
+                "n": 5
+              }
+            ]
+          },
+          {
+            "pos": "3B",
+            "votes": [
+              {
+                "p": "King Boo",
+                "team": "new-new-new-york-mets",
+                "n": 6
+              },
+              {
+                "p": "Green Magikoopa",
+                "team": "pi-illo-island-dreamers",
+                "n": 3
+              },
+              {
+                "p": "Blue Magikoopa",
+                "team": "sarasaland-sandstorm",
+                "n": 1
+              },
+              {
+                "p": "Mario",
+                "team": "star-road-superstars",
+                "n": 1
+              }
+            ]
+          },
+          {
+            "pos": "SS",
+            "votes": [
+              {
+                "p": "Petey Piranha",
+                "team": "new-new-new-york-mets",
+                "n": 9
+              },
+              {
+                "p": "Blue Kritter",
+                "team": "sarasaland-sandstorm",
+                "n": 1
+              },
+              {
+                "p": "Hammer Bro",
+                "team": "pi-illo-island-dreamers",
+                "n": 1
+              }
+            ]
+          },
+          {
+            "pos": "C",
+            "votes": [
+              {
+                "p": "Red Toad",
+                "team": "pi-illo-island-dreamers",
+                "n": 4
+              },
+              {
+                "p": "Blue Dry Bones",
+                "team": "sarasaland-sandstorm",
+                "n": 3
+              },
+              {
+                "p": "Blue Toad",
+                "team": "star-road-superstars",
+                "n": 2
+              },
+              {
+                "p": "Yoshi",
+                "team": "new-new-new-york-mets",
+                "n": 2
+              }
+            ]
+          },
+          {
+            "pos": "LF",
+            "votes": [
+              {
+                "p": "Blooper",
+                "team": "new-new-new-york-mets",
+                "n": 4
+              },
+              {
+                "p": "Green Toad",
+                "team": "pi-illo-island-dreamers",
+                "n": 3
+              },
+              {
+                "p": "Grimace",
+                "team": "star-road-superstars",
+                "n": 2
+              },
+              {
+                "p": "Numbah Four",
+                "team": "sarasaland-sandstorm",
+                "n": 2
+              }
+            ]
+          },
+          {
+            "pos": "CF",
+            "votes": [
+              {
+                "p": "Heisenberg",
+                "team": "new-new-new-york-mets",
+                "n": 6
+              },
+              {
+                "p": "Buttercup",
+                "team": "pi-illo-island-dreamers",
+                "n": 2
+              },
+              {
+                "p": "Starfire",
+                "team": "star-road-superstars",
+                "n": 2
+              },
+              {
+                "p": "Baby Daisy",
+                "team": "sarasaland-sandstorm",
+                "n": 1
+              }
+            ]
+          },
+          {
+            "pos": "RF",
+            "votes": [
+              {
+                "p": "Boo'tleg",
+                "team": "new-new-new-york-mets",
+                "n": 7
+              },
+              {
+                "p": "Green Dry Bones",
+                "team": "pi-illo-island-dreamers",
+                "n": 2
+              },
+              {
+                "p": "Velma",
+                "team": "sarasaland-sandstorm",
+                "n": 2
+              }
+            ]
+          },
+          {
+            "pos": "P",
+            "votes": [
+              {
+                "p": "Daisy",
+                "team": "sarasaland-sandstorm",
+                "n": 7
+              },
+              {
+                "p": "Lightning McQueen",
+                "team": "pi-illo-island-dreamers",
+                "n": 3
+              },
+              {
+                "p": "Steve",
+                "team": "new-new-new-york-mets",
+                "n": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": "bk",
+        "name": "Bowser League",
+        "picks": [
+          {
+            "pos": "1B",
+            "votes": [
+              {
+                "p": "Weird Al",
+                "team": "glitzville-glamours",
+                "n": 9
+              },
+              {
+                "p": "Jimmy Neutron",
+                "team": "ohio",
+                "n": 2
+              }
+            ]
+          },
+          {
+            "pos": "2B",
+            "votes": [
+              {
+                "p": "Red Pianta",
+                "team": "glitzville-glamours",
+                "n": 6
+              },
+              {
+                "p": "Yellow Magikoopa",
+                "team": "wild-woods-1-uppers",
+                "n": 3
+              },
+              {
+                "p": "Gray Shy Guy",
+                "team": "goon-squad",
+                "n": 1
+              },
+              {
+                "p": "Toadsworth",
+                "team": "ohio",
+                "n": 1
+              }
+            ]
+          },
+          {
+            "pos": "3B",
+            "votes": [
+              {
+                "p": "Bowser",
+                "team": "wild-woods-1-uppers",
+                "n": 9
+              },
+              {
+                "p": "Beef Boss",
+                "team": "ohio",
+                "n": 1
+              },
+              {
+                "p": "Birdo",
+                "team": "glitzville-glamours",
+                "n": 1
+              }
+            ]
+          },
+          {
+            "pos": "SS",
+            "votes": [
+              {
+                "p": "Fire Bro",
+                "team": "glitzville-glamours",
+                "n": 6
+              },
+              {
+                "p": "Green Kritter",
+                "team": "goon-squad",
+                "n": 2
+              },
+              {
+                "p": "Red Kritter",
+                "team": "wild-woods-1-uppers",
+                "n": 2
+              },
+              {
+                "p": "Brown Kritter",
+                "team": "ohio",
+                "n": 1
+              }
+            ]
+          },
+          {
+            "pos": "C",
+            "votes": [
+              {
+                "p": "King K. Rool",
+                "team": "wild-woods-1-uppers",
+                "n": 9
+              },
+              {
+                "p": "Boo",
+                "team": "goon-squad",
+                "n": 1
+              },
+              {
+                "p": "Toadette",
+                "team": "glitzville-glamours",
+                "n": 1
+              }
+            ]
+          },
+          {
+            "pos": "LF",
+            "votes": [
+              {
+                "p": "Green Paratroopa",
+                "team": "wild-woods-1-uppers",
+                "n": 5
+              },
+              {
+                "p": "Baby DK",
+                "team": "ohio",
+                "n": 4
+              },
+              {
+                "p": "Red Shy Guy",
+                "team": "glitzville-glamours",
+                "n": 2
+              }
+            ]
+          },
+          {
+            "pos": "CF",
+            "votes": [
+              {
+                "p": "Vito",
+                "team": "goon-squad",
+                "n": 6
+              },
+              {
+                "p": "Funky Kong",
+                "team": "ohio",
+                "n": 3
+              },
+              {
+                "p": "May",
+                "team": "glitzville-glamours",
+                "n": 1
+              },
+              {
+                "p": "Red Koopa",
+                "team": "wild-woods-1-uppers",
+                "n": 1
+              }
+            ]
+          },
+          {
+            "pos": "RF",
+            "votes": [
+              {
+                "p": "Luigi",
+                "team": "goon-squad",
+                "n": 6
+              },
+              {
+                "p": "Gray Dry Bones",
+                "team": "wild-woods-1-uppers",
+                "n": 2
+              },
+              {
+                "p": "Red Dry Bones",
+                "team": "glitzville-glamours",
+                "n": 2
+              },
+              {
+                "p": "Diddy Kong",
+                "team": "ohio",
+                "n": 1
+              }
+            ]
+          },
+          {
+            "pos": "P",
+            "votes": [
+              {
+                "p": "Donkey Kong",
+                "team": "ohio",
+                "n": 5
+              },
+              {
+                "p": "Wiggler",
+                "team": "wild-woods-1-uppers",
+                "n": 5
+              },
+              {
+                "p": "Callie",
+                "team": "glitzville-glamours",
+                "n": 1
+              }
+            ],
+            "picked": [
+              "Wiggler"
+            ]
+          }
+        ]
+      }
+    ],
+    "game": {
+      "stadium": "Mario Stadium",
+      "note": "Ended after 8 innings on the 10-run rule.",
+      "away": {
+        "conf": "bk",
+        "score": 21,
+        "line": [
+          4,
+          2,
+          2,
+          2,
+          0,
+          2,
+          0,
+          9
+        ]
+      },
+      "home": {
+        "conf": "mk",
+        "score": 11,
+        "line": [
+          3,
+          0,
+          3,
+          1,
+          1,
+          0,
+          3,
+          0
+        ]
+      }
+    }
+  },
+  "schedule": [
+    {"week":1,"series":[{"teams":["new-new-new-york-mets","star-road-superstars"],"stadium":"Mario Stadium","games":3},{"teams":["pi-illo-island-dreamers","goon-squad"],"stadium":"Yoshi Park","games":3},{"teams":["wild-woods-1-uppers","glitzville-glamours"],"stadium":"Wario City","games":3},{"teams":["sarasaland-sandstorm","ohio"],"stadium":"DK Jungle","games":3}]},
+    {"week":2,"series":[{"teams":["wild-woods-1-uppers","sarasaland-sandstorm"],"stadium":"Mario Stadium","games":3},{"teams":["ohio","glitzville-glamours"],"stadium":"Bowser Jr. Playroom","games":3},{"teams":["star-road-superstars","goon-squad"],"stadium":"Bowser Castle","games":3},{"teams":["new-new-new-york-mets","pi-illo-island-dreamers"],"stadium":"Daisy Cruiser","games":3}]},
+    {"week":3,"series":[{"teams":["glitzville-glamours","sarasaland-sandstorm"],"stadium":"Yoshi Park","games":3},{"teams":["wild-woods-1-uppers","ohio"],"stadium":"Wario City","games":3},{"teams":["pi-illo-island-dreamers","star-road-superstars"],"stadium":"DK Jungle","games":3},{"teams":["new-new-new-york-mets","goon-squad"],"stadium":"Daisy Cruiser","games":3}]},
+    {"week":4,"series":[{"teams":["star-road-superstars","sarasaland-sandstorm"],"stadium":"Bowser Jr. Playroom","games":3},{"teams":["wild-woods-1-uppers","pi-illo-island-dreamers"],"stadium":"Mario Stadium","games":3},{"teams":["new-new-new-york-mets","glitzville-glamours"],"stadium":"Bowser Castle","games":3},{"teams":["goon-squad","ohio"],"stadium":"Yoshi Park","games":3}]},
+    {"week":5,"series":[{"teams":["new-new-new-york-mets","sarasaland-sandstorm"],"stadium":"DK Jungle","games":3},{"teams":["wild-woods-1-uppers","goon-squad"],"stadium":"Bowser Jr. Playroom","games":3},{"teams":["star-road-superstars","glitzville-glamours"],"stadium":"Daisy Cruiser","games":3},{"teams":["pi-illo-island-dreamers","ohio"],"stadium":"Bowser Castle","games":3}]},
+    {"week":6,"series":[{"teams":["goon-squad","glitzville-glamours"],"stadium":"Mario Stadium","games":3},{"teams":["star-road-superstars","ohio"],"stadium":"Yoshi Park","games":3},{"teams":["wild-woods-1-uppers","new-new-new-york-mets"],"stadium":"DK Jungle","games":3},{"teams":["pi-illo-island-dreamers","sarasaland-sandstorm"],"stadium":"Daisy Cruiser","games":3}]}
+  ],
+  "totals": [
+    {"team":"wild-woods-1-uppers","p":"Gray Dry Bones","bat":{"ab":53,"pa":53,"h":35,"b1":32,"b2":2,"hr":1,"tb":40,"rbi":4,"so":2}},
+    {"team":"pi-illo-island-dreamers","p":"Red Toad","bat":{"ab":44,"pa":44,"h":29,"b1":26,"b2":1,"hr":2,"tb":36,"rbi":14,"so":1}},
+    {"team":"star-road-superstars","p":"Blue Pianta","bat":{"ab":49,"pa":49,"h":32,"b1":29,"hr":3,"tb":41,"rbi":6}},
+    {"team":"wild-woods-1-uppers","p":"Wiggler","bat":{"ab":46,"pa":46,"h":30,"b1":24,"b2":2,"hr":4,"tb":44,"rbi":17},"pit":{"k":7}},
+    {"team":"goon-squad","p":"Waluigi","bat":{"ab":39,"pa":39,"h":25,"b1":20,"b2":5,"tb":30,"rbi":2}},
+    {"team":"glitzville-glamours","p":"Red Dry Bones","bat":{"ab":44,"pa":44,"h":28,"b1":25,"b2":2,"b3":1,"tb":32,"rbi":3}},
+    {"team":"pi-illo-island-dreamers","p":"Green Dry Bones","bat":{"ab":55,"pa":55,"h":34,"b1":24,"b2":7,"b3":1,"hr":2,"tb":49,"rbi":8}},
+    {"team":"star-road-superstars","p":"Boomerang Bro","bat":{"ab":47,"pa":47,"h":29,"b1":22,"b2":2,"b3":1,"hr":4,"tb":45,"rbi":17}},
+    {"team":"wild-woods-1-uppers","p":"Bowser","bat":{"ab":53,"pa":53,"h":32,"b1":18,"b2":2,"hr":12,"tb":70,"rbi":28},"pit":{"k":1}},
+    {"team":"new-new-new-york-mets","p":"Petey Piranha","bat":{"ab":48,"pa":48,"h":29,"b1":17,"b2":2,"b3":2,"hr":8,"tb":59,"rbi":16,"so":2}},
+    {"team":"star-road-superstars","p":"Purple Toad","bat":{"ab":42,"pa":42,"h":25,"b1":22,"b2":3,"tb":28,"rbi":15}},
+    {"team":"pi-illo-island-dreamers","p":"Green Magikoopa","bat":{"ab":55,"pa":55,"h":32,"b1":27,"b2":4,"hr":1,"tb":39,"rbi":12}},
+    {"team":"wild-woods-1-uppers","p":"Red Kritter","bat":{"ab":43,"pa":43,"h":25,"b1":16,"b2":4,"hr":5,"tb":44,"rbi":17}},
+    {"team":"goon-squad","p":"Luigi","bat":{"ab":51,"pa":51,"h":29,"b1":25,"b2":2,"b3":1,"hr":1,"tb":36,"rbi":5,"so":1},"pit":{"k":3}},
+    {"team":"pi-illo-island-dreamers","p":"Bowser Jr.","bat":{"ab":53,"pa":53,"h":30,"b1":26,"b2":4,"tb":34,"rbi":5},"pit":{"k":3}},
+    {"team":"star-road-superstars","p":"Yellow Pianta","bat":{"ab":39,"pa":39,"h":21,"b1":20,"b2":1,"tb":22,"rbi":6},"pit":{"k":2}},
+    {"team":"ohio","p":"Donkey Kong","bat":{"ab":43,"pa":43,"h":23,"b1":11,"hr":12,"tb":59,"rbi":30,"so":1},"pit":{"k":2}},
+    {"team":"star-road-superstars","p":"Blue Toad","bat":{"ab":43,"pa":43,"h":23,"b1":21,"b2":2,"tb":25,"rbi":5}},
+    {"team":"wild-woods-1-uppers","p":"Yellow Magikoopa","bat":{"ab":51,"pa":51,"h":27,"b1":25,"b2":2,"tb":29,"rbi":2,"so":3}},
+    {"team":"glitzville-glamours","p":"Red Pianta","bat":{"ab":44,"pa":44,"h":23,"b1":21,"b2":1,"hr":1,"tb":27,"rbi":6,"so":1}},
+    {"team":"new-new-new-york-mets","p":"Steve","bat":{"ab":37,"pa":37,"h":19,"b1":18,"hr":1,"tb":22,"rbi":5}},
+    {"team":"glitzville-glamours","p":"Fire Bro","bat":{"ab":49,"pa":49,"h":25,"b1":16,"hr":9,"tb":52,"rbi":28}},
+    {"team":"ohio","p":"Baby DK","bat":{"ab":46,"pa":46,"h":23,"b1":22,"b2":1,"tb":24,"rbi":4}},
+    {"team":"sarasaland-sandstorm","p":"Numbah Four","bat":{"ab":14,"pa":14,"h":7,"b1":6,"b2":1,"tb":8,"rbi":3}},
+    {"team":"star-road-superstars","p":"Yellow Toad","bat":{"ab":14,"pa":14,"h":7,"b1":7,"tb":7}},
+    {"team":"goon-squad","p":"Wario","bat":{"ab":39,"pa":39,"h":19,"b1":17,"hr":2,"tb":25,"rbi":7}},
+    {"team":"sarasaland-sandstorm","p":"Blue Dry Bones","bat":{"ab":27,"pa":27,"h":13,"b1":11,"b2":1,"hr":1,"tb":17,"rbi":5}},
+    {"team":"new-new-new-york-mets","p":"Kukrushka","bat":{"ab":52,"pa":52,"h":25,"b1":22,"b2":3,"tb":28,"rbi":4}},
+    {"team":"pi-illo-island-dreamers","p":"Red Magikoopa","bat":{"ab":50,"pa":50,"h":24,"b1":24,"tb":24,"rbi":4,"so":1}},
+    {"team":"goon-squad","p":"Boo","bat":{"ab":36,"pa":36,"h":17,"b1":17,"tb":17,"rbi":2}},
+    {"team":"sarasaland-sandstorm","p":"Velma","bat":{"ab":15,"pa":15,"h":7,"b1":5,"b2":2,"tb":9,"rbi":2}},
+    {"team":"goon-squad","p":"Green Kritter","bat":{"ab":48,"pa":48,"h":22,"b1":16,"b2":3,"hr":3,"tb":34,"rbi":16}},
+    {"team":"pi-illo-island-dreamers","p":"Buttercup","bat":{"ab":53,"pa":53,"h":24,"b1":22,"b2":2,"tb":26,"rbi":8},"pit":{"k":1}},
+    {"team":"new-new-new-york-mets","p":"King Boo","bat":{"ab":42,"pa":42,"h":19,"b1":10,"b2":2,"hr":7,"tb":42,"rbi":19,"so":1}},
+    {"team":"pi-illo-island-dreamers","p":"Green Toad","bat":{"ab":49,"pa":49,"h":22,"b1":20,"b2":2,"tb":24,"rbi":4,"so":2}},
+    {"team":"star-road-superstars","p":"Mario","bat":{"ab":49,"pa":49,"h":22,"b1":22,"tb":22,"rbi":4}},
+    {"team":"wild-woods-1-uppers","p":"Red Koopa","bat":{"ab":36,"pa":36,"h":16,"b1":13,"b2":2,"hr":1,"tb":21,"rbi":3,"so":1}},
+    {"team":"glitzville-glamours","p":"May","bat":{"ab":45,"pa":45,"h":20,"b1":17,"b2":3,"tb":23,"rbi":2,"so":1},"pit":{"k":1}},
+    {"team":"ohio","p":"Brown Kritter","bat":{"ab":41,"pa":41,"h":18,"b1":16,"hr":2,"tb":24,"rbi":5,"so":1}},
+    {"team":"sarasaland-sandstorm","p":"Blue Magikoopa","bat":{"ab":41,"pa":41,"h":18,"b1":17,"hr":1,"tb":21,"rbi":4}},
+    {"team":"goon-squad","p":"Vito","bat":{"ab":48,"pa":48,"h":21,"b1":18,"b2":1,"b3":1,"hr":1,"tb":27,"rbi":6}},
+    {"team":"sarasaland-sandstorm","p":"Blue Kritter","bat":{"ab":42,"pa":42,"h":18,"b1":9,"b2":3,"b3":1,"hr":5,"tb":38,"rbi":14,"so":1}},
+    {"team":"ohio","p":"Toadsworth","bat":{"ab":35,"pa":35,"h":15,"b1":14,"b2":1,"tb":16,"rbi":3}},
+    {"team":"sarasaland-sandstorm","p":"Peach","bat":{"ab":35,"pa":35,"h":15,"b1":15,"tb":15,"rbi":2}},
+    {"team":"goon-squad","p":"Dina","bat":{"ab":14,"pa":14,"h":6,"b1":5,"b2":1,"tb":7,"rbi":1}},
+    {"team":"star-road-superstars","p":"Sans","bat":{"ab":47,"pa":47,"h":20,"b1":19,"hr":1,"tb":23,"rbi":9}},
+    {"team":"glitzville-glamours","p":"Weird Al","bat":{"ab":38,"pa":38,"h":16,"b1":13,"b2":2,"hr":1,"tb":21,"rbi":12}},
+    {"team":"glitzville-glamours","p":"Birdo","bat":{"ab":43,"pa":43,"h":18,"b1":14,"b2":1,"hr":3,"tb":28,"rbi":5,"so":1},"pit":{"k":7}},
+    {"team":"star-road-superstars","p":"Grimace","bat":{"ab":24,"pa":24,"h":10,"b1":9,"hr":1,"tb":13,"rbi":4}},
+    {"team":"wild-woods-1-uppers","p":"King K. Rool","bat":{"ab":41,"pa":41,"h":17,"b1":5,"b2":1,"hr":11,"tb":51,"rbi":29}},
+    {"team":"pi-illo-island-dreamers","p":"Red Paratroopa","bat":{"ab":27,"pa":27,"h":11,"b1":9,"b2":2,"tb":13,"rbi":1,"so":1}},
+    {"team":"new-new-new-york-mets","p":"Boo'tleg","bat":{"ab":42,"pa":42,"h":17,"b1":14,"b2":2,"hr":1,"tb":22,"rbi":4}},
+    {"team":"ohio","p":"Diddy Kong","bat":{"ab":47,"pa":47,"h":19,"b1":19,"tb":19},"pit":{"k":3}},
+    {"team":"pi-illo-island-dreamers","p":"Hammer Bro","bat":{"ab":50,"pa":50,"h":20,"b1":14,"b2":3,"b3":1,"hr":2,"tb":31,"rbi":7,"so":1}},
+    {"team":"new-new-new-york-mets","p":"Blooper","bat":{"ab":25,"pa":25,"h":10,"b1":8,"b2":1,"b3":1,"tb":13,"rbi":5}},
+    {"team":"ohio","p":"Jimmy Neutron","bat":{"ab":35,"pa":35,"h":14,"b1":13,"b2":1,"tb":15,"rbi":1}},
+    {"team":"wild-woods-1-uppers","p":"Green Paratroopa","bat":{"ab":38,"pa":38,"h":15,"b1":12,"b2":1,"hr":2,"tb":22,"rbi":8,"so":1}},
+    {"team":"sarasaland-sandstorm","p":"Naoto","bat":{"ab":43,"pa":43,"h":17,"b1":14,"b2":3,"tb":20,"rbi":2,"so":1}},
+    {"team":"goon-squad","p":"Green Koopa","bat":{"ab":31,"pa":31,"h":12,"b1":12,"tb":12,"rbi":2}},
+    {"team":"new-new-new-york-mets","p":"Heisenberg","bat":{"ab":44,"pa":44,"h":17,"b1":17,"tb":17,"rbi":5,"so":1}},
+    {"team":"pi-illo-island-dreamers","p":"Lightning McQueen","bat":{"ab":43,"pa":43,"h":16,"b1":12,"b2":3,"hr":1,"tb":22,"rbi":11}},
+    {"team":"sarasaland-sandstorm","p":"Baby Daisy","bat":{"ab":49,"pa":49,"h":18,"b1":14,"b2":3,"b3":1,"tb":23,"rbi":4}},
+    {"team":"ohio","p":"Funky Kong","bat":{"ab":41,"pa":41,"h":15,"b1":8,"b2":2,"hr":5,"tb":32,"rbi":14,"so":1}},
+    {"team":"goon-squad","p":"Green Shy Guy","bat":{"ab":41,"pa":41,"h":15,"b1":12,"b2":1,"hr":2,"tb":22,"rbi":9,"so":1}},
+    {"team":"wild-woods-1-uppers","p":"Lynne","bat":{"ab":50,"pa":50,"h":18,"b1":14,"b2":4,"tb":22,"rbi":10}},
+    {"team":"glitzville-glamours","p":"Toadette","bat":{"ab":45,"pa":45,"h":16,"b1":16,"tb":16,"so":1}},
+    {"team":"new-new-new-york-mets","p":"Yoshi","bat":{"ab":37,"pa":37,"h":13,"b1":11,"b2":1,"b3":1,"tb":16,"rbi":2}},
+    {"team":"glitzville-glamours","p":"Callie","bat":{"ab":35,"pa":35,"h":12,"b1":9,"b2":3,"tb":15,"rbi":4}},
+    {"team":"goon-squad","p":"Gray Shy Guy","bat":{"ab":36,"pa":36,"h":12,"b1":12,"tb":12,"rbi":1}},
+    {"team":"sarasaland-sandstorm","p":"Blue Yoshi","bat":{"ab":31,"pa":31,"h":10,"b1":9,"b2":1,"tb":11}},
+    {"team":"sarasaland-sandstorm","p":"Baby Mario","bat":{"ab":28,"pa":28,"h":9,"b1":9,"tb":9,"so":2}},
+    {"team":"star-road-superstars","p":"Starfire","bat":{"ab":41,"pa":41,"h":13,"b1":11,"b2":2,"tb":15,"rbi":9}},
+    {"team":"ohio","p":"Beef Boss","bat":{"ab":32,"pa":32,"h":10,"b1":9,"b2":1,"tb":11,"rbi":1}},
+    {"team":"ohio","p":"Dixie Kong","bat":{"ab":45,"pa":45,"h":14,"b1":13,"b2":1,"tb":15,"rbi":1}},
+    {"team":"sarasaland-sandstorm","p":"Terry Crews","bat":{"ab":13,"pa":13,"h":4,"b1":4,"tb":4,"rbi":3}},
+    {"team":"sarasaland-sandstorm","p":"Daisy","bat":{"ab":37,"pa":37,"h":11,"b1":6,"b2":4,"hr":1,"tb":18,"rbi":8,"so":1},"pit":{"k":2}},
+    {"team":"star-road-superstars","p":"Tiny Kong","bat":{"ab":7,"pa":7,"h":2,"b1":2,"tb":2,"rbi":2}},
+    {"team":"wild-woods-1-uppers","p":"Goomba","bat":{"ab":21,"pa":21,"h":6,"b1":6,"tb":6,"rbi":2}},
+    {"team":"new-new-new-york-mets","p":"Pablo Sanchez","bat":{"ab":45,"pa":45,"h":12,"b1":12,"tb":12,"rbi":2,"so":1}},
+    {"team":"glitzville-glamours","p":"Red Shy Guy","bat":{"ab":14,"pa":14,"h":3,"b1":2,"b2":1,"tb":4}}
+  ],
+  "games": [
+    {"id":"s2-001","week":1,"n":1,"type":"regular","stadium":"Mario Stadium","away":{"team":"star-road-superstars","score":0,"line":[0,0,0,0,0]},"home":{"team":"new-new-new-york-mets","score":4,"line":[1,1,2,0,"X"]},"batting":[{"t":"a","p":"Yellow Pianta","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Yellow Toad","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Mario","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Boomerang Bro","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Sans","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Blue Toad","ab":2,"pa":2},{"t":"a","p":"Blue Pianta","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"a","p":"Starfire","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"a","p":"Purple Toad","ab":2,"pa":2,"h":2,"b1":2,"tb":2},{"t":"h","p":"Kukrushka","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"h","p":"Pablo Sanchez","ab":3,"pa":3},{"t":"h","p":"Petey Piranha","ab":2,"pa":2,"h":2,"b3":1,"hr":1,"tb":7,"rbi":1},{"t":"h","p":"King Boo","ab":2,"pa":2,"h":1,"hr":1,"tb":4,"rbi":2},{"t":"h","p":"Boo'tleg","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Heisenberg","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Boo","ab":2,"pa":2,"h":2,"b1":2,"tb":2},{"t":"h","p":"Steve","ab":2,"pa":2,"rbi":1},{"t":"h","p":"Yoshi","ab":2,"pa":2,"h":1,"b1":1,"tb":1}],"pitching":[]},
+    {"id":"s2-002","week":1,"n":2,"type":"regular","stadium":"Mario Stadium","away":{"team":"new-new-new-york-mets","score":3,"line":[0,0,1,2,0]},"home":{"team":"star-road-superstars","score":4,"line":[0,0,0,4,"X"]},"batting":[{"t":"a","p":"Kukrushka","ab":3,"pa":3,"h":1,"b1":1,"tb":1,"rbi":1},{"t":"a","p":"Pablo Sanchez","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"a","p":"Petey Piranha","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"a","p":"King Boo","ab":2,"pa":2,"h":1,"hr":1,"tb":4,"rbi":2},{"t":"a","p":"Boo'tleg","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"a","p":"Heisenberg","ab":2,"pa":2},{"t":"a","p":"Boo","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"a","p":"Steve","ab":2,"pa":2,"h":2,"b1":2,"tb":2},{"t":"a","p":"Yoshi","ab":2,"pa":2},{"t":"h","p":"Yellow Pianta","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Yellow Toad","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Mario","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Boomerang Bro","ab":2,"pa":2,"h":2,"b1":2,"tb":2,"rbi":2},{"t":"h","p":"Sans","ab":2,"pa":2,"rbi":1},{"t":"h","p":"Blue Toad","ab":2,"pa":2,"h":1,"b2":1,"tb":2,"rbi":1},{"t":"h","p":"Blue Pianta","ab":2,"pa":2},{"t":"h","p":"Starfire","ab":2,"pa":2},{"t":"h","p":"Purple Toad","ab":1,"pa":1}],"pitching":[]},
+    {"id":"s2-003","week":1,"n":3,"type":"regular","stadium":"Mario Stadium","away":{"team":"star-road-superstars","score":6,"line":[0,2,1,3,0]},"home":{"team":"new-new-new-york-mets","score":8,"line":[null,null,4,null,"X"]},"batting":[{"t":"a","p":"Yellow Pianta","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Yellow Toad","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"a","p":"Mario","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"a","p":"Boomerang Bro","ab":3,"pa":3,"h":1,"hr":1,"tb":4,"rbi":3},{"t":"a","p":"Sans","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"a","p":"Blue Toad","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"a","p":"Blue Pianta","ab":3,"pa":3,"h":3,"b1":3,"tb":3,"rbi":1},{"t":"a","p":"Starfire","ab":3,"pa":3,"h":1,"b1":1,"tb":1,"rbi":1},{"t":"a","p":"Purple Toad","ab":3,"pa":3,"h":1,"b1":1,"tb":1,"rbi":1},{"t":"h","p":"Kukrushka","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"h","p":"Pablo Sanchez","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"h","p":"Petey Piranha","ab":3,"pa":3,"h":2,"b1":2,"tb":2,"rbi":1},{"t":"h","p":"King Boo","ab":3,"pa":3,"h":1,"hr":1,"tb":4,"rbi":2},{"t":"h","p":"Boo'tleg","ab":3,"pa":3,"h":2,"b1":2,"tb":2,"rbi":1},{"t":"h","p":"Heisenberg","ab":3,"pa":3,"h":3,"b1":3,"tb":3},{"t":"h","p":"Boo","ab":3,"pa":3,"h":3,"b1":3,"tb":3,"rbi":2},{"t":"h","p":"Steve","ab":3,"pa":3,"h":3,"b1":3,"tb":3,"rbi":1},{"t":"h","p":"Yoshi","ab":3,"pa":3,"h":1,"b1":1,"tb":1,"rbi":1}],"pitching":[]},
+    {"id":"s2-004","week":1,"n":1,"type":"regular","stadium":"Yoshi Park","away":{"team":"pi-illo-island-dreamers","score":18},"home":{"team":"goon-squad","score":1},"batting":[{"t":"a","p":"Green Dry Bones","ab":5,"pa":5,"h":4,"b1":4,"tb":4},{"t":"a","p":"Buttercup","ab":5,"pa":5,"h":3,"b1":3,"tb":3,"rbi":3},{"t":"a","p":"Green Magikoopa","ab":5,"pa":5,"h":4,"b1":3,"hr":1,"tb":7,"rbi":4},{"t":"a","p":"Fire Bro","ab":5,"pa":5,"h":3,"b1":2,"hr":1,"tb":6,"rbi":3},{"t":"a","p":"Bowser Jr.","ab":4,"pa":4,"h":4,"b1":4,"tb":4},{"t":"a","p":"Red Magikoopa","ab":4,"pa":4,"h":2,"b1":2,"tb":2,"so":1},{"t":"a","p":"Red Toad","ab":4,"pa":4,"h":4,"b1":3,"hr":1,"tb":7,"rbi":6},{"t":"a","p":"Lightning McQueen","ab":4,"pa":4,"h":3,"b1":3,"tb":3,"rbi":1},{"t":"a","p":"Red Paratroopa","ab":4,"pa":4,"h":2,"b1":2,"tb":2,"rbi":1},{"t":"h","p":"Luigi","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"h","p":"Green Kritter","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"h","p":"Vito","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"h","p":"Green Shy Guy","ab":3,"pa":3,"h":1,"b1":1,"tb":1,"rbi":1},{"t":"h","p":"Green Koopa","ab":2,"pa":2},{"t":"h","p":"Goomba","ab":2,"pa":2},{"t":"h","p":"Wario","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Waluigi","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Gray Shy Guy","ab":2,"pa":2}],"pitching":[{"t":"h","p":"Luigi","k":1}]},
+    {"id":"s2-005","week":1,"n":2,"type":"regular","stadium":"Yoshi Park","away":{"team":"goon-squad","score":5,"line":[5,0,0,0,0]},"home":{"team":"pi-illo-island-dreamers","score":7,"line":[0,3,1,3,"X"]},"batting":[{"t":"a","p":"Luigi","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"a","p":"Green Kritter","ab":3,"pa":3,"h":1,"hr":1,"tb":4,"rbi":3},{"t":"a","p":"Vito","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Green Shy Guy","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Green Koopa","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"a","p":"Goomba","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Wario","ab":2,"pa":2,"h":1,"b1":1,"tb":1,"rbi":1},{"t":"a","p":"Waluigi","ab":2,"pa":2,"rbi":1},{"t":"a","p":"Gray Shy Guy","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Green Dry Bones","ab":3,"pa":3,"h":3,"b1":3,"tb":3,"rbi":1},{"t":"h","p":"Buttercup","ab":3,"pa":3},{"t":"h","p":"Green Magikoopa","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"h","p":"Fire Bro","ab":3,"pa":3,"h":2,"hr":2,"tb":8,"rbi":4},{"t":"h","p":"Bowser Jr.","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"h","p":"Red Magikoopa","ab":2,"pa":2,"h":2,"b1":2,"tb":2},{"t":"h","p":"Red Toad","ab":2,"pa":2,"h":2,"b1":2,"tb":2},{"t":"h","p":"Lightning McQueen","ab":2,"pa":2,"h":1,"b2":1,"tb":2,"rbi":2},{"t":"h","p":"Red Paratroopa","ab":2,"pa":2,"h":1,"b1":1,"tb":1}],"pitching":[]},
+    {"id":"s2-006","week":1,"n":3,"type":"regular","stadium":"Yoshi Park","away":{"team":"goon-squad","score":9,"line":[5,0,0,0,4]},"home":{"team":"pi-illo-island-dreamers","score":6,"line":[4,1,0,1,0]},"batting":[{"t":"a","p":"Luigi","ab":4,"pa":4,"h":3,"b1":3,"tb":3},{"t":"a","p":"Green Kritter","ab":4,"pa":4,"h":3,"b1":2,"hr":1,"tb":6,"rbi":5},{"t":"a","p":"Vito","ab":4,"pa":4,"h":2,"b1":2,"tb":2},{"t":"a","p":"Green Shy Guy","ab":4,"pa":4,"h":2,"b1":2,"tb":2},{"t":"a","p":"Green Koopa","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"a","p":"Goomba","ab":3,"pa":3,"rbi":1},{"t":"a","p":"Wario","ab":3,"pa":3,"h":3,"b1":2,"hr":1,"tb":6,"rbi":2},{"t":"a","p":"Waluigi","ab":3,"pa":3,"h":2,"b1":1,"b2":1,"tb":3},{"t":"a","p":"Gray Shy Guy","ab":3,"pa":3,"h":2,"b1":2,"tb":2,"rbi":1},{"t":"h","p":"Green Dry Bones","ab":4,"pa":4,"h":3,"b1":2,"b2":1,"tb":4},{"t":"h","p":"Buttercup","ab":4,"pa":4},{"t":"h","p":"Green Magikoopa","ab":3,"pa":3,"h":3,"b1":2,"b2":1,"tb":4},{"t":"h","p":"Fire Bro","ab":3,"pa":3,"h":3,"b1":3,"tb":3},{"t":"h","p":"Bowser Jr.","ab":3,"pa":3,"h":3,"b1":3,"tb":3,"rbi":2},{"t":"h","p":"Red Magikoopa","ab":3,"pa":3,"h":2,"b1":2,"tb":2,"rbi":1},{"t":"h","p":"Red Toad","ab":3,"pa":3,"h":1,"b1":1,"tb":1,"rbi":1},{"t":"h","p":"Lightning McQueen","ab":3,"pa":3,"h":1,"b2":1,"tb":2,"rbi":2},{"t":"h","p":"Red Paratroopa","ab":3,"pa":3,"h":1,"b1":1,"tb":1,"so":1}],"pitching":[{"t":"a","p":"Luigi","k":1}]},
+    {"id":"s2-007","week":1,"n":1,"type":"regular","stadium":"Wario City","away":{"team":"glitzville-glamours","score":3,"line":[0,1,0,1,1]},"home":{"team":"wild-woods-1-uppers","score":4,"line":[2,1,1,0,"X"]},"batting":[{"t":"a","p":"Toadette","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Green Toad","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Birdo","ab":3,"pa":3,"h":2,"b1":1,"hr":1,"tb":5,"rbi":1},{"t":"a","p":"Hammer Bro","ab":3,"pa":3,"h":2,"b1":1,"hr":1,"tb":5,"rbi":2},{"t":"a","p":"May","ab":3,"pa":3},{"t":"a","p":"Red Pianta","ab":2,"pa":2,"h":1,"b2":1,"tb":2,"so":1},{"t":"a","p":"Red Dry Bones","ab":2,"pa":2,"h":2,"b1":2,"tb":2},{"t":"a","p":"Weird Al","ab":2,"pa":2},{"t":"a","p":"Callie","ab":2,"pa":2},{"t":"h","p":"Gray Dry Bones","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Bowser","ab":2,"pa":2,"h":2,"hr":2,"tb":8,"rbi":3},{"t":"h","p":"Yellow Magikoopa","ab":2,"pa":2},{"t":"h","p":"Lynne","ab":2,"pa":2},{"t":"h","p":"Wiggler","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Red Kritter","ab":2,"pa":2,"h":1,"hr":1,"tb":4,"rbi":1},{"t":"h","p":"King K. Rool","ab":2,"pa":2},{"t":"h","p":"Green Paratroopa","ab":1,"pa":1},{"t":"h","p":"Red Koopa","ab":1,"pa":1}],"pitching":[{"t":"h","p":"Wiggler","k":1}]},
+    {"id":"s2-008","week":1,"n":2,"type":"regular","stadium":"Wario City","away":{"team":"glitzville-glamours","score":7,"line":[0,2,0,2,3]},"home":{"team":"wild-woods-1-uppers","score":2,"line":[0,0,0,0,2]},"batting":[{"t":"a","p":"Toadette","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Green Toad","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Birdo","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Hammer Bro","ab":3,"pa":3,"h":3,"b1":3,"tb":3},{"t":"a","p":"May","ab":3,"pa":3,"h":1,"b1":1,"tb":1,"so":1},{"t":"a","p":"Red Pianta","ab":3,"pa":3,"h":3,"b1":2,"hr":1,"tb":6,"rbi":3},{"t":"a","p":"Red Dry Bones","ab":3,"pa":3,"h":2,"b1":1,"b2":1,"tb":3},{"t":"a","p":"Weird Al","ab":2,"pa":2,"h":2,"b1":2,"tb":2,"rbi":3},{"t":"a","p":"Callie","ab":2,"pa":2,"h":1,"b1":1,"tb":1,"rbi":1},{"t":"h","p":"Gray Dry Bones","ab":3,"pa":3,"h":2,"b1":1,"b2":1,"tb":3},{"t":"h","p":"Bowser","ab":3,"pa":3,"h":2,"b1":1,"hr":1,"tb":5,"rbi":2},{"t":"h","p":"Yellow Magikoopa","ab":3,"pa":3},{"t":"h","p":"Lynne","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"h","p":"Wiggler","ab":2,"pa":2,"h":2,"b1":1,"b2":1,"tb":3},{"t":"h","p":"Red Kritter","ab":2,"pa":2,"h":1,"b2":1,"tb":2},{"t":"h","p":"King K. Rool","ab":2,"pa":2},{"t":"h","p":"Green Paratroopa","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Red Koopa","ab":2,"pa":2}],"pitching":[{"t":"h","p":"Wiggler","k":1}]},
+    {"id":"s2-009","week":1,"n":3,"type":"regular","stadium":"Wario City","away":{"team":"glitzville-glamours","score":9,"line":[0,0,1,8,0]},"home":{"team":"wild-woods-1-uppers","score":11,"line":[4,2,0,0,"5x"]},"batting":[{"t":"a","p":"Toadette","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"a","p":"Green Toad","ab":3,"pa":3,"h":1,"b1":1,"tb":1,"so":1},{"t":"a","p":"Birdo","ab":3,"pa":3,"h":2,"b1":1,"hr":1,"tb":5,"rbi":3},{"t":"a","p":"Hammer Bro","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"May","ab":3,"pa":3,"h":3,"b1":3,"tb":3,"rbi":1},{"t":"a","p":"Red Pianta","ab":3,"pa":3,"h":1,"b1":1,"tb":1,"rbi":1},{"t":"a","p":"Red Dry Bones","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Weird Al","ab":2,"pa":2,"h":2,"b2":2,"tb":4,"rbi":3},{"t":"a","p":"Callie","ab":2,"pa":2,"h":1,"b2":1,"tb":2,"rbi":1},{"t":"h","p":"Gray Dry Bones","ab":3,"pa":3,"h":3,"b1":3,"tb":3},{"t":"h","p":"Bowser","ab":3,"pa":3,"h":2,"hr":2,"tb":8,"rbi":4},{"t":"h","p":"Yellow Magikoopa","ab":3,"pa":3,"h":2,"b1":1,"b2":1,"tb":3,"so":1},{"t":"h","p":"Lynne","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"h","p":"Wiggler","ab":3,"pa":3,"h":2,"b1":1,"hr":1,"tb":5,"rbi":2},{"t":"h","p":"Red Kritter","ab":3,"pa":3,"h":1,"b1":1,"tb":1,"rbi":1},{"t":"h","p":"King K. Rool","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"h","p":"Green Paratroopa","ab":3,"pa":3,"h":1,"hr":1,"tb":4,"rbi":4,"so":1},{"t":"h","p":"Red Koopa","ab":2,"pa":2}],"pitching":[{"t":"a","p":"Birdo","k":1},{"t":"a","p":"May","k":1},{"t":"h","p":"Wiggler","k":1}]},
+    {"id":"s2-010","week":1,"n":1,"type":"regular","stadium":"DK Jungle","away":{"team":"sarasaland-sandstorm","score":2,"line":[0,2,0,0,0]},"home":{"team":"ohio","score":3,"line":[0,0,0,3,"X"]},"batting":[{"t":"a","p":"Baby Daisy","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Blue Yoshi","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Baby Mario","ab":3,"pa":3,"h":3,"b1":3,"tb":3},{"t":"a","p":"Blue Kritter","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"a","p":"Naoto","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Blue Magikoopa","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"a","p":"Blue Dry Bones","ab":2,"pa":2},{"t":"a","p":"Peach","ab":2,"pa":2},{"t":"a","p":"Daisy","ab":2,"pa":2,"h":1,"hr":1,"tb":4,"rbi":2},{"t":"h","p":"Diddy Kong","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Baby DK","ab":2,"pa":2},{"t":"h","p":"Dixie Kong","ab":2,"pa":2},{"t":"h","p":"Donkey Kong","ab":2,"pa":2,"h":1,"hr":1,"tb":4,"rbi":1},{"t":"h","p":"Brown Kritter","ab":2,"pa":2,"h":2,"b1":2,"tb":2},{"t":"h","p":"Funky Kong","ab":2,"pa":2,"h":2,"b1":1,"hr":1,"tb":5,"rbi":2},{"t":"h","p":"Jimmy Neutron","ab":2,"pa":2},{"t":"h","p":"Toadsworth","ab":2,"pa":2},{"t":"h","p":"Beef Boss","ab":1,"pa":1}],"pitching":[]},
+    {"id":"s2-011","week":1,"n":2,"type":"regular","stadium":"DK Jungle","away":{"team":"ohio","score":6,"line":[0,1,1,0,4]},"home":{"team":"sarasaland-sandstorm","score":3,"line":[0,3,0,0,0]},"batting":[{"t":"a","p":"Diddy Kong","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"a","p":"Baby DK","ab":3,"pa":3,"h":2,"b1":2,"tb":2,"rbi":1},{"t":"a","p":"Dixie Kong","ab":3,"pa":3,"h":2,"b1":2,"tb":2,"rbi":1},{"t":"a","p":"Donkey Kong","ab":3,"pa":3,"h":2,"hr":2,"tb":8,"rbi":4},{"t":"a","p":"Brown Kritter","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"a","p":"Funky Kong","ab":3,"pa":3},{"t":"a","p":"Jimmy Neutron","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"a","p":"Toadsworth","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"a","p":"Beef Boss","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Baby Daisy","ab":3,"pa":3},{"t":"h","p":"Blue Yoshi","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"h","p":"Baby Mario","ab":2,"pa":2},{"t":"h","p":"Blue Kritter","ab":2,"pa":2},{"t":"h","p":"Naoto","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Blue Magikoopa","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Blue Dry Bones","ab":2,"pa":2,"h":2,"b1":2,"tb":2,"rbi":1},{"t":"h","p":"Peach","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Daisy","ab":2,"pa":2,"h":1,"b2":1,"tb":2,"rbi":2}],"pitching":[]},
+    {"id":"s2-012","week":1,"n":3,"type":"regular","stadium":"DK Jungle","away":{"team":"sarasaland-sandstorm","score":2,"line":[1,0,0,0,1]},"home":{"team":"ohio","score":0,"line":[0,0,0,0,0]},"batting":[{"t":"a","p":"Baby Daisy","ab":3,"pa":3,"h":2,"b1":2,"tb":2},{"t":"a","p":"Blue Yoshi","ab":3,"pa":3,"h":3,"b1":3,"tb":3},{"t":"a","p":"Baby Mario","ab":3,"pa":3,"h":1,"b1":1,"tb":1},{"t":"a","p":"Blue Kritter","ab":3,"pa":3,"h":2,"b1":1,"b2":1,"tb":3,"rbi":2},{"t":"a","p":"Naoto","ab":3,"pa":3},{"t":"a","p":"Blue Magikoopa","ab":2,"pa":2,"h":2,"b1":2,"tb":2},{"t":"a","p":"Blue Dry Bones","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"a","p":"Peach","ab":2,"pa":2},{"t":"a","p":"Daisy","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Diddy Kong","ab":2,"pa":2},{"t":"h","p":"Baby DK","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Dixie Kong","ab":2,"pa":2},{"t":"h","p":"Donkey Kong","ab":2,"pa":2,"h":1,"b1":1,"tb":1},{"t":"h","p":"Brown Kritter","ab":2,"pa":2},{"t":"h","p":"Funky Kong","ab":2,"pa":2},{"t":"h","p":"Jimmy Neutron","ab":1,"pa":1,"h":1,"b1":1,"tb":1},{"t":"h","p":"Toadsworth","ab":1,"pa":1},{"t":"h","p":"Beef Boss","ab":1,"pa":1}],"pitching":[]},
+    {"id":"s2-013","week":2,"n":1,"type":"regular","stadium":"Mario Stadium","away":{"team":"wild-woods-1-uppers","score":4,"line":[1,2,1,0,0]},"home":{"team":"sarasaland-sandstorm","score":1,"line":[1,0,0,0,0],"h":4},"batting":[],"pitching":[]},
+    {"id":"s2-014","week":2,"n":2,"type":"regular","stadium":"Mario Stadium","away":{"team":"sarasaland-sandstorm","score":6,"line":[0,3,1,0,1,1],"h":14},"home":{"team":"wild-woods-1-uppers","score":5,"line":[0,0,3,2,0,0],"h":8},"batting":[],"pitching":[]},
+    {"id":"s2-015","week":2,"n":3,"type":"regular","stadium":"Mario Stadium","away":{"team":"sarasaland-sandstorm","score":2,"line":[0,2,0],"h":3},"home":{"team":"wild-woods-1-uppers","score":12,"line":[0,8,"4x"],"h":18},"batting":[],"pitching":[]},
+    {"id":"s2-016","week":2,"n":1,"type":"regular","stadium":"Bowser Jr. Playroom","away":{"team":"ohio","score":1,"line":[0,0,0,0,1]},"home":{"team":"glitzville-glamours","score":0,"line":[0,0,0,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-017","week":2,"n":2,"type":"regular","stadium":"Bowser Jr. Playroom","away":{"team":"ohio","score":3,"line":[0,0,0,0,0,3]},"home":{"team":"glitzville-glamours","score":0,"line":[0,0,0,0,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-018","week":2,"n":3,"type":"regular","stadium":"Bowser Jr. Playroom","away":{"team":"glitzville-glamours","score":1,"line":[0,1,0,0,0]},"home":{"team":"ohio","score":0,"line":[0,0,0,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-019","week":2,"n":1,"type":"regular","stadium":"Bowser Castle","away":{"team":"goon-squad","score":0,"line":[0,0,0,0,0]},"home":{"team":"star-road-superstars","score":1,"line":[0,0,1,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-020","week":2,"n":2,"type":"regular","stadium":"Bowser Castle","away":{"team":"goon-squad","score":2,"line":[0,0,0,1,1]},"home":{"team":"star-road-superstars","score":5,"line":[2,0,0,3,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-021","week":2,"n":3,"type":"regular","stadium":"Bowser Castle","away":{"team":"goon-squad","score":3,"line":[2,1,0,0,0]},"home":{"team":"star-road-superstars","score":7,"line":[0,3,4,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-022","week":2,"n":1,"type":"regular","stadium":"Daisy Cruiser","away":{"team":"pi-illo-island-dreamers","score":5,"line":[1,2,1,0,1]},"home":{"team":"new-new-new-york-mets","score":1,"line":[0,0,1,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-023","week":2,"n":2,"type":"regular","stadium":"Daisy Cruiser","away":{"team":"pi-illo-island-dreamers","score":6,"line":[0,0,2,0,4]},"home":{"team":"new-new-new-york-mets","score":7,"line":[1,6,0,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-024","week":2,"n":3,"type":"regular","stadium":"Daisy Cruiser","away":{"team":"pi-illo-island-dreamers","score":4,"line":[0,0,4,0,0]},"home":{"team":"new-new-new-york-mets","score":5,"line":[2,0,0,3,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-025","week":3,"n":1,"type":"regular","stadium":"Yoshi Park","away":{"team":"glitzville-glamours","score":1,"line":[0,0,0,1,0]},"home":{"team":"sarasaland-sandstorm","score":0,"line":[0,0,0,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-026","week":3,"n":2,"type":"regular","stadium":"Yoshi Park","away":{"team":"glitzville-glamours","score":1,"line":[0,0,0,0,1]},"home":{"team":"sarasaland-sandstorm","score":5,"line":[4,0,1,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-027","week":3,"n":3,"type":"regular","stadium":"Yoshi Park","away":{"team":"sarasaland-sandstorm","score":4,"line":[0,0,0,3,1]},"home":{"team":"glitzville-glamours","score":5,"line":[0,4,0,0,"1x"]},"batting":[],"pitching":[]},
+    {"id":"s2-028","week":3,"n":1,"type":"regular","stadium":"Wario City","away":{"team":"ohio","score":0,"line":[0,0]},"home":{"team":"wild-woods-1-uppers","score":11,"line":[7,"4x"]},"batting":[],"pitching":[]},
+    {"id":"s2-029","week":3,"n":2,"type":"regular","stadium":"Wario City","away":{"team":"wild-woods-1-uppers","score":8,"line":[0,4,0,4,0]},"home":{"team":"ohio","score":9,"line":[3,0,2,3,"1x"]},"batting":[],"pitching":[]},
+    {"id":"s2-030","week":3,"n":3,"type":"regular","stadium":"Wario City","away":{"team":"wild-woods-1-uppers","score":1,"line":[1,0,0,0,0]},"home":{"team":"ohio","score":5,"line":[4,0,1,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-031","week":3,"n":1,"type":"regular","stadium":"DK Jungle","away":{"team":"pi-illo-island-dreamers","score":3,"line":[0,0,0,1,2]},"home":{"team":"star-road-superstars","score":5,"line":[0,3,0,2,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-032","week":3,"n":2,"type":"regular","stadium":"DK Jungle","away":{"team":"pi-illo-island-dreamers","score":1,"line":[0,0,1,0,0]},"home":{"team":"star-road-superstars","score":8,"line":[2,0,1,5,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-033","week":3,"n":3,"type":"regular","stadium":"DK Jungle","away":{"team":"star-road-superstars","score":4,"line":[0,0,2,2,0]},"home":{"team":"pi-illo-island-dreamers","score":3,"line":[0,0,1,0,2]},"batting":[],"pitching":[]},
+    {"id":"s2-034","week":3,"n":1,"type":"regular","stadium":"Daisy Cruiser","away":{"team":"new-new-new-york-mets","score":1,"line":[0,0,1,0,0]},"home":{"team":"goon-squad","score":2,"line":[1,0,1,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-035","week":3,"n":2,"type":"regular","stadium":"Daisy Cruiser","away":{"team":"goon-squad","score":7,"line":[0,0,3,4,0]},"home":{"team":"new-new-new-york-mets","score":0,"line":[0,0,0,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-036","week":3,"n":3,"type":"regular","stadium":"Daisy Cruiser","away":{"team":"new-new-new-york-mets","score":4,"line":[0,0,0,3,1]},"home":{"team":"goon-squad","score":1,"line":[0,0,0,1,0]},"batting":[],"pitching":[]},
+    {"id":"s2-037","week":4,"n":1,"type":"regular","stadium":"Bowser Jr. Playroom","away":{"team":"sarasaland-sandstorm","score":0,"line":[0,0,0,0,0]},"home":{"team":"star-road-superstars","score":3,"line":[0,0,0,3,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-038","week":4,"n":2,"type":"regular","stadium":"Bowser Jr. Playroom","away":{"team":"star-road-superstars","score":4,"line":[3,0,0,0,1]},"home":{"team":"sarasaland-sandstorm","score":0,"line":[0,0,0,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-039","week":4,"n":3,"type":"regular","stadium":"Bowser Jr. Playroom","away":{"team":"star-road-superstars","score":7,"line":[4,0,1,0,2]},"home":{"team":"sarasaland-sandstorm","score":2,"line":[0,0,0,2,0]},"batting":[],"pitching":[]},
+    {"id":"s2-040","week":4,"n":1,"type":"regular","stadium":"Mario Stadium","away":{"team":"wild-woods-1-uppers","score":4,"line":[0,1,3,0,0]},"home":{"team":"pi-illo-island-dreamers","score":1,"line":[0,0,0,1,0]},"batting":[],"pitching":[]},
+    {"id":"s2-041","week":4,"n":2,"type":"regular","stadium":"Mario Stadium","away":{"team":"wild-woods-1-uppers","score":8,"line":[0,0,0,0,8]},"home":{"team":"pi-illo-island-dreamers","score":9,"line":[2,2,0,4,"1x"]},"batting":[],"pitching":[]},
+    {"id":"s2-042","week":4,"n":3,"type":"regular","stadium":"Mario Stadium","away":{"team":"pi-illo-island-dreamers","score":5,"line":[1,0,3,1,0]},"home":{"team":"wild-woods-1-uppers","score":9,"line":[6,0,2,1,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-043","week":4,"n":1,"type":"regular","stadium":"Bowser Castle","away":{"team":"new-new-new-york-mets","score":7,"line":[4,0,2,0,1]},"home":{"team":"glitzville-glamours","score":1,"line":[0,0,0,1,0]},"batting":[],"pitching":[]},
+    {"id":"s2-044","week":4,"n":2,"type":"regular","stadium":"Bowser Castle","away":{"team":"glitzville-glamours","score":1,"line":[0,0,0,1,0]},"home":{"team":"new-new-new-york-mets","score":2,"line":[2,0,0,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-045","week":4,"n":3,"type":"regular","stadium":"Bowser Castle","away":{"team":"new-new-new-york-mets","score":2,"line":[1,0,0,0,1]},"home":{"team":"glitzville-glamours","score":0,"line":[0,0,0,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-046","week":4,"n":1,"type":"regular","stadium":"Yoshi Park","away":{"team":"ohio","score":3,"line":[0,0,3,0,0]},"home":{"team":"goon-squad","score":2,"line":[0,0,1,0,1]},"batting":[],"pitching":[]},
+    {"id":"s2-047","week":4,"n":2,"type":"regular","stadium":"Yoshi Park","away":{"team":"goon-squad","score":4,"line":[0,4,0,0,0]},"home":{"team":"ohio","score":6,"line":[5,1,0,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-048","week":4,"n":3,"type":"regular","stadium":"Yoshi Park","away":{"team":"ohio","score":5,"line":[0,1,3,0,1]},"home":{"team":"goon-squad","score":3,"line":[0,0,2,0,1]},"batting":[],"pitching":[]},
+    {"id":"s2-049","week":5,"n":1,"type":"regular","stadium":"DK Jungle","away":{"team":"new-new-new-york-mets","score":6,"line":[3,2,1,0,0]},"home":{"team":"sarasaland-sandstorm","score":0,"line":[0,0,0,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-050","week":5,"n":2,"type":"regular","stadium":"DK Jungle","away":{"team":"new-new-new-york-mets","score":6,"line":[0,0,4,2,0]},"home":{"team":"sarasaland-sandstorm","score":2,"line":[0,0,0,2,0]},"batting":[],"pitching":[]},
+    {"id":"s2-051","week":5,"n":3,"type":"regular","stadium":"DK Jungle","away":{"team":"sarasaland-sandstorm","score":10,"line":[0,1,1,0,8]},"home":{"team":"new-new-new-york-mets","score":5,"line":[0,5,0,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-052","week":5,"n":1,"type":"regular","stadium":"Bowser Jr. Playroom","away":{"team":"wild-woods-1-uppers","score":8,"line":[1,0,4,0,3]},"home":{"team":"goon-squad","score":7,"line":[0,0,3,4,0]},"batting":[],"pitching":[]},
+    {"id":"s2-053","week":5,"n":2,"type":"regular","stadium":"Bowser Jr. Playroom","away":{"team":"goon-squad","score":0,"line":[0,0,0,0]},"home":{"team":"wild-woods-1-uppers","score":10,"line":[0,7,1,"2x"]},"batting":[],"pitching":[]},
+    {"id":"s2-054","week":5,"n":3,"type":"regular","stadium":"Bowser Jr. Playroom","away":{"team":"goon-squad","score":0,"line":[0,0,0,0,0]},"home":{"team":"wild-woods-1-uppers","score":5,"line":[0,0,4,1,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-055","week":5,"n":1,"type":"regular","stadium":"Daisy Cruiser","away":{"team":"star-road-superstars","score":9,"line":[1,0,0,8,0]},"home":{"team":"glitzville-glamours","score":3,"line":[3,0,0,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-056","week":5,"n":2,"type":"regular","stadium":"Daisy Cruiser","away":{"team":"star-road-superstars","score":6,"line":[2,0,1,0,3]},"home":{"team":"glitzville-glamours","score":5,"line":[4,0,0,1,0]},"batting":[],"pitching":[]},
+    {"id":"s2-057","week":5,"n":3,"type":"regular","stadium":"Daisy Cruiser","away":{"team":"star-road-superstars","score":5,"line":[3,1,1,0,0]},"home":{"team":"glitzville-glamours","score":4,"line":[2,0,0,2,0]},"batting":[],"pitching":[]},
+    {"id":"s2-058","week":5,"n":1,"type":"regular","stadium":"Bowser Castle","away":{"team":"ohio","score":4,"line":[3,1,0,0,0]},"home":{"team":"pi-illo-island-dreamers","score":13,"line":[6,7,0,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-059","week":5,"n":2,"type":"regular","stadium":"Bowser Castle","away":{"team":"pi-illo-island-dreamers","score":3,"line":[0,0,3,0,0]},"home":{"team":"ohio","score":2,"line":[0,2,0,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-060","week":5,"n":3,"type":"regular","stadium":"Bowser Castle","away":{"team":"pi-illo-island-dreamers","score":2,"line":[0,1,0,0,0,1]},"home":{"team":"ohio","score":1,"line":[0,0,1,0,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-061","week":6,"n":1,"type":"regular","stadium":"Mario Stadium","away":{"team":"goon-squad","score":3,"line":[1,1,0,0,1],"h":10},"home":{"team":"glitzville-glamours","score":1,"line":[0,0,1,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-062","week":6,"n":2,"type":"regular","stadium":"Mario Stadium","away":{"team":"glitzville-glamours","score":0,"line":[0,0,0,0,0],"h":4},"home":{"team":"goon-squad","score":1,"line":[0,1,0,0,"X"],"h":7},"batting":[],"pitching":[]},
+    {"id":"s2-063","week":6,"n":3,"type":"regular","stadium":"Mario Stadium","away":{"team":"goon-squad","score":2,"line":[0,0,0,0,2],"h":11},"home":{"team":"glitzville-glamours","score":3,"line":[0,2,1,0,"X"],"h":10},"batting":[],"pitching":[]},
+    {"id":"s2-064","week":6,"n":1,"type":"regular","stadium":"Yoshi Park","away":{"team":"star-road-superstars","score":1,"line":[1,0,0,0,0]},"home":{"team":"ohio","score":7,"line":[2,0,3,2,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-065","week":6,"n":2,"type":"regular","stadium":"Yoshi Park","away":{"team":"ohio","score":0,"line":[0,0,0,0,0]},"home":{"team":"star-road-superstars","score":1,"line":[0,1,0,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-066","week":6,"n":3,"type":"regular","stadium":"Yoshi Park","away":{"team":"star-road-superstars","score":2,"line":[0,0,0,2,0]},"home":{"team":"ohio","score":4,"line":[4,0,0,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-067","week":6,"n":1,"type":"regular","stadium":"DK Jungle","away":{"team":"wild-woods-1-uppers","score":8,"line":[4,1,1,0,2]},"home":{"team":"new-new-new-york-mets","score":3,"line":[1,1,0,0,1]},"batting":[],"pitching":[]},
+    {"id":"s2-068","week":6,"n":2,"type":"regular","stadium":"DK Jungle","away":{"team":"new-new-new-york-mets","score":0,"line":[0,0,0,0,0]},"home":{"team":"wild-woods-1-uppers","score":1,"line":[0,0,1,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-069","week":6,"n":3,"type":"regular","stadium":"DK Jungle","away":{"team":"wild-woods-1-uppers","score":9,"line":[0,1,5,1,2]},"home":{"team":"new-new-new-york-mets","score":0,"line":[0,0,0,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-070","week":6,"n":1,"type":"regular","stadium":"Daisy Cruiser","away":{"team":"pi-illo-island-dreamers","score":0,"line":[0,0,0,0,0]},"home":{"team":"sarasaland-sandstorm","score":1,"line":[1,0,0,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-071","week":6,"n":2,"type":"regular","stadium":"Daisy Cruiser","away":{"team":"pi-illo-island-dreamers","score":2,"line":[0,0,0,2,0]},"home":{"team":"sarasaland-sandstorm","score":7,"line":[0,0,7,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-072","week":6,"n":3,"type":"regular","stadium":"Daisy Cruiser","away":{"team":"sarasaland-sandstorm","score":0,"line":[0,0,0,0,0,0,0]},"home":{"team":"pi-illo-island-dreamers","score":1,"line":[0,0,0,0,0,0,"1x"]},"batting":[],"pitching":[]},
+    {"id":"s2-073","type":"playoffs","round":"Mushroom League","n":1,"stadium":"Bowser Jr. Playroom","away":{"team":"star-road-superstars","score":1,"line":[0,0,1,0,0,0,0]},"home":{"team":"new-new-new-york-mets","score":3,"line":[0,0,0,1,0,0,"2x"]},"batting":[],"pitching":[]},
+    {"id":"s2-074","type":"playoffs","round":"Mushroom League","n":2,"stadium":"Yoshi Park","away":{"team":"new-new-new-york-mets","score":1,"line":[0,0,0,1,0]},"home":{"team":"star-road-superstars","score":8,"line":[1,5,0,2,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-075","type":"playoffs","round":"Mushroom League","n":3,"stadium":"Bowser Jr. Playroom","away":{"team":"new-new-new-york-mets","score":1,"line":[0,0,0,1,0]},"home":{"team":"star-road-superstars","score":6,"line":[0,0,0,6,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-076","type":"playoffs","round":"Mushroom League","n":4,"stadium":"Yoshi Park","away":{"team":"star-road-superstars","score":0,"line":[0,0,0,0,0]},"home":{"team":"new-new-new-york-mets","score":1,"line":[0,0,0,0,"1x"]},"batting":[],"pitching":[]},
+    {"id":"s2-077","type":"playoffs","round":"Mushroom League","n":5,"stadium":"Bowser Jr. Playroom","away":{"team":"new-new-new-york-mets","score":6,"line":[3,2,1,0,0]},"home":{"team":"star-road-superstars","score":1,"line":[0,0,0,0,1]},"batting":[],"pitching":[]},
+    {"id":"s2-078","type":"playoffs","round":"Bowser League","n":1,"stadium":"Daisy Cruiser","away":{"team":"ohio","score":3,"line":[0,0,0,0,3]},"home":{"team":"wild-woods-1-uppers","score":5,"line":[0,5,0,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-079","type":"playoffs","round":"Bowser League","n":2,"stadium":"DK Jungle","away":{"team":"wild-woods-1-uppers","score":8,"line":[1,4,0,2,1]},"home":{"team":"ohio","score":6,"line":[2,4,0,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-080","type":"playoffs","round":"Bowser League","n":3,"stadium":"Daisy Cruiser","away":{"team":"ohio","score":1,"line":[0,0,1,0,0]},"home":{"team":"wild-woods-1-uppers","score":8,"line":[2,0,4,2,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-081","type":"playoffs","round":"Bowser League","n":4,"notPlayed":true,"away":{"team":"ohio","score":null,"line":[]},"home":{"team":"wild-woods-1-uppers","score":null,"line":[]}},
+    {"id":"s2-082","type":"playoffs","round":"Bowser League","n":5,"notPlayed":true,"away":{"team":"wild-woods-1-uppers","score":null,"line":[]},"home":{"team":"ohio","score":null,"line":[]}},
+    {"id":"s2-083","type":"playoffs","round":"World Series","n":1,"stadium":"Wario City","away":{"team":"new-new-new-york-mets","score":1,"line":[0,0,0,0,1]},"home":{"team":"wild-woods-1-uppers","score":5,"line":[4,0,0,1,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-084","type":"playoffs","round":"World Series","n":2,"stadium":"Bowser Castle","away":{"team":"wild-woods-1-uppers","score":2,"line":[0,0,0,0,2]},"home":{"team":"new-new-new-york-mets","score":5,"line":[0,1,4,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-085","type":"playoffs","round":"World Series","n":3,"stadium":"DK Jungle","away":{"team":"wild-woods-1-uppers","score":5,"line":[1,0,0,2,2]},"home":{"team":"new-new-new-york-mets","score":1,"line":[0,0,1,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-086","type":"playoffs","round":"World Series","n":4,"stadium":"Bowser Jr. Playroom","away":{"team":"wild-woods-1-uppers","score":4,"line":[1,0,1,0,2]},"home":{"team":"new-new-new-york-mets","score":0,"line":[0,0,0,0,0]},"batting":[],"pitching":[]},
+    {"id":"s2-087","type":"playoffs","round":"World Series","n":5,"stadium":"Wario City","away":{"team":"new-new-new-york-mets","score":3,"line":[3,0,0,0,0]},"home":{"team":"wild-woods-1-uppers","score":4,"line":[1,3,0,0,"X"]},"batting":[],"pitching":[]},
+    {"id":"s2-088","type":"playoffs","round":"World Series","n":6,"notPlayed":true,"away":{"team":"wild-woods-1-uppers","score":null,"line":[]},"home":{"team":"new-new-new-york-mets","score":null,"line":[]}},
+    {"id":"s2-089","type":"playoffs","round":"World Series","n":7,"notPlayed":true,"away":{"team":"new-new-new-york-mets","score":null,"line":[]},"home":{"team":"wild-woods-1-uppers","score":null,"line":[]}}
+  ]
+}

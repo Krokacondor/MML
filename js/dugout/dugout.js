@@ -185,7 +185,9 @@ async function readGameFiles(files) {
   return parseGame(sheets);
 }
 
-function tabUpload(el) {
+async function tabUpload(el) {
+  // Everyone the league already knows, to point out names appearing for the first time.
+  const known = await loadLeague().then((m) => ({ slugs: new Set(m.players.keys()), canon: m.canon }), () => null);
   el.innerHTML = html`
     <h2>Upload a game</h2>
     <label class="drop" data-drop>
@@ -200,7 +202,7 @@ function tabUpload(el) {
     const files = [...fileList]; // copied, because clearing the input empties its list
     if (!files.length) return;
     work(null, async () => {
-      showPreview($('[data-preview]', el), await readGameFiles(files));
+      showPreview($('[data-preview]', el), await readGameFiles(files), known);
       input.value = '';
       return `Read ${files.map((f) => f.name).join(', ')}. Check it over, then save it.`;
     });
@@ -218,7 +220,9 @@ function tabUpload(el) {
   };
 }
 
-function showPreview(el, { game, warnings }) {
+function showPreview(el, { game, warnings }, known) {
+  const names = [...new Set([...game.batting, ...game.pitching].map((r) => r.p))];
+  const fresh = known?.slugs.size ? names.filter((name) => !known.slugs.has(slug(known.canon(name)))) : [];
   const teamPick = (key, label) => {
     const side = game[key];
     const hit = matchTeam(S.teams, side.name, side.label);
@@ -245,11 +249,16 @@ function showPreview(el, { game, warnings }) {
         ${teamPick('home', 'Home team')}
         <label>Season<select name="season">${seasonOptions(S.league.currentSeason)}</select></label>
         <label>Date played<input type="date" name="date" value="${todayISO()}" required></label>
+        <label>Week <small>optional</small><input type="number" name="week" min="1" max="99" placeholder="for example 1"></label>
         <label>Game type<select name="type">${options(Object.entries(GAME_TYPES), 'regular')}</select></label>
       </div>
       ${warnings.length
         ? html`<div class="warn"><b>Worth a look before saving:</b><ul>${warnings.map((w) => html`<li>${w}</li>`)}</ul></div>`
         : html`<p class="good">The file adds up: hits, runs and the score all agree.</p>`}
+      ${fresh.length
+        ? html`<div class="warn"><b>New to the league (${fresh.length}):</b> ${fresh.join(', ')}.
+            <br>If one of these is a returning player spelled differently, add the spelling under League, "Player names", before saving. Otherwise they start a fresh page.</div>`
+        : ''}
       <div class="cols">${box('a', game.away)}${box('h', game.home)}</div>
       ${game.pitching.length
         ? html`<table class="mini">
@@ -303,7 +312,7 @@ async function saveGame(parsed, f) {
   await updateJson(S.repo, path, { id: f.season, name: meta.name, games: [] }, (season) => {
     season.id ||= f.season;
     season.games ||= [];
-    saved = toStoredGame(parsed, { id: nextGameId(season), date: f.date, type: f.type, awayTeam: ids.away, homeTeam: ids.home });
+    saved = toStoredGame(parsed, { id: nextGameId(season), date: f.date, week: f.week, type: f.type, awayTeam: ids.away, homeTeam: ids.home });
     season.games.push(saved);
   }, `Add game: ${parsed.away.name} ${parsed.away.score}, ${parsed.home.name} ${parsed.home.score}`, serializeSeason);
   return `Saved as game ${saved.id}.${whenLive()}`;
@@ -323,12 +332,13 @@ async function tabGames(el) {
       <label class="inline">Season <select data-season>${seasonOptions(seasonId)}</select></label>
       ${games.length
         ? html`<table class="mini mini--wide">
-            <thead><tr><th>Game</th><th>Date</th><th>Type</th><th>Result</th><th></th></tr></thead>
+            <thead><tr><th>Game</th><th>Date</th><th>Week</th><th>Type</th><th>Result</th><th></th></tr></thead>
             <tbody>${[...games].reverse().map((g) => html`<tr data-id="${g.id}">
               <td>${g.id}</td>
               <td><input type="date" value="${g.date}" data-date></td>
+              <td><input type="number" min="1" max="99" value="${g.week || ''}" data-week></td>
               <td><select data-type>${options(Object.entries(GAME_TYPES), g.type || 'regular')}</select></td>
-              <td>${teamName(g.away.team)} ${g.away.score}, ${teamName(g.home.team)} ${g.home.score}</td>
+              <td>${g.notPlayed ? `${teamName(g.away.team)} at ${teamName(g.home.team)}, not played` : `${teamName(g.away.team)} ${g.away.score}, ${teamName(g.home.team)} ${g.home.score}`}</td>
               <td><button type="button" data-save>Save changes</button> <button type="button" class="danger" data-del>Delete</button></td>
             </tr>`)}</tbody>
           </table>`
@@ -357,8 +367,14 @@ async function tabGames(el) {
     } else if (e.target.matches('[data-save]')) {
       const date = $('[data-date]', row).value;
       const type = $('[data-type]', row).value;
+      const week = Number($('[data-week]', row).value);
       work(e.target, async () => {
-        await updateJson(S.repo, path(), null, (s) => { Object.assign(s.games.find((g) => g.id === id), { date, type }); }, `Update game ${id}`, serializeSeason);
+        await updateJson(S.repo, path(), null, (s) => {
+          const game = s.games.find((g) => g.id === id);
+          Object.assign(game, { date, type });
+          if (week > 0) game.week = week;
+          else delete game.week;
+        }, `Update game ${id}`, serializeSeason);
         return `Game ${id} updated.${whenLive()}`;
       });
     }
@@ -455,13 +471,17 @@ function tabTeams(el) {
     <legend>${t.name || 'New team'}</legend>
     <div class="grid">
       <label>Team name<input name="name" value="${t.name}" required></label>
-      <label>Short name <small>3 letters</small><input name="abbr" value="${t.abbr || ''}" maxlength="4"></label>
+      <label>Short name <small>up to 5 letters</small><input name="abbr" value="${t.abbr || ''}" maxlength="5"></label>
       <label>General manager<input name="gm" value="${t.gm || ''}"></label>
+      ${(S.league.conferences || []).length
+        ? html`<label>Conference<select name="conference">${options([['', 'None'], ...S.league.conferences.map((c) => [c.id, c.name])], t.conference || '')}</select></label>`
+        : ''}
       <label>Main color<input type="color" name="c1" value="${t.colors?.[0] || '#d63a2f'}"></label>
       <label>Trim color<input type="color" name="c2" value="${t.colors?.[1] || '#fffcf1'}"></label>
       <label class="tick"><input type="checkbox" name="active" ${t.active === false ? '' : 'checked'}> Active this season</label>
     </div>
     <label>Names used in game files <small>comma separated; a file with one of these names is matched to this team</small><input name="aliases" value="${(t.aliases || []).join(', ')}"></label>
+    <label>Logo <small>a picture already in the repository, for example assets/teams/my-team.png</small><input name="logo" value="${t.logo || ''}"></label>
     <label>About the team <small>optional, shown on the team page</small><input name="blurb" value="${t.blurb || ''}"></label>
   </fieldset>`;
 
@@ -485,26 +505,29 @@ function tabTeams(el) {
   el.onsubmit = (e) => {
     e.preventDefault();
     const edits = [...el.querySelectorAll('fieldset.team')].map((fs) => {
-      const v = (name) => $(`[name="${name}"]`, fs).value.trim();
+      const v = (name) => $(`[name="${name}"]`, fs)?.value.trim() ?? '';
       return {
         id: fs.dataset.id,
+        optional: { conference: v('conference'), logo: v('logo'), blurb: v('blurb') },
         name: v('name'),
         abbr: v('abbr').toUpperCase(),
         gm: v('gm'),
         colors: [v('c1'), v('c2')],
         aliases: v('aliases').split(',').map((s) => s.trim()).filter(Boolean),
-        blurb: v('blurb'),
         active: $('[name="active"]', fs).checked,
       };
     });
     work(e.submitter, async () => {
       S.teams = await updateJson(S.repo, 'data/teams.json', [], (teams) => {
-        for (const { id, blurb, active, ...edit } of edits) {
+        for (const { id, optional, active, ...edit } of edits) {
           let team = teams.find((t) => t.id === id);
           if (!team) teams.push((team = makeTeam(teams, edit.name)));
           Object.assign(team, edit, { abbr: edit.abbr || team.abbr });
-          if (blurb) team.blurb = blurb;
-          else delete team.blurb;
+          // Optional fields are saved only when filled in.
+          for (const [key, value] of Object.entries(optional)) {
+            if (value) team[key] = value;
+            else delete team[key];
+          }
           if (active) delete team.active;
           else team.active = false;
         }
@@ -582,7 +605,10 @@ function tabLeague(el) {
         <h3>Seasons</h3>
         <p class="hint">The current season is the one the site opens on and the one new uploads go into.</p>
         <div class="seasons">${L.seasons.map((s) => html`<label class="tick"><input type="radio" name="currentSeason" value="${s.id}" ${s.id === L.currentSeason ? 'checked' : ''}> <input name="season:${s.id}" value="${s.name}" required></label>`)}</div>
-        <label>Start a new season <small>leave blank unless you are adding one</small><input name="newSeason" placeholder="Season ${L.seasons.length + 1}"></label>
+        <label>Start a new season <small>leave blank unless you are adding one</small><input name="newSeason" placeholder="New season name"></label>
+        <h3>Player names</h3>
+        <p class="hint">When the same character is spelled two ways (an old season says "Red Koopa", a game file says "Red Koopa Troopa"), list it here so both count as one player. One per line: the other spelling, an equals sign, then the name the site should show.</p>
+        <label>Other spelling = Name on the site<textarea name="aliases" rows="5" placeholder="Red Koopa Troopa = Red Koopa">${Object.entries(L.playerAliases || {}).map(([from, to]) => `${from} = ${to}`).join('\n')}</textarea></label>
         <button class="btn">Save league settings</button>
       </form>`;
   };
@@ -593,6 +619,9 @@ function tabLeague(el) {
       S.league = await updateJson(S.repo, 'data/league.json', {}, (L) => {
         Object.assign(L, { name: f.name.trim(), tagline: f.tagline.trim(), leadersCount: Number(f.leadersCount) || 5, eraInnings: Number(f.eraInnings) });
         L.qualifiers = { paPerTeamGame: Number(f.pa), ipPerTeamGame: Number(f.ip) };
+        L.playerAliases = Object.fromEntries(
+          f.aliases.split('\n').map((line) => line.split('=').map((s) => s.trim())).filter(([from, to]) => from && to),
+        );
         for (const s of L.seasons) s.name = (f[`season:${s.id}`] || s.name).trim();
         L.currentSeason = f.currentSeason || L.currentSeason;
         if (f.newSeason.trim()) {
