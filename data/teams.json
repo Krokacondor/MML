@@ -7,7 +7,7 @@
     "conference": "mk",
     "colors": ["#19708e", "#f2c14b"],
     "logo": "assets/teams/star-road-superstars.png",
-    "seasons": ["s2"],
+    "seasons": ["s2", "s3"],
     "aliases": []
   },
   {
@@ -40,7 +40,7 @@
     "conference": "mk",
     "colors": ["#e2b838", "#ea7206"],
     "logo": "assets/teams/sarasaland-sandstorm.png",
-    "seasons": ["s2"],
+    "seasons": ["s2", "s3"],
     "aliases": []
   },
   {
