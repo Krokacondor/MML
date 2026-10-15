@@ -165,7 +165,7 @@ export function teamsIn(model, season) {
   return [...ids].map((id) => model.team(id));
 }
 
-export function buildLeague({ league, teams = [], players = {}, articles = [], authors = [], seasons = {} }) {
+export function buildLeague({ league, teams = [], players = {}, articles = [], authors = [], posts = [], seasons = {} }) {
   // Each story carries its writer's picture, from data/authors.json.
   const writer = new Map(authors.map((a) => [slug(a.name), a]));
   const teamMap = new Map(teams.map((t) => [t.id, t]));
@@ -181,6 +181,8 @@ export function buildLeague({ league, teams = [], players = {}, articles = [], a
     articles: [...articles]
       .map((a) => ({ ...a, authorPicture: a.author ? writer.get(slug(a.author))?.picture || '' : '' }))
       .sort((a, b) => String(b.date).localeCompare(String(a.date))),
+    // Social posts, newest first (posts.json lists the newest first within a day).
+    posts: posts.map((p, i) => ({ ...p, order: i })).sort((a, b) => String(b.date).localeCompare(String(a.date)) || a.order - b.order),
     seasons: [],
     players: new Map(),
   };

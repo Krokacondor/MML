@@ -95,3 +95,10 @@ fieldset.card { box-shadow: 4px 4px 0 var(--ink); }
 .stack { display: grid; gap: 10px; justify-items: start; }
 .stack label { justify-self: stretch; }
 @media (max-width: 560px) { .picrow { grid-template-columns: 1fr; } }
+
+/* social posts: the paste / drop box and the "posted by" choice */
+.drop { display: grid; place-items: center; min-height: 140px; padding: 12px; text-align: center; background: #fffbea; border: 3px dashed var(--ink); }
+.drop.is-over, .drop:focus { background: var(--sun); outline: none; }
+.drop img { display: block; max-width: 100%; max-height: 420px; }
+.kinds { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0; padding: 0; border: 0; }
+.kinds legend { margin-bottom: 6px; padding: 0; font: 700 15px/1.2 var(--cond); letter-spacing: 1px; text-transform: uppercase; }

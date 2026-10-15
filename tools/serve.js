@@ -32,11 +32,11 @@ function dataPath(rel) {
 }
 
 // Pictures uploaded from the Dugout go in these asset folders only.
-const PICTURE_DIRS = ['assets/news', 'assets/authors'];
+const PICTURE_DIRS = ['assets/news', 'assets/authors', 'assets/posts'];
 function picturePath(rel) {
   const full = path.resolve(ROOT, String(rel || ''));
   const ok = PICTURE_DIRS.some((d) => full.startsWith(path.join(ROOT, d) + path.sep)) && /\.(png|jpe?g|webp)$/i.test(full);
-  if (!ok) throw Object.assign(new Error('Pictures can only be saved in assets/news or assets/authors.'), { status: 400 });
+  if (!ok) throw Object.assign(new Error('Pictures can only be saved in assets/news, assets/authors or assets/posts.'), { status: 400 });
   return full;
 }
 

@@ -382,6 +382,25 @@ i.sp { font-style: normal; }
 .story__pic img { display: block; max-width: 100%; max-height: 560px; margin: 0 auto; border: var(--edge); }
 .story__pic figcaption { text-align: center; }
 .story__pic figcaption { margin-top: 7px; font: 500 15px/1.35 var(--cond); color: var(--ink-soft); }
+/* the social feed: post pictures in columns, newest first */
+.posts { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); gap: 22px; align-items: start; margin-top: 18px; }
+.post { min-width: 0; margin: 0; background: var(--chalk); border: var(--edge); box-shadow: 5px 5px 0 var(--ink); }
+.post[hidden] { display: none; }
+.post__head { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-bottom: var(--edge); }
+.post__who { display: flex; align-items: center; gap: 9px; min-width: 0; text-decoration: none; color: var(--ink); }
+.post__who > span:last-child { display: grid; gap: 3px; min-width: 0; }
+.post__who b { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font: 700 17px/1.05 var(--cond); }
+a.post__who:hover b { text-decoration: underline; }
+.post__gm { display: grid; place-items: center; flex: none; width: 39px; height: 39px; font: 400 15px/1 var(--display); background: var(--c, var(--ink)); color: var(--on, var(--chalk)); border: var(--edge); }
+.post__gm--other { background: var(--ink); color: var(--sun); }
+.post__date { margin-left: auto; flex: none; font: 700 13px/1 var(--cond); letter-spacing: 1.2px; text-transform: uppercase; color: var(--red); }
+.post__pic { display: block; }
+.post__pic img { display: block; width: 100%; height: auto; }
+/* a spoiler post keeps its size but shows stripes until it is uncovered */
+.post__guard { position: relative; }
+.post__guard.is-hidden { cursor: pointer; background: repeating-linear-gradient(-45deg, var(--ink) 0 8px, #3d5a74 8px 16px); }
+.post__guard.is-hidden .post__pic { visibility: hidden; }
+.post__cover { position: absolute; inset: 0; display: grid; place-items: center; font: 400 20px/1 var(--display); text-transform: uppercase; color: var(--sun); }
 .clip h3 { margin: 8px 0 10px; font-size: 23px; line-height: 1.08; }
 .clip p { margin: 0 0 12px; font-size: 16px; line-height: 1.45; }
 .clip__more { font: 700 14px/1 var(--cond); letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 3px solid var(--red); }

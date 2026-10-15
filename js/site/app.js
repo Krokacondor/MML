@@ -10,6 +10,7 @@ import { playersView, playerView } from './players.js';
 import { statsView } from './stats.js';
 import { gamesView, gameView } from './games.js';
 import { newsView, articleView } from './news.js';
+import { feedView, feedName } from './feed.js';
 import { awardsView } from './awards.js';
 import { spoil, watchSpoilers } from './spoilers.js';
 
@@ -25,6 +26,7 @@ const ROUTES = [
   [/^\/(?:awards|allstars)$/, awardsView, 'awards'],
   [/^\/news$/, newsView, 'news'],
   [/^\/news\/([^/]+)$/, articleView, 'news'],
+  [/^\/feed$/, feedView, 'feed'],
 ];
 
 const view = document.getElementById('view');
@@ -101,6 +103,7 @@ async function boot() {
     route();
   };
   $('[data-nav="awards"]').hidden = !seasons.some((s) => s.allStars || s.awards.length);
+  $('[data-feed-name]').textContent = feedName(league);
 
   drawLogo();
   drawTicker();

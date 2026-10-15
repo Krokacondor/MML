@@ -13,6 +13,7 @@ The stat-tracking website for the Mario Mania League (MML), a CPU vs CPU Mario S
 - **Stats**: every stat from the season in sortable tables, for players or teams
 - **Scores**: every game, each with a full box score
 - **Awards**: the end-of-season awards, each league's All-Stars at their positions on a diamond, and the All-Star Game
+- **League Banter**: made-up social media posts by players, GMs and others, filterable by team, player and kind of poster
 - **The Dugout** (`dugout.html`): the staff page for uploading game files and editing everything else
 
 The season menu at the top of the page switches between seasons.
@@ -82,6 +83,18 @@ Stories go in the Press Box (the News page and the bottom of Home).
 6. Save. Pictures are shrunk in your browser before saving (stories up to 1400 pixels, writers to a 256-pixel square cut from the middle), so any size is fine.
 
 Stories live in `data/articles.json`, writers in `data/authors.json`, and their pictures in `assets/news/` and `assets/authors/`. Deleting a story deletes its picture too.
+
+## Making a social post
+
+Social posts are made-up social media posts (a picture of a post) by players, GMs or anyone else. They show on League Banter page, newest first, where visitors can filter them by team, by player, or by kind of poster.
+
+1. In the Dugout, open **Social posts** and choose **New post**.
+2. Add the picture: paste it (Ctrl+V), drag it into the box, or choose a file. It is shrunk to 1200 pixels wide before saving.
+3. **Posted by**: a player (type the name; their latest team is filled in), a GM (pick the GM; their team is filled in), or someone else (type any name).
+4. **Team** is what the team filter uses. Change it if the post belongs with a different team, or pick "No team".
+5. Optional: type the words of the post (for screen readers), and tick **Spoiler** if the post gives away a result. A spoiler post stays covered until a visitor clicks it.
+
+Posts live in `data/posts.json` and their pictures in `assets/posts/`. A link can open the page already filtered: `#/feed?team=wild-woods-1-uppers`, `#/feed?player=petey-piranha`, or `#/feed?kind=gm`. The page's name comes from `"feedName"` in `data/league.json` (League Banter when it is not set).
 
 ## Seasons
 
@@ -171,6 +184,7 @@ data/teams.json     teams, general managers, conferences, colors, logos
 data/players.json   optional player details (bats, throws, type, scouting report)
 data/articles.json  articles (stories)
 data/authors.json   story writers and their pictures
+data/posts.json     social posts
 data/seasons/       one file per season: one game per line, or one player per line for totals seasons
 data/access/        encrypted Dugout logins
 assets/             character pictures, team, league and conference logos, story and writer pictures

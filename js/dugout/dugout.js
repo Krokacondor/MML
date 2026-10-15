@@ -137,6 +137,7 @@ const TABS = {
   upload: ['Upload game', tabUpload],
   games: ['Games', tabGames],
   articles: ['Articles', tabArticles],
+  posts: ['Social posts', tabPosts],
   teams: ['Teams', tabTeams],
   players: ['Players', tabPlayers],
   league: ['League', tabLeague],
@@ -413,7 +414,7 @@ async function shrinkPicture(file, { max, square = false }) {
   let type = file.type === 'image/jpeg' ? 'image/jpeg' : 'image/png';
   let dataUrl = paint(type);
   if (type === 'image/png' && dataUrl.length > 1_400_000) dataUrl = paint((type = 'image/jpeg'));
-  return { dataUrl, base64: dataUrl.split(',')[1], ext: type === 'image/png' ? 'png' : 'jpg' };
+  return { dataUrl, base64: dataUrl.split(',')[1], ext: type === 'image/png' ? 'png' : 'jpg', width: canvas.width, height: canvas.height };
 }
 
 async function tabArticles(el) {
@@ -567,6 +568,165 @@ async function tabArticles(el) {
       cur = list.find((a) => a.id === id);
       draw();
       return `Story saved.${whenLive()}`;
+    });
+  };
+  draw();
+}
+
+// ---- Social posts ----------------------------------------------------------
+
+// Made-up social media posts: a picture, who it is "by" (a player, a GM or
+// anyone else) and the team it belongs to, so the site can filter them.
+async function tabPosts(el) {
+  const [list0, model] = await Promise.all([readJson('data/posts.json', []), loadLeague().catch(() => null)]);
+  let list = list0;
+  let cur = null;
+  let picked = null; // the new picture, shrunk, until it is saved
+  const players = model ? [...model.players.values()].map((p) => p.name).sort() : [];
+  const teams = [...S.teams].sort((a, b) => a.name.localeCompare(b.name));
+  const teamName = (id) => teams.find((t) => t.id === id)?.name || '';
+  // A player's most recent team, to fill in the team for them.
+  const teamOfPlayer = (name) => (model && name ? model.players.get(slug(model.canon(name)))?.last?.teamId || '' : '');
+  const label = (p) => (p.by?.kind === 'gm' ? `${p.by.name} (GM, ${teamName(p.team)})` : p.by?.name || 'Someone');
+
+  const draw = () => {
+    picked = null;
+    const sorted = [...list].sort((a, b) => String(b.date).localeCompare(String(a.date)));
+    const kind = cur?.by?.kind || 'player';
+    el.innerHTML = html`
+      <h2>Social posts</h2>
+      <p class="hint">Made-up social media posts by players, GMs or anyone else. They show on the site under "${S.league.feedName || 'League Banter'}", newest first.</p>
+      <div class="two">
+        <div>
+          <button type="button" class="btn btn--plain" data-new>New post</button>
+          <ul class="list">${sorted.map((p) => html`<li><button type="button" data-edit="${p.id}" class="${cur?.id === p.id ? 'is-on' : ''}"><b>${label(p)}</b><span>${p.date}${p.spoiler ? ' / spoiler' : ''}</span></button></li>`)}</ul>
+        </div>
+        ${cur
+          ? html`<form class="card" data-post>
+              <div class="drop" data-drop tabindex="0">
+                <img data-pic alt="" ${cur.image ? html`src="${cur.image}"` : 'hidden'}>
+                <p class="hint" data-drop-hint ${cur.image ? 'hidden' : ''}><b>Paste the picture here</b> (Ctrl+V), drag it in, or choose a file.</p>
+              </div>
+              <label>Picture<input type="file" accept="image/png,image/jpeg,image/webp,image/gif" data-file></label>
+              <fieldset class="kinds">
+                <legend>Posted by</legend>
+                ${[['player', 'A player'], ['gm', 'A GM'], ['other', 'Someone else']].map(([v, t]) => html`<label class="tick"><input type="radio" name="kind" value="${v}" ${kind === v ? 'checked' : ''}> ${t}</label>`)}
+              </fieldset>
+              <label data-for="player">Player <small>start typing a name</small><input name="player" list="post-players" value="${kind === 'player' ? cur.by?.name || '' : ''}" autocomplete="off"></label>
+              <datalist id="post-players">${players.map((n) => html`<option value="${n}"></option>`)}</datalist>
+              <label data-for="gm">GM<select name="gm">${teams.map((t) => html`<option value="${t.id}" ${kind === 'gm' && cur.team === t.id ? 'selected' : ''}>${t.gm || 'No GM'} (${t.name})</option>`)}</select></label>
+              <label data-for="other">Name <small>a reporter, a fan, a sponsor...</small><input name="other" value="${kind === 'other' ? cur.by?.name || '' : ''}"></label>
+              <div class="grid">
+                <label>Team <small>used by the team filter</small><select name="team"><option value="">No team</option>${teams.map((t) => html`<option value="${t.id}" ${cur.team === t.id ? 'selected' : ''}>${t.name}</option>`)}</select></label>
+                <label>Date<input type="date" name="date" value="${cur.date}" required></label>
+              </div>
+              <label>Words in the post <small>optional. Helps screen readers.</small><textarea name="text" rows="3">${cur.text || ''}</textarea></label>
+              <label class="tick"><input type="checkbox" name="spoiler" ${cur.spoiler ? 'checked' : ''}> Spoiler: hide it until it is clicked (it gives away a result)</label>
+              <button class="btn">Save post</button>
+              ${cur.id ? html`<button type="button" class="danger" data-del>Delete post</button>` : ''}
+            </form>`
+          : html`<p class="hint">Pick a post to edit, or make a new one.</p>`}
+      </div>`;
+    const form = $('[data-post]', el);
+    if (!form) return;
+
+    // Show only the "posted by" field that fits, and keep the team in step.
+    const sync = (fillTeam) => {
+      const k = form.kind.value;
+      for (const box of form.querySelectorAll('[data-for]')) box.hidden = box.dataset.for !== k;
+      if (!fillTeam) return;
+      if (k === 'gm') form.team.value = form.gm.value;
+      if (k === 'player' && teamOfPlayer(form.player.value)) form.team.value = teamOfPlayer(form.player.value);
+    };
+    sync(false);
+    form.querySelector('.kinds').onchange = () => sync(true);
+    form.gm.onchange = () => sync(true);
+    form.player.onchange = () => sync(true);
+
+    const take = (file) => file && work(null, async () => {
+      picked = await shrinkPicture(file, { max: 1200 });
+      const img = $('[data-pic]', el);
+      img.src = picked.dataUrl;
+      img.hidden = false;
+      $('[data-drop-hint]', el).hidden = true;
+      return 'Picture ready. It is saved with the post.';
+    });
+    $('[data-file]', el).onchange = (e) => take(e.target.files[0]);
+    const drop = $('[data-drop]', el);
+    drop.ondragover = (e) => { e.preventDefault(); drop.classList.add('is-over'); };
+    drop.ondragleave = () => drop.classList.remove('is-over');
+    drop.ondrop = (e) => {
+      e.preventDefault();
+      drop.classList.remove('is-over');
+      take([...e.dataTransfer.files].find((f) => f.type.startsWith('image/')));
+    };
+    // Pasting works anywhere on the page while a post is open.
+    document.onpaste = (e) => {
+      if (!form.isConnected) return (document.onpaste = null);
+      const item = [...(e.clipboardData?.items || [])].find((i) => i.type.startsWith('image/'));
+      if (!item) return;
+      e.preventDefault();
+      take(item.getAsFile());
+    };
+  };
+
+  el.onclick = (e) => {
+    if (e.target.closest('[data-new]')) {
+      cur = { id: '', date: todayISO(), by: { kind: 'player', name: '' }, team: '', text: '', spoiler: false };
+      draw();
+    } else if (e.target.closest('[data-edit]')) {
+      cur = list.find((p) => p.id === e.target.closest('[data-edit]').dataset.edit);
+      draw();
+    } else if (e.target.closest('[data-del]')) {
+      if (!confirm(`Delete this post by ${label(cur)}?`)) return;
+      const { id, image } = cur;
+      work(e.target, async () => {
+        list = await updateJson(S.repo, 'data/posts.json', [], (all) => all.filter((p) => p.id !== id), `Remove post: ${label(cur)}`);
+        if (image) await S.repo.remove(image, 'Remove post picture').catch(() => {});
+        cur = null;
+        draw();
+        return `Post deleted.${whenLive()}`;
+      });
+    }
+  };
+  el.onsubmit = (e) => {
+    e.preventDefault();
+    const f = fields(e.target);
+    const kind = f.kind;
+    const gmTeam = teams.find((t) => t.id === f.gm);
+    const name = kind === 'player' ? (model ? model.canon(f.player.trim()) : f.player.trim()) : kind === 'gm' ? gmTeam?.gm || '' : f.other.trim();
+    work(e.submitter, async () => {
+      if (!name) throw new Error(kind === 'player' ? 'Type the player who is posting.' : kind === 'gm' ? 'That team has no GM yet.' : 'Type who is posting.');
+      if (!picked && !cur.image) throw new Error('Add the picture first: paste it, drag it in, or choose a file.');
+      let id = cur.id;
+      if (!id) {
+        const taken = (await readJson('data/posts.json', [])).map((p) => p.id);
+        const base = `${f.date}-${slug(name) || 'post'}`;
+        id = base;
+        for (let n = 2; taken.includes(id); n++) id = `${base}-${n}`;
+      }
+      const oldImage = cur.image || '';
+      let image = oldImage;
+      let size = { width: cur.width, height: cur.height };
+      if (picked) {
+        image = `assets/posts/${id}-${Date.now().toString(36)}.${picked.ext}`;
+        await S.repo.putFile(image, picked.base64, `Post picture: ${name}`);
+        size = { width: picked.width, height: picked.height };
+      }
+      list = await updateJson(S.repo, 'data/posts.json', [], (all) => {
+        const post = {
+          id, date: f.date, by: { kind, name }, team: kind === 'gm' ? f.gm : f.team, image, ...size,
+          ...(f.text.trim() ? { text: f.text.trim() } : {}),
+          ...(f.spoiler ? { spoiler: true } : {}),
+        };
+        const at = all.findIndex((p) => p.id === id);
+        if (at >= 0) all[at] = post;
+        else all.unshift(post);
+      }, `Post: ${name}`);
+      if (oldImage && oldImage !== image) await S.repo.remove(oldImage, 'Remove old post picture').catch(() => {});
+      cur = list.find((p) => p.id === id);
+      draw();
+      return `Post saved.${whenLive()}`;
     });
   };
   draw();
