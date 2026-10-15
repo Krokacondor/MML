@@ -88,7 +88,6 @@ select, input, button, textarea { font: inherit; color: inherit; border-radius: 
 .foot .stitch { margin: 0; padding-top: 7px; background-origin: content-box; background-clip: content-box; height: 25px; }
 .foot__in { max-width: 1200px; margin: 0 auto; padding: 16px 20px 28px; display: flex; flex-wrap: wrap; align-items: baseline; gap: 6px 18px; font: 500 15px/1.4 var(--cond); letter-spacing: .5px; }
 .foot b { font: 400 18px/1 var(--display); text-transform: uppercase; color: var(--sun); }
-.foot__note { flex-basis: 100%; margin: 4px 0 0; font-size: 14px; color: rgba(255, 248, 226, .78); }
 
 /* ---- Shared pieces ----------------------------------------------------- */
 
