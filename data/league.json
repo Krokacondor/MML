@@ -11,7 +11,7 @@
     { "id": "mk", "name": "Mushroom League", "logo": "assets/conferences/mushroom-kingdom.png" },
     { "id": "bk", "name": "Bowser League", "logo": "assets/conferences/bowser-kingdom.png" }
   ],
-  "playerAliases": {},
+  "playerAliases": { "Red Koopa Troopa": "Red Koopa", "Kritter": "Green Kritter" },
   "leadersCount": 5,
   "eraInnings": 9,
   "qualifiers": {

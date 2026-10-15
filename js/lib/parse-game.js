@@ -205,6 +205,12 @@ export function parseGame(sheets) {
   };
   const away = makeSide(sides[0]);
   const home = makeSide(sides[1]);
+  // A blank last inning for the home team is a bottom half never played
+  // (the home team was already ahead), so show X rather than "unknown".
+  const last = away.line.length - 1;
+  if (last >= 0 && home.line.length === away.line.length && home.line[last] == null && away.line[last] != null) {
+    home.line = [...home.line.slice(0, last), 'X'];
+  }
 
   const batting = [];
   for (const [t, side] of [['a', away], ['h', home]]) {
