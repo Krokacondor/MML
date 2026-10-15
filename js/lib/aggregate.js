@@ -165,7 +165,9 @@ export function teamsIn(model, season) {
   return [...ids].map((id) => model.team(id));
 }
 
-export function buildLeague({ league, teams = [], players = {}, articles = [], seasons = {} }) {
+export function buildLeague({ league, teams = [], players = {}, articles = [], authors = [], seasons = {} }) {
+  // Each story carries its writer's picture, from data/authors.json.
+  const writer = new Map(authors.map((a) => [slug(a.name), a]));
   const teamMap = new Map(teams.map((t) => [t.id, t]));
   // "Name in an old file" -> "name the site uses", so one character is one player.
   const aliases = new Map(Object.entries(league.playerAliases || {}).map(([from, to]) => [slug(from), to]));
@@ -176,7 +178,9 @@ export function buildLeague({ league, teams = [], players = {}, articles = [], s
     teams: teamMap,
     team: (id) => teamMap.get(id) || { id, name: id || 'Unknown team', abbr: '???', gm: '', colors: ['#4a5473', '#fffcf1'], missing: true },
     canon,
-    articles: [...articles].sort((a, b) => String(b.date).localeCompare(String(a.date))),
+    articles: [...articles]
+      .map((a) => ({ ...a, authorPicture: a.author ? writer.get(slug(a.author))?.picture || '' : '' }))
+      .sort((a, b) => String(b.date).localeCompare(String(a.date))),
     seasons: [],
     players: new Map(),
   };
@@ -196,6 +200,11 @@ export function buildLeague({ league, teams = [], players = {}, articles = [], s
       awards: file.awards || [],
       schedule: file.schedule || [],
       format: file.format || '',
+      // Before a season starts: a note on where things stand, clubs not yet
+      // announced ({ gm, label, note }), and whether it uses the league's groups.
+      preseason: file.preseason || '',
+      pending: file.pending || [],
+      ungrouped: file.groups === false,
       reg: buildStats(played.filter((g) => g.type !== 'playoffs'), { totals: file.totals, tracked: file.tracked, canon }),
       post: buildStats(played.filter((g) => g.type === 'playoffs'), { canon }),
     };

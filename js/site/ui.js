@@ -22,6 +22,12 @@ export const gameWhen = (game, opts, short = false) => {
 
 // The chosen season if it passes the test, otherwise the most recent season
 // that does. Lets pages show last season's picture before a new one starts.
+// A short season label for panels showing an earlier season ("S2").
+export const seasonTag = (season) => {
+  const n = season.name.match(/\d+/);
+  return html`<i class="stag">${n ? `S${n[0]}` : season.name}</i>`;
+};
+
 export const lastSeasonWith = (model, season, test) => (test(season) ? season : [...model.seasons].reverse().find(test) || season);
 
 // ---- Team colors ----------------------------------------------------------
@@ -164,6 +170,8 @@ export function standingsRows(ctx, teams = teamsIn(ctx.model, ctx.season)) {
 // conferences, and teams without one, land in a single unnamed group.
 export function byConference(ctx, teams = teamsIn(ctx.model, ctx.season)) {
   const sorted = [...teams].sort((a, b) => a.name.localeCompare(b.name));
+  // A season whose groups aren't set yet lists every team together.
+  if (ctx.season.ungrouped) return sorted.length ? [{ conf: null, teams: sorted }] : [];
   const groups = (ctx.league.conferences || []).map((conf) => ({ conf, teams: sorted.filter((t) => t.conference === conf.id) }));
   const rest = sorted.filter((t) => !groups.some((g) => g.teams.includes(t)));
   return [...groups.filter((g) => g.teams.length), ...(rest.length ? [{ conf: null, teams: rest }] : [])];
@@ -174,7 +182,7 @@ export const confHead = (conf) =>
 
 export function standings(ctx) {
   const groups = byConference(ctx);
-  if (!groups.length) return html`<p class="empty">No teams yet. They appear here after the first game is uploaded.</p>`;
+  if (!groups.length) return html`<p class="empty">No teams yet. Come back later!</p>`;
   return html`${progressNote(ctx.season)}${groups.map(({ conf, teams }) => html`${confHead(conf)}<div class="board"><div class="board__scroll"><table class="stand">
     <thead><tr><th></th><th class="l">Team</th><th>W</th><th>L</th><th>PCT</th><th>GB</th><th>RS</th><th>RA</th><th>DIFF</th><th>STRK</th></tr></thead>
     <tbody>${standingsRows(ctx, teams).map((r, i) => html`<tr>
@@ -203,6 +211,26 @@ export const teamLogo = (team) =>
     ? html`<span class="tlogo"><img src="${team.logo}" alt="${team.name} logo"></span>`
     : html`<span class="tlogo tlogo--none" style="${teamVars(team)}"><b>${team.abbr}</b></span>`;
 
+// A club not announced yet: the GM is known, the team isn't (or has no name yet).
+export const pendingCard = (p) =>
+  html`<div class="teamcard teamcard--tba" style="--c:#4b6278;--on:#fff8e2">
+    <span class="tlogo tlogo--none"><b>?</b></span>
+    <span class="teamcard__name">${p.label || 'To be announced'}</span>
+    <span class="teamcard__gm">GM <b>${p.gm}</b></span>
+    ${p.note ? html`<span class="teamcard__note">${p.note}</span>` : ''}
+  </div>`;
+
+// A season's clubs: the announced teams (by group when the season has groups)
+// followed by the clubs still to be announced.
+export function seasonClubs(ctx, teams = teamsIn(ctx.model, ctx.season)) {
+  const groups = byConference(ctx, teams);
+  const pending = ctx.season.pending || [];
+  return html`${groups.map(({ conf, teams: list }) => html`${confHead(conf)}<div class="teamgrid">${list.map((t) => teamCard(ctx, t))}</div>`)}
+    ${pending.length
+      ? html`${groups.length ? html`<h3 class="confhead"><span>Still to be announced</span></h3>` : ''}<div class="teamgrid">${pending.map(pendingCard)}</div>`
+      : ''}`;
+}
+
 // The card used wherever teams are listed.
 export function teamCard(ctx, team) {
   const rec = ctx.season.reg.teams.get(team.id);
@@ -216,9 +244,14 @@ export function teamCard(ctx, team) {
 
 // ---- Press clippings ------------------------------------------------------
 
+// A writer's square picture beside their name.
+export const byline = (a, size = 30) =>
+  a.authorPicture ? html`<img class="byline__pic" src="${a.authorPicture}" alt="" style="--b:${size}px">` : '';
+
 export const clip = (a, i = 0) =>
   html`<a class="clip" href="#/news/${a.id}" style="--tilt:${[-0.8, 0.6, -0.4][i % 3]}deg"><span class="clip__paper">
-    <span class="dateline">${fmtDate(a.date)}${a.author ? ` / ${a.author}` : ''}</span>
+    ${a.image ? html`<img class="clip__pic" src="${a.image}" alt="" loading="lazy">` : ''}
+    <span class="dateline byline">${byline(a)}<span>${fmtDate(a.date)}${a.author ? ` / ${a.author}` : ''}</span></span>
     <h3>${a.title}</h3>
     <p>${a.summary || excerpt(a.body)}</p>
     <span class="clip__more">Read the story</span>

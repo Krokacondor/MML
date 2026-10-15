@@ -17,12 +17,13 @@ async function getJson(path, fallback) {
 
 export async function loadLeague() {
   const league = await getJson('data/league.json');
-  const [teams, players, articles, ...files] = await Promise.all([
+  const [teams, players, articles, authors, ...files] = await Promise.all([
     getJson('data/teams.json', []),
     getJson('data/players.json', {}),
     getJson('data/articles.json', []),
+    getJson('data/authors.json', []),
     ...(league.seasons || []).map((s) => getJson(`data/seasons/${s.id}.json`, { games: [] })),
   ]);
   const seasons = Object.fromEntries((league.seasons || []).map((s, i) => [s.id, files[i]]));
-  return buildLeague({ league, teams, players, articles, seasons });
+  return buildLeague({ league, teams, players, articles, authors, seasons });
 }

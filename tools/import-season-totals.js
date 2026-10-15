@@ -116,7 +116,7 @@ const season = {
   ...kept,
   id: seasonId,
   name: meta.name,
-  note: "This season's player and team stats are season totals, which did not keep runs or fielding. Game results are entered separately, from the league's scoreboard pictures.",
+  note: "Season 2 did not keep runs or fielding stats.",
   tracked: { bat: ['ab', 'pa', 'h', 'b1', 'b2', 'b3', 'hr', 'tb', 'rbi', 'bb', 'so'], pit: ['k', 'bb'] },
   ...(allStars || oldStars ? { allStars: allStars || oldStars } : {}),
   totals,

@@ -31,6 +31,15 @@ function dataPath(rel) {
   return full;
 }
 
+// Pictures uploaded from the Dugout go in these asset folders only.
+const PICTURE_DIRS = ['assets/news', 'assets/authors'];
+function picturePath(rel) {
+  const full = path.resolve(ROOT, String(rel || ''));
+  const ok = PICTURE_DIRS.some((d) => full.startsWith(path.join(ROOT, d) + path.sep)) && /\.(png|jpe?g|webp)$/i.test(full);
+  if (!ok) throw Object.assign(new Error('Pictures can only be saved in assets/news or assets/authors.'), { status: 400 });
+  return full;
+}
+
 async function readBody(req) {
   const chunks = [];
   for await (const chunk of req) chunks.push(chunk);
@@ -60,8 +69,16 @@ async function localApi(req, res, url) {
     await fs.writeFile(file, body.text, 'utf8');
     return send(res, 200, { sha: sha(body.text) });
   }
+  if (action === 'upload' && req.method === 'PUT') {
+    const body = await readBody(req);
+    const file = picturePath(body.path);
+    await fs.mkdir(path.dirname(file), { recursive: true });
+    await fs.writeFile(file, Buffer.from(String(body.base64 || ''), 'base64'));
+    return send(res, 200, { ok: true });
+  }
   if (action === 'remove' && req.method === 'DELETE') {
-    await fs.rm(dataPath(rel), { force: true });
+    const isPicture = PICTURE_DIRS.some((d) => String(rel || '').startsWith(d + '/'));
+    await fs.rm(isPicture ? picturePath(rel) : dataPath(rel), { force: true });
     return send(res, 200, { ok: true });
   }
   return send(res, 404, { message: 'Unknown action' });

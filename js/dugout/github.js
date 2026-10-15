@@ -1,5 +1,5 @@
-// Where the Dugout saves to. Two back ends with the same four methods
-// (read, write, remove, list):
+// Where the Dugout saves to. Two back ends with the same methods
+// (read, write, putFile, remove, list):
 //   GitHubRepo  commits to the repository through GitHub's API (the live site)
 //   LocalRepo   writes to the data/ folder on this computer, through tools/serve.js
 
@@ -60,6 +60,12 @@ export class GitHubRepo {
     await this.api('PUT', `${this.base}/contents/${path}`, { message, content: toBase64(text), branch: this.branch, ...(sha ? { sha } : {}) });
   }
 
+  // A picture (base64), replacing any file already at that path.
+  async putFile(path, base64, message) {
+    const file = await this.api('GET', `${this.base}/contents/${path}?ref=${encodeURIComponent(this.branch)}`);
+    await this.api('PUT', `${this.base}/contents/${path}`, { message, content: base64, branch: this.branch, ...(file?.sha ? { sha: file.sha } : {}) });
+  }
+
   async remove(path, message) {
     const file = await this.api('GET', `${this.base}/contents/${path}?ref=${encodeURIComponent(this.branch)}`);
     if (file) await this.api('DELETE', `${this.base}/contents/${path}`, { message, sha: file.sha, branch: this.branch });
@@ -108,6 +114,9 @@ export class LocalRepo {
   }
   write(path, text, sha) {
     return this.call('PUT', 'write', {}, { path, text, sha });
+  }
+  putFile(path, base64) {
+    return this.call('PUT', 'upload', {}, { path, base64 });
   }
   remove(path) {
     return this.call('DELETE', 'remove', { path });

@@ -85,3 +85,13 @@ fieldset.card { box-shadow: 4px 4px 0 var(--ink); }
 @media (max-width: 760px) {
   .two { grid-template-columns: 1fr; }
 }
+
+/* story and writer pictures in the Articles tab */
+.picrow { display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; }
+.picbox { position: relative; overflow: hidden; background: #fffbea; border: 2px dashed var(--ink); }
+.picbox img { position: absolute; inset: 0; display: block; width: 100%; height: 100%; object-fit: cover; }
+.picbox--writer { width: 76px; height: 76px; }
+.picbox--story { width: 200px; height: 112px; }
+.stack { display: grid; gap: 10px; justify-items: start; }
+.stack label { justify-self: stretch; }
+@media (max-width: 560px) { .picrow { grid-template-columns: 1fr; } }

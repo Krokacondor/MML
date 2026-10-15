@@ -113,6 +113,7 @@ select, input, button, textarea { font: inherit; color: inherit; border-radius: 
 .empty { margin: 0; padding: 12px 4px; font: 600 18px/1.4 var(--cond); color: var(--ink-soft); }
 .empty--hero { padding: 28px; text-align: center; background: var(--chalk); border: 3px dashed var(--ink); color: var(--ink); }
 .note { margin: 6px 0 10px; font: 600 15px/1.3 var(--cond); letter-spacing: .6px; color: var(--ink-soft); }
+.stag { margin-left: 9px; padding: 2px 6px 1px; font: 400 14px/1 var(--display); font-style: normal; vertical-align: 2px; background: var(--sun); color: var(--ink); border: 2px solid var(--ink); }
 .tag { margin-left: 7px; padding: 3px 5px 2px; font: 700 11px/1 var(--cond); font-style: normal; letter-spacing: 1px; text-transform: uppercase; background: var(--ink); color: var(--chalk); }
 .vs { font: 600 13px/1 var(--cond); letter-spacing: 1px; text-transform: uppercase; color: var(--ink-soft); }
 .res--W { color: var(--win); }
@@ -366,6 +367,16 @@ i.sp { font-style: normal; }
   mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 18px 100%;
 }
 .dateline { display: block; margin: 0; font: 700 13px/1.2 var(--cond); letter-spacing: 1.6px; text-transform: uppercase; color: var(--red); }
+.clip__pic { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; margin-bottom: 12px; border: 2px solid var(--ink); }
+.byline { display: flex; align-items: center; gap: 8px; }
+.byline__pic { flex: none; width: var(--b); height: var(--b); object-fit: cover; background: var(--paper); border: 2px solid var(--ink); }
+.byline--story { gap: 12px; margin: 0 0 22px; }
+.byline--story span { display: grid; gap: 4px; }
+.byline--story b { font-size: 16px; color: var(--ink); }
+.story__pic { margin: 0 0 24px; }
+.story__pic img { display: block; max-width: 100%; max-height: 560px; margin: 0 auto; border: var(--edge); }
+.story__pic figcaption { text-align: center; }
+.story__pic figcaption { margin-top: 7px; font: 500 15px/1.35 var(--cond); color: var(--ink-soft); }
 .clip h3 { margin: 8px 0 10px; font-size: 23px; line-height: 1.08; }
 .clip p { margin: 0 0 12px; font-size: 16px; line-height: 1.45; }
 .clip__more { font: 700 14px/1 var(--cond); letter-spacing: 1.5px; text-transform: uppercase; border-bottom: 3px solid var(--red); }
@@ -384,7 +395,7 @@ i.sp { font-style: normal; }
 .tlogo { display: grid; place-items: center; min-width: 0; min-height: 0; }
 .tlogo img { display: block; width: 100%; height: 100%; min-height: 0; object-fit: contain; }
 .tlogo--none { position: relative; isolation: isolate; font: 400 22px/1 var(--display); color: var(--on); }
-.tlogo--none::before { content: ''; position: absolute; z-index: -1; width: 84px; height: 84px; background: var(--c); border: var(--edge); transform: rotate(45deg); box-shadow: 6px 0 0 var(--ink); }
+.tlogo--none::before { content: ''; position: absolute; z-index: -1; width: 84px; height: 84px; background: var(--c); border: var(--edge); box-shadow: 5px 5px 0 var(--ink); }
 
 .teamcard {
   display: grid; justify-items: center; align-content: start; gap: 5px; padding: 22px 14px 14px; text-align: center; text-decoration: none;
@@ -397,6 +408,9 @@ i.sp { font-style: normal; }
 /* GM names keep the capitalization they were typed with */
 .teamcard__gm b { margin-left: 4px; font-size: 18px; letter-spacing: .3px; text-transform: none; color: var(--ink); }
 .teamcard__rec { margin-top: 2px; font: 400 28px/1 var(--display); }
+.teamcard__note { font: 600 14px/1.2 var(--cond); letter-spacing: .5px; color: var(--ink-soft); }
+.teamcard--tba { background: linear-gradient(var(--c) 10px, var(--chalk) 10px); border-style: dashed; box-shadow: none; }
+.teamcard--tba .tlogo--none { font-size: 40px; }
 
 .confhead { display: flex; align-items: center; gap: 10px; margin: 22px 0 10px; font: 700 20px/1 var(--cond); letter-spacing: 2.5px; }
 .confhead img { width: 36px; height: 36px; object-fit: contain; }
@@ -411,6 +425,8 @@ i.sp { font-style: normal; }
 .teamhead__season { margin: 0 0 2px; font: 400 25px/1 var(--script); }
 .teamhead__gm { margin: 14px 0 0; font: 700 16px/1 var(--cond); letter-spacing: 2.5px; text-transform: uppercase; }
 .teamhead__gm b { display: inline-block; margin-left: 8px; padding: 6px 11px 5px; font-size: 20px; letter-spacing: .5px; text-transform: none; background: var(--ink); color: var(--chalk); }
+.teamhead__chip { display: inline-flex; align-items: center; gap: 7px; margin-left: 8px; padding: 5px 10px 4px; font-size: 18px; letter-spacing: .5px; text-transform: none; text-decoration: none; background: var(--chalk); color: var(--ink); border: 2px solid var(--ink); }
+.teamhead__chip:hover { background: var(--sun); }
 .teamhead__blurb { max-width: 62ch; margin: 12px 0 0; }
 
 /* ---- Awards and All-Stars ---------------------------------------------- */
@@ -430,20 +446,25 @@ i.sp { font-style: normal; }
 .teamhead__honor { margin: 12px 0 0; }
 .teamhead__honor a { display: inline-block; padding: 6px 10px 4px; font: 400 15px/1 var(--display); text-transform: uppercase; text-decoration: none; background: var(--sun); color: var(--ink); border: 2px solid var(--ink); }
 
-.picks { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 14px; }
-.panel > .conflogo + .picks { margin-top: 36px; }
-.pick { position: relative; display: grid; align-content: start; gap: 2px; padding: 30px 10px 10px; background: var(--chalk); border: var(--edge); }
-.pick__pos { position: absolute; top: -3px; left: -3px; padding: 6px 9px 4px; font: 400 16px/1 var(--display); background: var(--ink); color: var(--sun); }
-.pick__star { display: flex; align-items: center; gap: 8px; text-decoration: none; }
-.pick__star + .pick__star { border-top: 2px dashed rgba(20, 47, 69, .22); }
-.pick__who { flex: 1; min-width: 0; display: grid; justify-items: start; gap: 4px; }
-.pick__name { font: 400 16px/1.1 var(--display); text-transform: uppercase; }
-.pick__star:hover .pick__name { text-decoration: underline; text-decoration-thickness: 2px; }
-.pick__n { font: 400 24px/1 var(--display); color: var(--red); padding-right: 4px; }
-.pick__tie { margin: 4px 0 0; font: 700 13px/1 var(--cond); letter-spacing: 1.5px; text-transform: uppercase; color: var(--red); }
-.pick__rest { margin: 6px 0 0; font: 500 14px/1.35 var(--cond); color: var(--ink-soft); }
-.pick__rest a { text-decoration: none; color: var(--ink); }
-.pick__rest a:hover { text-decoration: underline; }
+/* All-Stars stand at their positions on a drawn diamond (awards.js SPOTS) */
+.allstars { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 420px), 1fr)); gap: 0 28px; }
+.allstars .panel__tab { font-size: clamp(14px, 4vw, 18px); }
+.field { position: relative; container-type: inline-size; margin-top: 30px; border: var(--edge); overflow: hidden; }
+.field__art { position: absolute; inset: 0; width: 100%; height: 100%; }
+.field__stands { fill: var(--grass-dark); }
+.field__grass { fill: #3f8f4f; }
+.field__wall { fill: none; stroke: var(--sun); stroke-width: 1.2; }
+.field__dirt { fill: #c98f55; }
+.field__infield { fill: #4a9a59; }
+.field__line { fill: none; stroke: var(--chalk); stroke-width: .5; }
+.field__base { fill: var(--chalk); stroke: var(--ink); stroke-width: .3; }
+.field__spot { --s: clamp(22px, 7.4cqw, 40px); position: absolute; display: flex; gap: 4px; transform: translate(-50%, calc(var(--s) * -.75)); }
+.field__star { position: relative; display: grid; justify-items: center; width: max(64px, 19cqw); text-decoration: none; color: var(--chalk); }
+.field__star .mug { --s: inherit !important; }
+.field__pos { position: absolute; top: -6px; left: calc(50% - var(--s) * .75 - 8px); padding: 3px 4px 2px; font: 400 clamp(10px, 2.6cqw, 14px)/1 var(--display); background: var(--ink); color: var(--sun); }
+.field__name { margin-top: 5px; padding: 2px 5px 1px; font: 700 clamp(11px, 3cqw, 16px)/1.05 var(--cond); text-align: center; text-transform: uppercase; letter-spacing: .3px; background: var(--ink); color: var(--chalk); }
+.field__team { margin-top: 2px; padding: 2px 5px 1px; font: 700 clamp(9px, 2.4cqw, 12px)/1 var(--cond); letter-spacing: 1px; background: var(--c); color: var(--on); border: 1px solid var(--ink); }
+.field__star:hover .field__name { background: var(--red); }
 
 .honors { display: grid; gap: 6px; margin: 0 6px 12px; padding: 0; list-style: none; }
 .honors a { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; padding: 8px 10px 6px; text-decoration: none; background: var(--sun); border: 2px solid var(--ink); }

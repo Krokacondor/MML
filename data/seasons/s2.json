@@ -1,7 +1,7 @@
 {
   "id": "s2",
   "name": "Season 2",
-  "note": "This season's player and team stats are season totals, which did not keep runs or fielding. Game results are entered separately, from the league's scoreboard pictures.",
+  "note": "Season 2 did not keep runs or fielding stats.",
   "tracked": {
     "bat": [
       "ab",

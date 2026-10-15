@@ -1,7 +1,7 @@
 import { html } from '../lib/html.js';
 import { leaderCats } from '../lib/statdefs.js';
 import { isQualified, pitched, teamsIn } from '../lib/aggregate.js';
-import { mug, portrait, pennant, teamVars, standings, scoreCard, clip, byConference, confHead, teamCard, lastSeasonWith } from './ui.js';
+import { mug, portrait, pennant, teamVars, standings, scoreCard, clip, seasonClubs, lastSeasonWith } from './ui.js';
 import { awardCards } from './awards.js';
 
 // The top players in one category, best first.
@@ -27,7 +27,7 @@ function topPlayers(ctx, cat, count) {
 
 function leaderBoard(ctx, cat) {
   const rows = topPlayers(ctx, cat, ctx.league.leadersCount || 5);
-  if (!rows.length) return html`<p class="empty empty--hero">Nobody is on this board yet. Check back after the next game.</p>`;
+  if (!rows.length) return html`<p class="empty empty--hero">Nobody is on this board yet. Come back later!</p>`;
   const card = ({ p, v }, rank, top) => {
     const team = ctx.model.team(p.teamId);
     return html`<a class="leader ${top ? 'leader--top' : ''}" href="#/player/${p.slug}" style="${teamVars(team)}">
@@ -49,12 +49,14 @@ export function home(ctx) {
   const cats = leaderCats(league).filter((c) => topPlayers(sctx, c, 1).length);
   const latest = [...season.games].reverse().slice(0, 4);
   const stories = model.articles.slice(0, 3);
-  const clubs = byConference(sctx, teamsIn(model, shown));
+  // The clubs panel shows the coming season once any of its clubs are known.
+  const clubSeason = teamsIn(model, season).length || season.pending.length ? season : shown;
+  const cctx = { ...ctx, season: clubSeason };
+  const hasClubs = teamsIn(model, clubSeason).length || clubSeason.pending.length;
 
   return {
     title: null,
     html: html`
-      ${waiting ? html`<p class="banner"><b>${season.name} is on deck.</b> No games have been played yet, so this page shows how ${shown.name} finished.</p>` : ''}
       <section class="hero">
         <div class="hero__head">
           <div>
@@ -65,7 +67,7 @@ export function home(ctx) {
         </div>
         ${cats.length
           ? html`<h2 class="hero__stat" data-cat-name>${cats[0].name}</h2><div data-leaders>${leaderBoard(sctx, cats[0])}</div>`
-          : html`<p class="empty empty--hero">No stats yet. The leaders appear here after the first game is uploaded.</p>`}
+          : html`<p class="empty empty--hero">No stats yet. Come back later!</p>`}
       </section>
 
       ${season.reg.hasResults || season.post.hasResults
@@ -82,10 +84,11 @@ export function home(ctx) {
             </section>
           </div>`
         : html`
-          ${clubs.length
+          ${hasClubs
             ? html`<section class="panel">
-                <h2 class="panel__tab"><span>${shown.name} Clubs</span></h2>
-                ${clubs.map(({ conf, teams }) => html`${confHead(conf)}<div class="teamgrid">${teams.map((t) => teamCard(sctx, t))}</div>`)}
+                <h2 class="panel__tab"><span>${clubSeason.name} Clubs</span></h2>
+                ${seasonClubs(cctx)}
+                <p class="more"><a href="#/teams">All teams</a></p>
               </section>`
             : ''}
           ${shown.awards.length
@@ -100,7 +103,7 @@ export function home(ctx) {
         <div class="press__head"><p class="script">From the</p><h2>Press Box</h2></div>
         ${stories.length
           ? html`<div class="clips">${stories.map(clip)}</div><p class="more"><a href="#/news">All stories</a></p>`
-          : html`<p class="empty">The press box is quiet. Stories show up here once they are written.</p>`}
+          : html`<p class="empty">The press box is quiet. Come back later!</p>`}
       </section>`,
     mount(root) {
       const chips = root.querySelector('.chips');

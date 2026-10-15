@@ -55,14 +55,14 @@ export function gamesView(ctx) {
 
   const { played, scheduled, partial } = scheduleProgress(season);
   const soFar = partial ? (season.tracked ? `Results are still being entered: ${played} of ${scheduled} games so far.` : `${played} of ${scheduled} scheduled games have been played.`) : '';
-  const about = [season.format, season.games.length ? soFar : season.tracked ? season.note : 'Scores and box scores appear here after each upload.'].filter(Boolean).join(' ');
+  const about = season.games.length || weeks.length ? [season.format, soFar].filter(Boolean).join(' ') : 'Come back later!';
   return {
     title: weeks.length ? 'Schedule' : 'Scores',
     html: html`
       <header class="pagehead"><p class="script">${season.name}</p><h1>${weeks.length ? 'Schedule & Scores' : 'Scores'}</h1></header>
-      ${about ? html`<p class="banner"><b>${season.games.length || weeks.length ? `About ${season.name}.` : `No games have been played in ${season.name} yet.`}</b> ${about}</p>` : ''}
+      ${about ? html`<p class="banner"><b>${season.games.length || weeks.length ? `About ${season.name}.` : `${season.name} has no games yet.`}</b> ${about}</p>` : ''}
       ${season.games.length
-        ? html`<p class="spoilnote">Scores are hidden so nothing gets spoiled. Click a game's eye to see it, or a week's eye for the whole week. ${eye(season.games.map((g) => g.id), 'every score')} <span>Every score</span></p>`
+        ? html`<p class="spoilnote">Scores are hidden. ${eye(season.games.map((g) => g.id), 'every score')} <span>Every score</span></p>`
         : ''}
       ${loose}${weeks}${rounds}`,
   };
@@ -119,8 +119,8 @@ export function gameView(ctx, id) {
           )}
           <section class="panel"><h2 class="panel__tab"><span>Pitching</span></h2><div class="sp-box" data-pitching></div></section>`
         : html`<div class="sp-box"><p class="empty">${game.notPlayed
-            ? 'This game was not needed: the series was already decided.'
-            : tracked ? `No player lines were kept for this game. They are part of the ${season.name} totals.` : 'Only the score of this game is on the books.'}</p></div>`}
+            ? 'This game was not needed.'
+            : 'No box score for this game.'}</p></div>`}
     </div>`,
     mount(root) {
       if (!hasBox) return;
@@ -146,7 +146,7 @@ export function gameView(ctx, id) {
         ],
         cols: colsFor('pitching', tracked, true),
         rows: pitchers,
-        empty: tracked ? 'Only some pitching stats were kept this season, and this game had none of them.' : 'No pitching stats were recorded for this game.',
+        empty: 'No pitching stats for this game.',
       });
     },
   };

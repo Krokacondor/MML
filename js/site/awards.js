@@ -24,7 +24,12 @@ export function awardCards(ctx) {
   )}</div>`;
 }
 
-// Season awards, then the All-Star vote position by position.
+// Where each position stands on the All-Star diamond: [left %, top] in the
+// field drawing's units (100 wide, FIELD_H tall), home plate at 50, 88.
+const FIELD_H = 118;
+const SPOTS = { CF: [50, 17], LF: [17, 29], RF: [83, 29], SS: [35, 45], '2B': [65, 45], '3B': [17, 64], '1B': [83, 64], P: [50, 66], C: [50, 95] };
+
+// Season awards, then each league's All-Stars on a diamond.
 export function awardsView(ctx) {
   const { model, season, league } = ctx;
   const shown = lastSeasonWith(model, season, (s) => s.awards.length || s.allStars);
@@ -34,29 +39,41 @@ export function awardsView(ctx) {
     return {
       title: 'Awards',
       html: html`<header class="pagehead"><p class="script">${season.name}</p><h1>Awards</h1></header>
-        <p class="empty">No awards or All-Star vote on record yet.</p>`,
+        <p class="empty">No awards yet. Come back later!</p>`,
     };
   }
 
-  const who = (v) => html`<a href="#/player/${slug(model.canon(v.p))}">${v.p}</a>`;
-  const pickCard = (pick) => {
-    const stars = allStarsAt(pick, vote.seats);
-    const others = pick.votes.filter((v) => !stars.includes(v));
-    return html`<div class="pick">
-      <span class="pick__pos">${pick.pos}</span>
-      ${stars.map((v) => {
-        const team = model.team(v.team);
-        return html`<a class="pick__star" href="#/player/${slug(model.canon(v.p))}" style="${teamVars(team)}">
-          ${mug(model.canon(v.p), { size: 36, plate: true })}
-          <span class="pick__who"><span class="pick__name">${v.p}</span>${pennant(team)}</span>
-          <b class="pick__n">${v.n}</b>
-        </a>`;
-      })}
-      ${stars.length > (vote.seats || 1) ? html`<p class="pick__tie">Tied for the last spot</p>` : ''}
-      ${pick.picked && others.some((v) => stars.some((s) => s.n === v.n)) ? html`<p class="pick__tie">Chosen from a tie</p>` : ''}
-      ${others.length ? html`<p class="pick__rest">Also: ${others.map((v, i) => html`${i ? ', ' : ''}${who(v)} ${v.n}`)}</p>` : ''}
-    </div>`;
+  // Each league's All-Stars stand at their positions on a diamond.
+  const fieldSpot = (pick) => {
+    const at = SPOTS[pick.pos];
+    if (!at) return '';
+    return html`<div class="field__spot" style="left:${at[0]}%;top:${(at[1] / FIELD_H) * 100}%">${allStarsAt(pick, vote.seats).map((v) => {
+      const team = model.team(v.team);
+      return html`<a class="field__star" href="#/player/${slug(model.canon(v.p))}" style="${teamVars(team)}">
+        ${mug(model.canon(v.p), { size: 40, plate: true })}
+        <span class="field__pos">${pick.pos}</span>
+        <span class="field__name">${v.p}</span>
+        <span class="field__team">${team.abbr}</span>
+      </a>`;
+    })}</div>`;
   };
+  const diamond = (picks) => html`<div class="field" style="aspect-ratio:100/${FIELD_H}">
+    <svg class="field__art" viewBox="0 0 100 ${FIELD_H}" aria-hidden="true">
+      <rect class="field__stands" width="100" height="${FIELD_H}"/>
+      <path class="field__grass" d="M50 88 L-3.7 34.3 A76 76 0 0 1 103.7 34.3 Z"/>
+      <path class="field__wall" d="M-3.7 34.3 A76 76 0 0 1 103.7 34.3"/>
+      <path class="field__dirt" d="M50 88 L14.6 52.6 A50 50 0 0 1 85.4 52.6 Z"/>
+      <path class="field__infield" d="M50 82 L68 64 L50 46 L32 64 Z"/>
+      <path class="field__line" d="M50 88 L-3.7 34.3 M50 88 L103.7 34.3"/>
+      <circle class="field__dirt" cx="50" cy="88" r="7"/>
+      <circle class="field__dirt" cx="50" cy="66" r="4.5"/>
+      <rect class="field__base" x="72.4" y="62.4" width="3.2" height="3.2" transform="rotate(45 74 64)"/>
+      <rect class="field__base" x="48.4" y="38.4" width="3.2" height="3.2" transform="rotate(45 50 40)"/>
+      <rect class="field__base" x="24.4" y="62.4" width="3.2" height="3.2" transform="rotate(45 26 64)"/>
+      <path class="field__base" d="M48.2 87 h3.6 v1.6 l-1.8 1.6 l-1.8 -1.6 Z"/>
+    </svg>
+    ${picks.map(fieldSpot)}
+  </div>`;
 
   // The All-Star Game is between the two conferences, so it lives with the vote,
   // not among the season's games, and never touches anyone's record.
@@ -78,7 +95,7 @@ export function awardsView(ctx) {
         <thead><tr><th></th>${Array.from({ length: innings }, (_, i) => html`<th class="inn">${i + 1}</th>`)}<th>R</th></tr></thead>
         <tbody>${row(asg.away, asg.home)}${row(asg.home, asg.away)}</tbody>
       </table></div></div>
-      ${asg.note ? html`<p class="note">${asg.note}</p>` : ''}
+      ${asg.note ? html`<p class="note only-shown">${asg.note}</p>` : ''}
     </section>`;
   };
 
@@ -88,13 +105,11 @@ export function awardsView(ctx) {
       <header class="pagehead"><p class="script">${shown.name}</p><h1>Awards</h1></header>
       ${shown.awards.length ? html`<section class="panel"><h2 class="panel__tab"><span>Season Awards</span></h2>${awardCards(sctx)}</section>` : ''}
       ${vote
-        ? html`<header class="pagehead" id="allstars"><p class="script">${shown.name}</p><h1>All-Stars</h1></header>
-            <p class="note">${vote.seats > 1 ? `The top ${vote.seats} vote-getters at each position` : 'The top vote-getter at each position'} in each conference, from ${vote.ballots} ballots. The number beside each name is votes received.</p>
-            ${asg ? asgBoard() : ''}
-            ${vote.conferences.map(({ id, name, picks }) => {
+        ? html`<div class="allstars" id="allstars">${vote.conferences.map(({ id, name, picks }) => {
               const conf = (league.conferences || []).find((c) => c.id === id) || { name };
-              return html`<section class="panel"><h2 class="panel__tab"><span>${conf.name}</span></h2>${conf.logo ? html`<img class="conflogo" src="${conf.logo}" alt="">` : ''}<div class="picks">${picks.map(pickCard)}</div></section>`;
-            })}`
+              return html`<section class="panel"><h2 class="panel__tab"><span>${conf.name} All-Stars</span></h2>${conf.logo ? html`<img class="conflogo" src="${conf.logo}" alt="">` : ''}${diamond(picks)}</section>`;
+            })}</div>
+            ${asg ? asgBoard() : ''}`
         : ''}`,
   };
 }

@@ -27,7 +27,7 @@ export function statsView(ctx) {
       title: 'Stats',
       html: html`
         <header class="pagehead"><p class="script">${season.name}</p><h1>Stats</h1></header>
-        <p class="banner"><b>${season.name} has no stats yet.</b> They appear after the first game is uploaded. Earlier seasons are in the season menu at the top of the page.</p>`,
+        <p class="banner"><b>${season.name} has no stats yet.</b> Come back later!</p>`,
     };
   }
 

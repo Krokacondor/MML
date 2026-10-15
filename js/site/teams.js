@@ -3,22 +3,19 @@ import { C } from '../lib/statdefs.js';
 import { positions, pitched, teamsIn } from '../lib/aggregate.js';
 import { seriesGames, seriesLength } from './games.js';
 import { spoil, eye } from './spoilers.js';
-import { teamVars, playerCell, teamCell, teamLogo, teamCard, standings, progressNote, byConference, confHead, streakOf, tabbedStats, tiles, gameWhen, notFound, lastSeasonWith } from './ui.js';
+import { teamVars, seasonTag, pennant, playerCell, teamCell, teamLogo, standings, progressNote, seasonClubs, streakOf, tabbedStats, tiles, gameWhen, notFound, lastSeasonWith } from './ui.js';
 
 export function teamsView(ctx) {
   const { model, season } = ctx;
   // A season whose teams are not set yet shows the last season's clubs instead.
-  const shown = lastSeasonWith(model, season, (s) => teamsIn(model, s).length > 0);
+  const shown = lastSeasonWith(model, season, (s) => teamsIn(model, s).length > 0 || s.pending.length > 0);
   const sctx = { ...ctx, season: shown };
-  const groups = byConference(sctx);
+  const any = teamsIn(model, shown).length || shown.pending.length;
   return {
     title: 'Teams',
     html: html`
       <header class="pagehead"><p class="script">${shown.name}</p><h1>Teams</h1></header>
-      ${shown !== season ? html`<p class="banner"><b>${season.name} teams are not set yet.</b> These are the ${shown.name} clubs.</p>` : ''}
-      ${groups.length
-        ? groups.map(({ conf, teams }) => html`${confHead(conf)}<div class="teamgrid">${teams.map((t) => teamCard(sctx, t))}</div>`)
-        : html`<p class="empty">No teams yet. They appear here after the first game is uploaded.</p>`}
+      ${any ? seasonClubs(sctx) : html`<p class="empty">No teams yet. Come back later!</p>`}
       ${shown.reg.hasResults ? html`<section class="panel"><h2 class="panel__tab"><span>Standings</span></h2>${standings(sctx)}</section>` : ''}`,
   };
 }
@@ -47,7 +44,14 @@ export function teamView(ctx, id) {
       .filter((s) => s.teams.includes(id))
       .map((s) => ({ week: wk.week, s, opp: model.team(s.teams.find((t) => t !== id)), games: seriesGames(shown, wk.week, s.teams) })),
   );
-  const conf = (league.conferences || []).find((c) => c.id === team.conference);
+  // The header names the chosen season when the team is part of it; panels
+  // filled from an earlier season carry that season's tag (S2).
+  const head = team.seasons?.includes(season.id) || shown === season ? season : shown;
+  const old = shown !== season ? html` ${seasonTag(shown)}` : '';
+  const conf = head.ungrouped ? null : (league.conferences || []).find((c) => c.id === team.conference);
+  // The GM's club before this one (team "formerly"), and the one after.
+  const before = team.formerly && model.teams.get(team.formerly);
+  const after = [...model.teams.values()].find((t) => t.formerly === id);
   const era = league.eraInnings === 7 ? C.p_era7 : C.p_era9;
   // Only the numbers this season actually recorded get a tile.
   const stat = (label, col) => ({ label, value: col.val(T) == null ? null : col.fmt(col.val(T)) });
@@ -68,26 +72,28 @@ export function teamView(ctx, id) {
       <header class="teamhead" style="${teamVars(team)}">
         ${teamLogo(team)}
         <div>
-          <p class="teamhead__season">${shown.name}${conf ? html` / ${conf.name}` : ''}</p>
+          <p class="teamhead__season">${head.name}${conf ? html` / ${conf.name}` : ''}</p>
           <h1>${team.name}</h1>
           ${team.gm ? html`<p class="teamhead__gm">General Manager <b>${team.gm}</b></p>` : ''}
+          ${before ? html`<p class="teamhead__gm">Previously <a class="teamhead__chip" href="#/team/${before.id}">${pennant(before)}${before.name}</a></p>` : ''}
+          ${after ? html`<p class="teamhead__gm">Now <a class="teamhead__chip" href="#/team/${after.id}">${pennant(after)}${after.name}</a></p>` : ''}
           ${shown.awards
             .filter((a) => a.winners.some((w) => w.gm && w.team === id))
             .map((a) => html`<p class="teamhead__honor"><a href="#/awards">${shown.name} ${a.title}</a></p>`)}
           ${team.blurb ? html`<p class="teamhead__blurb">${team.blurb}</p>` : ''}
         </div>
       </header>
-      ${shown !== season ? html`<p class="banner"><b>${team.name} has no ${season.name} games yet.</b> Showing ${shown.name}.</p>` : ''}
-      ${played ? tiles(numbers) : ''}
+      ${played && !old ? tiles(numbers) : ''}
       ${results.length ? progressNote(shown) : ''}
       <section class="panel">
-        <h2 class="panel__tab"><span>Roster & Stats</span></h2>
+        <h2 class="panel__tab"><span>Roster & Stats${old}</span></h2>
+        ${played && old ? tiles(numbers) : ''}
         <div data-roster></div>
         ${shown.note ? html`<p class="note">${shown.note}</p>` : ''}
       </section>
       ${series.length
         ? html`<section class="panel">
-            <h2 class="panel__tab"><span>Schedule</span></h2>
+            <h2 class="panel__tab"><span>Schedule${old}</span></h2>
             <div class="tbl"><table class="st st--log">
               <thead><tr><th class="lead">Week</th><th class="lead">Opponent</th><th class="lead">Stadium</th><th class="lead">Games</th></tr></thead>
               <tbody>${series.map(({ week, s, opp, games }) => html`<tr>
@@ -108,7 +114,7 @@ export function teamView(ctx, id) {
         : ''}
       ${results.length
         ? html`<section class="panel">
-            <h2 class="panel__tab"><span>Game Log</span></h2>
+            <h2 class="panel__tab"><span>Game Log${old}</span></h2>
             <div class="tbl"><table class="st st--log">
               <thead><tr><th class="lead">Game</th><th class="lead">Opponent</th><th class="lead">Result</th><th></th></tr></thead>
               <tbody>${results.map((r) => html`<tr class="${spoil(r.game.id)}" data-spoil="${r.game.id}">
@@ -132,7 +138,7 @@ export function teamView(ctx, id) {
         ],
         sortBy: { batting: 'avg', pitching: 'p_k' },
         foot: () => ({ label: 'Team totals', row: T }),
-        empty: `No stats for ${team.name} in ${shown.name} yet.`,
+        empty: 'No stats yet. Come back later!',
       });
     },
   };

@@ -29,7 +29,7 @@
     "conference": "mk",
     "colors": ["#f93b3a", "#7df2ab"],
     "logo": "assets/teams/pi-illo-island-dreamers.png",
-    "seasons": ["s2"],
+    "seasons": ["s2", "s3"],
     "aliases": ["Piillo Island Dreamers"]
   },
   {
@@ -51,7 +51,7 @@
     "conference": "bk",
     "colors": ["#f783b3", "#ffe94d"],
     "logo": "assets/teams/glitzville-glamours.png",
-    "seasons": ["s2"],
+    "seasons": ["s2", "s3"],
     "aliases": []
   },
   {
@@ -62,7 +62,7 @@
     "conference": "bk",
     "colors": ["#66c475", "#063168"],
     "logo": "assets/teams/wild-woods-1-uppers.png",
-    "seasons": ["s2"],
+    "seasons": ["s2", "s3"],
     "aliases": []
   },
   {
@@ -84,7 +84,18 @@
     "conference": "bk",
     "colors": ["#0ea4e3", "#87d3ea"],
     "logo": "assets/teams/goon-squad.png",
-    "seasons": ["s2"],
+    "seasons": ["s2", "s3"],
+    "aliases": []
+  },
+  {
+    "id": "petalburg-koopa-troopas",
+    "name": "Petalburg Koopa Troopas",
+    "abbr": "PKT",
+    "gm": "Krokacondor",
+    "colors": ["#004aad", "#ff6011"],
+    "logo": "assets/teams/petalburg-koopa-troopas.png",
+    "seasons": ["s3"],
+    "formerly": "new-new-new-york-mets",
     "aliases": []
   }
 ]

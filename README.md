@@ -12,7 +12,7 @@ The stat-tracking website for the Mario Mania League (MML), a CPU vs CPU Mario S
 - **Players**: a card for each player with season-by-season stats, career totals, awards and All-Star selections, and every team they have played for
 - **Stats**: every stat from the season in sortable tables, for players or teams
 - **Scores**: every game, each with a full box score
-- **Awards**: the end-of-season awards, and the All-Star vote position by position with vote counts
+- **Awards**: the end-of-season awards, each league's All-Stars at their positions on a diamond, and the All-Star Game
 - **The Dugout** (`dugout.html`): the staff page for uploading game files and editing everything else
 
 The season menu at the top of the page switches between seasons.
@@ -70,6 +70,19 @@ The reader looks for these sheets by their contents, so sheet names and order do
 
 Only the Stats sheet is required. Team total rows are ignored because the site does its own adding up. If a file ever has a column the site does not know, the value is still saved and the Dugout tells you which column it was.
 
+## Writing a story
+
+Stories go in the Press Box (the News page and the bottom of Home).
+
+1. Open the Dugout, sign in, and go to **Articles**.
+2. Choose **Write a new story** (or pick an old one to edit).
+3. Fill in the headline, date, summary (a sentence or two shown on the clipping), and the story itself. The preview under the story shows how it will look.
+4. **Writer**: pick a writer from the list or type a new name. The writers can be made up ("Mr. Stats Man"). Choose a **writer's picture** the first time; it is remembered and shows on every story by that writer. Choosing a new one replaces it everywhere.
+5. **Story picture** (optional): shown above the story and, cropped, on its clipping. Add a caption if you like. **Remove picture** takes it off.
+6. Save. Pictures are shrunk in your browser before saving (stories up to 1400 pixels, writers to a 256-pixel square cut from the middle), so any size is fine.
+
+Stories live in `data/articles.json`, writers in `data/authors.json`, and their pictures in `assets/news/` and `assets/authors/`. Deleting a story deletes its picture too.
+
 ## Seasons
 
 Start a new season in the Dugout under **League**. It becomes the current season: the one the site opens on and the one uploads go into.
@@ -89,6 +102,16 @@ The same file holds the Season 2 All-Star vote, tallied from the ballot spreadsh
 ```
 node tools/import-season-totals.js "D:\Downloads\sluggers_stats.xlsx" --season s2 --seats 2 --ballots "D:\Downloads\MML Season 2 All Star Voting (Responses).xlsx"
 ```
+
+### Before a season starts
+
+A season file can list the clubs that aren't announced yet, so the Home and Teams pages show the whole league as it takes shape:
+
+- `"pending"`: one entry per club still to come, `{ "gm": "Daxx", "label": "New team", "note": "New team captain" }`. Remove an entry once its team is added to `data/teams.json` with that season in its `"seasons"` list.
+- `"preseason"`: a sentence on where things stand (for example, that rosters are set at the re-draft).
+- `"groups": false`: list the season's teams together instead of by Mushroom and Bowser League, until the season's groups are decided.
+
+Until a team plays in the new season, its page shows its last season, with that season's tag (S2) on each panel. A new club run by a returning GM can point to the GM's old team with `"formerly": "<old team id>"` in `data/teams.json`: the new team's page shows "Previously" and the old team's page shows "Now", each linking to the other.
 
 ### Schedule and format
 
@@ -111,7 +134,7 @@ Every score on the site starts hidden under a striped box that is always two dig
 Both live in the season's file in `data/seasons/`.
 
 - `"awards"` is a list of awards, each with a title and its winners. A winner is a player (`{ "p": "Petey Piranha" }`) or a general manager (`{ "gm": "Rory", "team": "star-road-superstars" }`). Winners get a badge on their player or team page.
-- `"allStars"` holds the vote. The top `"seats"` vote-getters at each position are the All-Stars. When two players tie for the last spot, both are shown as tied. To record who actually got the spot, add `"picked": ["Name One", "Name Two"]` to that position.
+- `"allStars"` holds the vote. The top `"seats"` vote-getters at each position are the All-Stars, shown on the Awards page at their positions on a diamond (P, C, 1B, 2B, 3B, SS, LF, CF, RF), one diamond per league. Vote counts are kept in the file but not shown. When two players tie for the last spot, both are shown as tied. To record who actually got the spot, add `"picked": ["Name One", "Name Two"]` to that position.
 - `"allStars"` can also hold the All-Star Game as `"game"`: `{ "stadium", "note", "away": { "conf": "bk", "score": 21, "line": [...] }, "home": { ... } }`, using the conference ids from `data/league.json`. It shows on the Awards page and does not count toward any team's record or player's stats.
 
 ## Pictures
@@ -146,10 +169,11 @@ dugout.html         the staff page
 data/league.json    league name, seasons, conferences, player name spellings, settings
 data/teams.json     teams, general managers, conferences, colors, logos
 data/players.json   optional player details (bats, throws, type, scouting report)
-data/articles.json  articles
+data/articles.json  articles (stories)
+data/authors.json   story writers and their pictures
 data/seasons/       one file per season: one game per line, or one player per line for totals seasons
 data/access/        encrypted Dugout logins
-assets/             character pictures, team, league and conference logos
+assets/             character pictures, team, league and conference logos, story and writer pictures
 js/lib/             the game file reader and all the stat math
 js/site/            the public pages
 js/dugout/          the staff page

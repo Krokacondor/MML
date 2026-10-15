@@ -384,27 +384,77 @@ async function tabGames(el) {
 
 // ---- Articles --------------------------------------------------------------
 
+// Pictures are shrunk in the browser before saving, so the repository stays
+// small. A square picture (a writer's) is cropped from the middle.
+async function shrinkPicture(file, { max, square = false }) {
+  if (!/^image\/(png|jpeg|webp|gif)$/.test(file.type)) throw new Error('Pick a PNG, JPG, WebP or GIF picture.');
+  const img = await createImageBitmap(file);
+  let [sx, sy, sw, sh] = [0, 0, img.width, img.height];
+  if (square) {
+    const side = Math.min(sw, sh);
+    [sx, sy, sw, sh] = [(sw - side) / 2, (sh - side) / 2, side, side];
+  }
+  const scale = Math.min(1, max / Math.max(sw, sh));
+  const canvas = document.createElement('canvas');
+  canvas.width = Math.round(sw * scale);
+  canvas.height = Math.round(sh * scale);
+  const paint = (type) => {
+    const g = canvas.getContext('2d');
+    g.clearRect(0, 0, canvas.width, canvas.height);
+    if (type === 'image/jpeg') {
+      g.fillStyle = '#ffffff';
+      g.fillRect(0, 0, canvas.width, canvas.height);
+    }
+    g.imageSmoothingQuality = 'high';
+    g.drawImage(img, sx, sy, sw, sh, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL(type, 0.86);
+  };
+  // PNGs keep their see-through parts, unless that makes a photo very large.
+  let type = file.type === 'image/jpeg' ? 'image/jpeg' : 'image/png';
+  let dataUrl = paint(type);
+  if (type === 'image/png' && dataUrl.length > 1_400_000) dataUrl = paint((type = 'image/jpeg'));
+  return { dataUrl, base64: dataUrl.split(',')[1], ext: type === 'image/png' ? 'png' : 'jpg' };
+}
+
 async function tabArticles(el) {
-  let list = await readJson('data/articles.json', []);
+  let [list, writers] = await Promise.all([readJson('data/articles.json', []), readJson('data/authors.json', [])]);
   let cur = null;
+  // Pictures picked but not saved yet.
+  let picked = { story: null, writer: null, dropStory: false };
+  const writerPic = (name) => writers.find((w) => slug(w.name) === slug(name || ''))?.picture || '';
+  const picAttrs = (src) => (src ? html`src="${src}"` : 'hidden');
 
   const draw = () => {
+    picked = { story: null, writer: null, dropStory: false };
     const sorted = [...list].sort((a, b) => String(b.date).localeCompare(String(a.date)));
     el.innerHTML = html`
       <h2>Articles</h2>
       <div class="two">
         <div>
           <button type="button" class="btn btn--plain" data-new>Write a new story</button>
-          <ul class="list">${sorted.map((a) => html`<li><button type="button" data-edit="${a.id}" class="${cur?.id === a.id ? 'is-on' : ''}"><b>${a.title}</b><span>${a.date}</span></button></li>`)}</ul>
+          <ul class="list">${sorted.map((a) => html`<li><button type="button" data-edit="${a.id}" class="${cur?.id === a.id ? 'is-on' : ''}"><b>${a.title}</b><span>${a.date}${a.author ? ` / ${a.author}` : ''}</span></button></li>`)}</ul>
         </div>
         ${cur
           ? html`<form class="card" data-article>
               <label>Headline<input name="title" value="${cur.title}" required></label>
               <div class="grid">
                 <label>Date<input type="date" name="date" value="${cur.date}" required></label>
-                <label>Byline<input name="author" value="${cur.author || ''}"></label>
+                <label>Writer <small>pick one or type a new name</small><input name="author" value="${cur.author || ''}" list="writers" autocomplete="off"></label>
+              </div>
+              <datalist id="writers">${writers.map((w) => html`<option value="${w.name}"></option>`)}</datalist>
+              <div class="picrow">
+                <div class="picbox picbox--writer"><img data-writer-pic alt="" ${picAttrs(writerPic(cur.author))}></div>
+                <label>Writer's picture <small>square works best. It shows on all of this writer's stories.</small><input type="file" accept="image/png,image/jpeg,image/webp,image/gif" data-writer-file></label>
               </div>
               <label>Summary <small>a sentence or two for the home page</small><input name="summary" value="${cur.summary || ''}"></label>
+              <div class="picrow">
+                <div class="picbox picbox--story"><img data-story-pic alt="" ${picAttrs(cur.image)}></div>
+                <div class="stack">
+                  <label>Story picture <small>shown above the story and on its clipping</small><input type="file" accept="image/png,image/jpeg,image/webp,image/gif" data-story-file></label>
+                  <label>Caption <small>optional</small><input name="caption" value="${cur.caption || ''}"></label>
+                  <button type="button" class="btn btn--plain" data-drop-pic ${cur.image ? '' : 'hidden'}>Remove picture</button>
+                </div>
+              </div>
               <label>Story<textarea name="body" rows="14" required>${cur.body || ''}</textarea></label>
               <p class="hint">Formatting: # Heading, **bold**, *italic*, [link text](https://...), ![picture](https://...). Start lines with - for a list. Leave a blank line between paragraphs.</p>
               <div class="story__body preview" data-preview></div>
@@ -414,11 +464,36 @@ async function tabArticles(el) {
           : html`<p class="hint">Pick a story to edit, or write a new one.</p>`}
       </div>`;
     const body = $('[name="body"]', el);
-    if (body) {
-      const show = () => { $('[data-preview]', el).innerHTML = markdown(body.value); };
-      body.oninput = show;
-      show();
-    }
+    if (!body) return;
+    const show = () => { $('[data-preview]', el).innerHTML = markdown(body.value); };
+    body.oninput = show;
+    show();
+    const setPic = (img, src) => {
+      img.hidden = !src;
+      if (src) img.src = src;
+      else img.removeAttribute('src');
+    };
+    // Typing a known writer's name shows their picture, unless a new one was picked.
+    $('[name="author"]', el).oninput = (e) => { if (!picked.writer) setPic($('[data-writer-pic]', el), writerPic(e.target.value)); };
+    $('[data-writer-file]', el).onchange = (e) => e.target.files[0] && work(null, async () => {
+      picked.writer = await shrinkPicture(e.target.files[0], { max: 256, square: true });
+      setPic($('[data-writer-pic]', el), picked.writer.dataUrl);
+      return 'Writer picture ready. It is saved with the story.';
+    });
+    $('[data-story-file]', el).onchange = (e) => e.target.files[0] && work(null, async () => {
+      picked.story = await shrinkPicture(e.target.files[0], { max: 1400 });
+      picked.dropStory = false;
+      setPic($('[data-story-pic]', el), picked.story.dataUrl);
+      $('[data-drop-pic]', el).hidden = false;
+      return 'Story picture ready. It is saved with the story.';
+    });
+    $('[data-drop-pic]', el).onclick = (e) => {
+      picked.story = null;
+      picked.dropStory = true;
+      $('[data-story-file]', el).value = '';
+      setPic($('[data-story-pic]', el), '');
+      e.target.hidden = true;
+    };
   };
 
   el.onclick = (e) => {
@@ -430,9 +505,10 @@ async function tabArticles(el) {
       draw();
     } else if (e.target.closest('[data-del]')) {
       if (!confirm(`Delete "${cur.title}"?`)) return;
-      const id = cur.id;
+      const { id, title, image } = cur;
       work(e.target, async () => {
-        list = await updateJson(S.repo, 'data/articles.json', [], (all) => all.filter((a) => a.id !== id), `Remove article: ${cur.title}`);
+        list = await updateJson(S.repo, 'data/articles.json', [], (all) => all.filter((a) => a.id !== id), `Remove article: ${title}`);
+        if (image) await S.repo.remove(image, `Remove story picture: ${title}`).catch(() => {});
         cur = null;
         draw();
         return `Story deleted.${whenLive()}`;
@@ -442,19 +518,52 @@ async function tabArticles(el) {
   el.onsubmit = (e) => {
     e.preventDefault();
     const f = fields(e.target);
+    const title = f.title.trim();
+    const author = f.author.trim();
     work(e.submitter, async () => {
       let id = cur.id;
+      if (!id) {
+        const taken = (await readJson('data/articles.json', [])).map((a) => a.id);
+        const base = slug(title) || 'story';
+        id = base;
+        for (let n = 2; taken.includes(id); n++) id = `${base}-${n}`;
+      }
+      // New pictures get a fresh name, so nobody's browser shows an old copy.
+      const stamp = Date.now().toString(36);
+      const oldImage = cur.image || '';
+      let image = picked.dropStory ? '' : oldImage;
+      if (picked.story) {
+        image = `assets/news/${id}-${stamp}.${picked.story.ext}`;
+        await S.repo.putFile(image, picked.story.base64, `Story picture: ${title}`);
+      }
+      let oldWriterPic = '';
+      if (picked.writer && author) {
+        const picture = `assets/authors/${slug(author)}-${stamp}.${picked.writer.ext}`;
+        await S.repo.putFile(picture, picked.writer.base64, `Writer picture: ${author}`);
+        writers = await updateJson(S.repo, 'data/authors.json', [], (all) => {
+          const at = all.findIndex((w) => slug(w.name) === slug(author));
+          if (at >= 0) {
+            oldWriterPic = all[at].picture;
+            all[at] = { ...all[at], name: author, picture };
+          } else {
+            all.push({ name: author, picture });
+          }
+        }, `Writer: ${author}`);
+      }
       list = await updateJson(S.repo, 'data/articles.json', [], (all) => {
-        if (!id) {
-          const base = slug(f.title) || 'story';
-          id = base;
-          for (let n = 2; all.some((a) => a.id === id); n++) id = `${base}-${n}`;
-        }
-        const story = { id, title: f.title.trim(), date: f.date, author: f.author.trim(), summary: f.summary.trim(), body: f.body.replace(/\r\n?/g, '\n').trim() };
+        const story = {
+          id, title, date: f.date, author, summary: f.summary.trim(),
+          ...(image ? { image } : {}),
+          ...(image && f.caption.trim() ? { caption: f.caption.trim() } : {}),
+          body: f.body.replace(/\r\n?/g, '\n').trim(),
+        };
         const at = all.findIndex((a) => a.id === id);
         if (at >= 0) all[at] = story;
         else all.unshift(story);
-      }, `Article: ${f.title.trim()}`);
+      }, `Article: ${title}`);
+      // Pictures nothing points to any more.
+      if (oldImage && oldImage !== image) await S.repo.remove(oldImage, `Remove old story picture: ${title}`).catch(() => {});
+      if (oldWriterPic) await S.repo.remove(oldWriterPic, `Remove old writer picture: ${author}`).catch(() => {});
       cur = list.find((a) => a.id === id);
       draw();
       return `Story saved.${whenLive()}`;

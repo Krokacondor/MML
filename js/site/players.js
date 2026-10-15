@@ -24,7 +24,7 @@ export function playersView(ctx) {
       </header>
       ${all.length
         ? html`<div class="pgrid">${all.map(card)}</div><p class="empty" data-none hidden>No players match that search.</p>`
-        : html`<p class="empty">Players appear here after the first game is uploaded.</p>`}`,
+        : html`<p class="empty">No players yet. Come back later!</p>`}`,
     mount(root) {
       const find = root.querySelector('[data-find]');
       find.oninput = () => {
@@ -128,7 +128,6 @@ export function playerView(ctx, id) {
           <section class="panel">
             <h2 class="panel__tab"><span>${shown.name}</span></h2>
             ${headline ? tiles(headline) : html`<p class="empty">${P.name} has no stats yet.</p>`}
-            ${shown !== season ? html`<p class="note">${P.name} has not played in ${season.name} yet.</p>` : ''}
           </section>
           ${info.bio ? html`<section class="panel"><h2 class="panel__tab"><span>Scouting Report</span></h2><p class="bio">${info.bio}</p></section>` : ''}
           <section class="panel">
