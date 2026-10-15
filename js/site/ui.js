@@ -133,7 +133,7 @@ export function lineScore(game, model) {
 export function scoreCard(game, model) {
   const row = (side, other) => {
     const team = model.team(side.team);
-    return html`<span class="score__row ${side.score > other.score ? 'is-win' : ''}">${pennant(team)}<span class="score__name">${team.name}</span><b class="sp">${runs(side)}</b></span>`;
+    return html`<span class="score__row ${side.score > other.score ? 'is-win' : side.score < other.score ? 'is-loss' : ''}">${pennant(team)}<span class="score__name">${team.name}</span><b class="sp">${runs(side)}</b></span>`;
   };
   // The scores stay hidden until the card's eye is clicked (see spoilers.js).
   return html`<div class="score ${spoil(game.id)}" data-spoil="${game.id}"><a class="score__link" href="#/game/${game.id}">

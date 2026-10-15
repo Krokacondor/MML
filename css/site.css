@@ -70,8 +70,9 @@ select, input, button, textarea { font: inherit; color: inherit; border-radius: 
 .ticker__in { max-width: 1200px; margin: 0 auto; padding: 7px 20px; display: flex; align-items: center; gap: 16px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; font: 700 18px/1 var(--cond); }
 .ticker b { color: var(--sun); font-size: 14px; letter-spacing: 2.5px; text-transform: uppercase; }
 .ticker a { display: flex; gap: 12px; padding-right: 16px; text-decoration: none; border-right: 2px dotted rgba(255, 248, 226, .4); }
-.ticker a span { display: flex; align-items: center; gap: 7px; opacity: .65; }
-.ticker a .is-win { opacity: 1; }
+.ticker a span { display: flex; align-items: center; gap: 7px; }
+/* winners stand out only once a game is uncovered, so nothing leaks while hidden */
+.ticker a:not(.is-hidden) span:not(.is-win) { opacity: .55; }
 
 /* red herringbone, like the seam of a baseball */
 .stitch {
@@ -233,7 +234,7 @@ select, input, button, textarea { font: inherit; color: inherit; border-radius: 
 .ls th { padding: 2px 0 4px; text-align: center; font: 700 14px/1 var(--cond); letter-spacing: 1.5px; color: var(--sun); }
 .ls .t { padding-right: 18px; text-align: left; white-space: nowrap; font: 700 23px/1 var(--cond); letter-spacing: 1px; text-transform: uppercase; }
 .ls .t a { text-decoration: none; }
-.ls tr:not(.is-win) .t { opacity: .7; }
+.spoil:not(.is-hidden) .ls tr:not(.is-win) .t { opacity: .7; }
 .ls .n { min-width: 42px; height: 46px; text-align: center; font: 400 22px/1 var(--display); background: #102f47; box-shadow: inset 0 0 0 2px #0a2134; }
 .ls .tot { background: var(--chalk); color: var(--ink); box-shadow: inset 0 0 0 2px var(--paper-lo); }
 
@@ -252,9 +253,13 @@ select, input, button, textarea { font: inherit; color: inherit; border-radius: 
 .score__meta { display: flex; align-items: center; gap: 8px; padding: 6px 10px 5px; font: 700 13px/1 var(--cond); letter-spacing: 1.5px; text-transform: uppercase; background: var(--ink); color: var(--chalk); }
 .score__meta i { font-style: normal; color: var(--sun); }
 .score__meta em { margin-left: auto; font-style: normal; color: var(--sun); }
-.score__row { display: flex; align-items: center; gap: 10px; padding: 7px 10px 2px; font: 600 19px/1 var(--cond); color: var(--ink-soft); }
-.score__row.is-win { color: var(--ink); }
+.score__row { display: flex; align-items: center; gap: 10px; padding: 7px 8px 2px 10px; font: 600 19px/1 var(--cond); color: var(--ink); }
 .score__row b { margin-left: auto; font: 400 22px/1 var(--display); }
+/* the winner: bold, with a red arrow at its score; the loser fades */
+.score__row::after { content: ''; flex: none; margin-left: -4px; border: 8px solid transparent; border-left: 0; border-right-width: 10px; }
+.spoil:not(.is-hidden) .score__row.is-win .score__name { font-weight: 700; }
+.spoil:not(.is-hidden) .score__row.is-win::after { border-right-color: var(--red); }
+.spoil:not(.is-hidden) .score__row.is-loss { opacity: .45; }
 .score__name { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
 .day { margin-top: 28px; }
 .day__date { display: flex; align-items: center; gap: 12px; margin-bottom: 12px; font: 700 20px/1 var(--cond); letter-spacing: 2.5px; }
@@ -507,7 +512,7 @@ i.sp { font-style: normal; }
 .matchup__abbr { grid-column: 1; align-self: end; font: 700 15px/1 var(--cond); letter-spacing: 2.5px; }
 .matchup__name { grid-column: 1; align-self: start; font: 400 clamp(20px, 3.2vw, 34px)/1.05 var(--display); text-transform: uppercase; }
 .matchup__team b { grid-column: 2; grid-row: 1 / 3; font: 400 clamp(46px, 8vw, 86px)/1 var(--display); }
-.matchup__team:not(.is-win) b { opacity: .5; }
+.spoil:not(.is-hidden) .matchup__team:not(.is-win) b { opacity: .5; }
 .matchup__at { display: grid; place-items: center; padding: 0 14px; font: 400 24px/1 var(--script); background: var(--ink); color: var(--sun); }
 .gamemeta { display: flex; flex-wrap: wrap; align-items: center; margin: 20px 0 16px; font: 600 16px/1.4 var(--cond); letter-spacing: .8px; text-transform: uppercase; }
 .gamemeta b { margin-right: 9px; color: var(--red); }
