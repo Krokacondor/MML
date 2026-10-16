@@ -583,3 +583,43 @@ a.post__who:hover b { text-decoration: underline; }
 @media (prefers-reduced-motion: reduce) {
   * { transition: none !important; }
 }
+
+/* draft, moves and end-of-season lineups (transactions.js) */
+.story-season { margin: 14px 0 6px; font: 700 15px/1 var(--cond); letter-spacing: 2px; text-transform: uppercase; color: var(--red); }
+.story-season:first-of-type { margin-top: 2px; }
+.story-lines { margin: 0; padding-left: 18px; display: grid; gap: 6px; font: 500 17px/1.35 var(--cond); }
+.story-lines .tcell { display: inline-flex; vertical-align: middle; }
+.story-lines a { font-weight: 700; }
+.dm { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 0 34px; }
+/* the lineup as a TV graphic: one dark board, number, player, position */
+.lineup { list-style: none; max-width: 560px; margin: 0; padding: 0 0 8px; background: var(--grass-dark); border: var(--edge); box-shadow: 5px 5px 0 var(--ink); color: var(--chalk); }
+.lineup__head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 4px; padding: 10px 16px 8px; background: var(--ink); border-bottom: 3px solid var(--sun); }
+.lineup__head span { font: 400 18px/1.1 var(--display); text-transform: uppercase; }
+.lineup__head b { font: 700 14px/1 var(--cond); letter-spacing: 2.5px; text-transform: uppercase; color: var(--sun); }
+.lineup__row { display: grid; grid-template-columns: 34px auto 1fr 44px; align-items: center; gap: 12px; padding: 5px 16px; }
+.lineup__row + .lineup__row { border-top: 1px solid rgba(255, 248, 226, .12); }
+.lineup__n { text-align: right; font: 400 22px/1 var(--display); color: var(--sun); }
+.lineup__who { min-width: 0; font: 700 20px/1.1 var(--cond); letter-spacing: .5px; text-transform: uppercase; }
+.lineup__who a { color: inherit; text-decoration: none; }
+.lineup__who a:hover { text-decoration: underline; }
+.lineup__who .tag { background: var(--sun); color: var(--ink); }
+.lineup__pos { text-align: left; font: 400 19px/1 var(--display); color: var(--sun); }
+.bcard__facts small { font-weight: 500; opacity: .75; }
+.lineup__n--sub { font: 700 13px/1 var(--cond); letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255, 248, 226, .7); }
+
+.tag--fa { background: #7b838a; color: #fff; }
+
+/* World Series rings on the player card: gold for the champions, silver for the runners-up */
+.rings { display: flex; flex-wrap: wrap; gap: 6px; margin: -4px 6px 12px; }
+.ring { display: inline-grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; font: 400 15px/1 var(--display); color: var(--ink); border: 2px solid var(--ink); box-shadow: 2px 2px 0 var(--ink); cursor: default; }
+.ring--gold { background: radial-gradient(circle at 35% 30%, #fff3b0, #f2c230 45%, #b8860b); }
+.ring--silver { background: radial-gradient(circle at 35% 30%, #ffffff, #d5dade 45%, #8e979f); }
+
+/* GM pages */
+.gm__frame { position: relative; z-index: 1; display: grid; place-items: center; width: 150px; height: 150px; overflow: hidden; background: var(--c); border: var(--edge); box-shadow: 4px 4px 0 var(--ink); }
+.gm__frame img { width: 100%; height: 100%; object-fit: cover; }
+.gm__frame b { font: 400 52px/1 var(--display); color: var(--on); }
+.gm__name { margin-bottom: 2px; font-size: 28px; overflow-wrap: normal; word-break: normal; }
+.gm__role { margin: 0 6px 12px; font: 700 14px/1 var(--cond); letter-spacing: 2.5px; text-transform: uppercase; color: var(--red); }
+.teamhead__gmname a { color: inherit; text-decoration: none; }
+.teamhead__gmname a:hover { text-decoration: underline; }

@@ -1,25 +1,30 @@
 {
   "baby-daisy": {
+    "name": "Baby Daisy",
     "bats": "Left",
     "throws": "Right",
     "type": "Power"
   },
   "baby-dk": {
+    "name": "Baby DK",
     "bats": "Left",
     "throws": "Right",
     "type": "Speed"
   },
   "baby-luigi": {
+    "name": "Baby Luigi",
     "bats": "Left",
     "throws": "Right",
     "type": "Speed"
   },
   "baby-mario": {
+    "name": "Baby Mario",
     "bats": "Right",
     "throws": "Right",
     "type": "Speed"
   },
   "baby-peach": {
+    "name": "Baby Peach",
     "bats": "Right",
     "throws": "Right",
     "type": "Balanced"
@@ -30,56 +35,67 @@
     "type": "Balanced"
   },
   "birdo": {
+    "name": "Birdo",
     "bats": "Right",
     "throws": "Right",
     "type": "Power"
   },
   "blooper": {
+    "name": "Blooper",
     "bats": "Left",
     "throws": "Right",
     "type": "Balanced"
   },
   "blue-dry-bones": {
+    "name": "Blue Dry Bones",
     "bats": "Left",
     "throws": "Left",
     "type": "Balanced"
   },
   "blue-kritter": {
+    "name": "Blue Kritter",
     "bats": "Left",
     "throws": "Right",
     "type": "Power"
   },
   "blue-magikoopa": {
+    "name": "Blue Magikoopa",
     "bats": "Left",
     "throws": "Right",
     "type": "Balanced"
   },
   "blue-noki": {
+    "name": "Blue Noki",
     "bats": "Left",
     "throws": "Right",
     "type": "Balanced"
   },
   "blue-pianta": {
+    "name": "Blue Pianta",
     "bats": "Right",
     "throws": "Right",
     "type": "Speed"
   },
   "blue-shy-guy": {
+    "name": "Blue Shy Guy",
     "bats": "Left",
     "throws": "Right",
     "type": "Technique"
   },
   "blue-toad": {
+    "name": "Blue Toad",
     "bats": "Right",
     "throws": "Right",
     "type": "Speed"
   },
   "blue-yoshi": {
+    "name": "Blue Yoshi",
     "bats": "Left",
     "throws": "Right",
     "type": "Speed"
   },
   "boo": {
+    "name": "Boo",
     "bats": "Left",
     "throws": "Left",
     "type": "Speed"
@@ -90,21 +106,25 @@
     "type": "Balanced"
   },
   "boomerang-bro": {
+    "name": "Boomerang Bro",
     "bats": "Right",
     "throws": "Right",
     "type": "Power"
   },
   "bowser": {
+    "name": "Bowser",
     "bats": "Left",
     "throws": "Right",
     "type": "Power"
   },
   "bowser-jr": {
+    "name": "Bowser Jr.",
     "bats": "Right",
     "throws": "Left",
     "type": "Technique"
   },
   "brown-kritter": {
+    "name": "Brown Kritter",
     "bats": "Left",
     "throws": "Right",
     "type": "Power"
@@ -119,12 +139,19 @@
     "throws": "Right",
     "type": "Balanced"
   },
+  "charlie-brown": {
+    "bats": "Right",
+    "throws": "Right",
+    "type": "Balanced"
+  },
   "daisy": {
+    "name": "Daisy",
     "bats": "Left",
     "throws": "Right",
     "type": "Power"
   },
   "diddy-kong": {
+    "name": "Diddy Kong",
     "bats": "Left",
     "throws": "Right",
     "type": "Technique"
@@ -135,76 +162,91 @@
     "type": "Balanced"
   },
   "dixie-kong": {
+    "name": "Dixie Kong",
     "bats": "Left",
     "throws": "Right",
     "type": "Balanced"
   },
   "donkey-kong": {
+    "name": "Donkey Kong",
     "bats": "Left",
     "throws": "Right",
     "type": "Power"
   },
   "fire-bro": {
+    "name": "Fire Bro",
     "bats": "Right",
     "throws": "Right",
     "type": "Power"
   },
   "funky-kong": {
+    "name": "Funky Kong",
     "bats": "Right",
     "throws": "Left",
     "type": "Power"
   },
   "goomba": {
+    "name": "Goomba",
     "bats": "Right",
     "throws": "Right",
     "type": "Speed"
   },
   "gray-dry-bones": {
+    "name": "Gray Dry Bones",
     "bats": "Left",
     "throws": "Left",
     "type": "Balanced"
   },
   "gray-shy-guy": {
+    "name": "Gray Shy Guy",
     "bats": "Left",
     "throws": "Right",
     "type": "Technique"
   },
   "green-dry-bones": {
+    "name": "Green Dry Bones",
     "bats": "Left",
     "throws": "Left",
     "type": "Balanced"
   },
   "green-koopa": {
+    "name": "Green Koopa",
     "bats": "Left",
     "throws": "Right",
     "type": "Speed"
   },
   "green-kritter": {
+    "name": "Green Kritter",
     "bats": "Left",
     "throws": "Right",
     "type": "Power"
   },
   "green-magikoopa": {
+    "name": "Green Magikoopa",
     "bats": "Left",
     "throws": "Right",
     "type": "Balanced"
   },
   "green-noki": {
+    "name": "Green Noki",
     "bats": "Left",
     "throws": "Right",
     "type": "Balanced"
   },
   "green-paratroopa": {
+    "name": "Green Paratroopa",
     "bats": "Left",
     "throws": "Right",
     "type": "Balanced"
   },
   "green-shy-guy": {
+    "name": "Green Shy Guy",
     "bats": "Left",
     "throws": "Right",
     "type": "Technique"
   },
   "green-toad": {
+    "name": "Green Toad",
     "bats": "Right",
     "throws": "Right",
     "type": "Speed"
@@ -215,6 +257,7 @@
     "type": "Balanced"
   },
   "hammer-bro": {
+    "name": "Hammer Bro",
     "bats": "Right",
     "throws": "Right",
     "type": "Power"
@@ -230,11 +273,13 @@
     "type": "Balanced"
   },
   "king-boo": {
+    "name": "King Boo",
     "bats": "Right",
     "throws": "Right",
     "type": "Power"
   },
   "king-k-rool": {
+    "name": "King K. Rool",
     "bats": "Right",
     "throws": "Left",
     "type": "Power"
@@ -245,6 +290,7 @@
     "type": "Balanced"
   },
   "light-blue-yoshi": {
+    "name": "Light Blue Yoshi",
     "bats": "Left",
     "throws": "Right",
     "type": "Speed"
@@ -255,6 +301,7 @@
     "type": "Balanced"
   },
   "luigi": {
+    "name": "Luigi",
     "bats": "Left",
     "throws": "Right",
     "type": "Speed"
@@ -265,6 +312,7 @@
     "type": "Balanced"
   },
   "mario": {
+    "name": "Mario",
     "bats": "Right",
     "throws": "Right",
     "type": "Balanced"
@@ -275,6 +323,7 @@
     "type": "Balanced"
   },
   "monty-mole": {
+    "name": "Monty Mole",
     "bats": "Left",
     "throws": "Right",
     "type": "Speed"
@@ -295,79 +344,99 @@
     "type": "Balanced"
   },
   "paragoomba": {
+    "name": "Paragoomba",
     "bats": "Right",
     "throws": "Right",
     "type": "Balanced"
   },
   "peach": {
+    "name": "Peach",
     "bats": "Right",
     "throws": "Right",
     "type": "Balanced"
   },
   "petey-piranha": {
+    "name": "Petey Piranha",
     "bats": "Left",
     "throws": "Right",
     "type": "Power"
   },
   "pink-yoshi": {
+    "name": "Pink Yoshi",
     "bats": "Left",
     "throws": "Right",
     "type": "Speed"
   },
   "purple-toad": {
+    "name": "Purple Toad",
     "bats": "Right",
     "throws": "Right",
     "type": "Speed"
   },
   "red-dry-bones": {
+    "name": "Red Dry Bones",
     "bats": "Left",
     "throws": "Left",
     "type": "Balanced"
   },
   "red-koopa": {
+    "name": "Red Koopa",
     "bats": "Left",
     "throws": "Right",
     "type": "Speed"
   },
   "red-kritter": {
+    "name": "Red Kritter",
     "bats": "Left",
     "throws": "Right",
     "type": "Power"
   },
   "red-magikoopa": {
+    "name": "Red Magikoopa",
     "bats": "Left",
     "throws": "Right",
     "type": "Balanced"
   },
   "red-noki": {
+    "name": "Red Noki",
     "bats": "Left",
     "throws": "Right",
     "type": "Balanced"
   },
   "red-paratroopa": {
+    "name": "Red Paratroopa",
     "bats": "Left",
     "throws": "Right",
     "type": "Balanced"
   },
   "red-pianta": {
+    "name": "Red Pianta",
     "bats": "Right",
     "throws": "Right",
     "type": "Speed"
   },
   "red-shy-guy": {
+    "name": "Red Shy Guy",
     "bats": "Left",
     "throws": "Right",
     "type": "Technique"
   },
   "red-toad": {
+    "name": "Red Toad",
     "bats": "Right",
     "throws": "Right",
     "type": "Speed"
   },
   "red-yoshi": {
+    "name": "Red Yoshi",
     "bats": "Left",
     "throws": "Right",
     "type": "Speed"
+  },
+  "rosalina": {
+    "bats": "Left",
+    "throws": "Right",
+    "type": "Balanced"
   },
   "sans": {
     "bats": "Right",
@@ -390,16 +459,19 @@
     "type": "Balanced"
   },
   "tiny-kong": {
+    "name": "Tiny Kong",
     "bats": "Left",
     "throws": "Right",
     "type": "Balanced"
   },
   "toadette": {
+    "name": "Toadette",
     "bats": "Right",
     "throws": "Right",
     "type": "Balanced"
   },
   "toadsworth": {
+    "name": "Toadsworth",
     "bats": "Right",
     "throws": "Right",
     "type": "Balanced"
@@ -415,11 +487,13 @@
     "type": "Balanced"
   },
   "waluigi": {
+    "name": "Waluigi",
     "bats": "Left",
     "throws": "Left",
     "type": "Technique"
   },
   "wario": {
+    "name": "Wario",
     "bats": "Right",
     "throws": "Right",
     "type": "Technique"
@@ -430,36 +504,43 @@
     "type": "Balanced"
   },
   "wiggler": {
+    "name": "Wiggler",
     "bats": "Left",
     "throws": "Right",
     "type": "Speed"
   },
   "yellow-magikoopa": {
+    "name": "Yellow Magikoopa",
     "bats": "Left",
     "throws": "Right",
     "type": "Balanced"
   },
   "yellow-pianta": {
+    "name": "Yellow Pianta",
     "bats": "Right",
     "throws": "Right",
     "type": "Speed"
   },
   "yellow-shy-guy": {
+    "name": "Yellow Shy Guy",
     "bats": "Left",
     "throws": "Right",
     "type": "Technique"
   },
   "yellow-toad": {
+    "name": "Yellow Toad",
     "bats": "Right",
     "throws": "Right",
     "type": "Speed"
   },
   "yellow-yoshi": {
+    "name": "Yellow Yoshi",
     "bats": "Left",
     "throws": "Right",
     "type": "Speed"
   },
   "yoshi": {
+    "name": "Yoshi",
     "bats": "Left",
     "throws": "Right",
     "type": "Speed"

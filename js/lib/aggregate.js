@@ -201,6 +201,11 @@ export function buildLeague({ league, teams = [], players = {}, articles = [], a
       allStars: file.allStars || null,
       awards: file.awards || [],
       schedule: file.schedule || [],
+      // The draft ({ round, pick, team, p }), in-season moves ({ deal, when, p,
+      // from, to }, "" being free agency) and end-of-season rosters.
+      draft: file.draft || [],
+      moves: file.moves || [],
+      rosters: file.rosters || [],
       format: file.format || '',
       // Before a season starts: a note on where things stand, clubs not yet
       // announced ({ gm, label, note }), and whether it uses the league's groups.
@@ -249,6 +254,52 @@ export function buildLeague({ league, teams = [], players = {}, articles = [], a
           }
         }
         P.last = { season, teamId: rec.teamId };
+      }
+    }
+
+    // A season with a draft lists everyone, played or not: drafted or signed
+    // players with no stat line, and every other character in the game (named in
+    // data/players.json), who spent the season as free agents.
+    if (season.draft.length) {
+      const names = new Map();
+      const add = (name) => {
+        const c = canon(name);
+        if (!names.has(slug(c))) names.set(slug(c), c);
+      };
+      for (const d of season.draft) add(d.p);
+      for (const m of season.moves) add(m.p);
+      for (const r of season.rosters) [...r.lineup.map((l) => l.p), ...r.bench].forEach(add);
+      for (const [s, i] of Object.entries(players)) if (i.name && !names.has(s)) names.set(s, i.name);
+      const same = (a, s) => slug(canon(a)) === s;
+      for (const [s, name] of names) {
+        if (!model.players.has(s)) {
+          model.players.set(s, {
+            slug: s,
+            name,
+            info: players[s] || {},
+            seasons: [],
+            stints: [],
+            honors: [],
+            career: { reg: { ...blankLine(), parts: [] }, post: { ...blankLine(), parts: [] } },
+            last: null,
+          });
+        }
+        const P = model.players.get(s);
+        if (P.seasons.some((x) => x.season === season)) continue; // has stats already
+        P.seasons.push({ season, reg: null, post: null });
+        // Their teams that season: drafted by, then each move's new team.
+        const pick = season.draft.find((d) => same(d.p, s));
+        const teams = [pick?.team, ...season.moves.filter((m) => same(m.p, s)).map((m) => m.to)].filter(Boolean);
+        for (const teamId of teams) {
+          const lastStint = P.stints[P.stints.length - 1];
+          if (lastStint?.teamId === teamId) {
+            if (!lastStint.seasons.includes(season)) lastStint.seasons.push(season);
+          } else {
+            P.stints.push({ teamId, seasons: [season] });
+          }
+        }
+        const roster = season.rosters.find((r) => [...r.lineup.map((l) => l.p), ...r.bench].some((p) => same(p, s)));
+        P.last = { season, teamId: roster?.team || '' };
       }
     }
 

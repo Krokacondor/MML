@@ -10,8 +10,8 @@
     { "id": "s3", "name": "Season 3" }
   ],
   "conferences": [
-    { "id": "mk", "name": "Mushroom League", "logo": "assets/conferences/mushroom-kingdom.png" },
-    { "id": "bk", "name": "Bowser League", "logo": "assets/conferences/bowser-kingdom.png" }
+    { "id": "mk", "name": "Mushroom Conference", "logo": "assets/conferences/mushroom-kingdom.png" },
+    { "id": "bk", "name": "Bowser Conference", "logo": "assets/conferences/bowser-kingdom.png" }
   ],
   "playerAliases": { "Red Koopa Troopa": "Red Koopa", "Kritter": "Green Kritter" },
   "leadersCount": 5,

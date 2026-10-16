@@ -85,7 +85,7 @@ if (ballotFile) {
   const conferences = [];
   head.forEach((cell, col) => {
     // Headers read "Mushroom Kingdom ... First Base (1B)". The group is matched on its
-    // first word, so it still lines up if the league calls it "Mushroom League".
+    // first word, so it still lines up if the league calls it "Mushroom Conference".
     const m = /^\s*(\w+)\s+(?:Kingdom|League|Conference|Division)\b[\s\S]*\((\w+)\)\s*$/.exec(String(cell || ''));
     if (!m) return;
     const conf = league.conferences.find((c) => c.name.toLowerCase().startsWith(m[1].toLowerCase()));

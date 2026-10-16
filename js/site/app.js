@@ -11,6 +11,7 @@ import { statsView } from './stats.js';
 import { gamesView, gameView } from './games.js';
 import { newsView, articleView } from './news.js';
 import { feedView, feedName } from './feed.js';
+import { gmView } from './gms.js';
 import { awardsView } from './awards.js';
 import { spoil, watchSpoilers } from './spoilers.js';
 
@@ -27,6 +28,7 @@ const ROUTES = [
   [/^\/news$/, newsView, 'news'],
   [/^\/news\/([^/]+)$/, articleView, 'news'],
   [/^\/feed$/, feedView, 'feed'],
+  [/^\/gm\/([^/]+)$/, gmView, 'teams'],
 ];
 
 const view = document.getElementById('view');
@@ -57,6 +59,14 @@ function drawTicker() {
 
 function route() {
   const [path, query = ''] = location.hash.replace(/^#/, '').split('?');
+  const wanted = new URLSearchParams(query).get('season');
+  if (wanted && wanted !== state.seasonId && state.model.seasons.some((s) => s.id === wanted)) {
+    state.seasonId = wanted;
+    sessionStorage.setItem('sl.season', wanted);
+    $('[data-season]').value = wanted;
+    drawLogo();
+    drawTicker();
+  }
   const ctx = { model: state.model, league: state.model.league, season: currentSeason(), q: Object.fromEntries(new URLSearchParams(query)) };
   let page = notFound();
   let nav = '';

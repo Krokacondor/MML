@@ -73,10 +73,13 @@ export const pretty = (data) => JSON.stringify(data, null, 2) + '\n';
 // Season files keep one game (or one player's season line) per row of text, so
 // the file stays readable and changes show up cleanly in the repository history.
 export function serializeSeason(season) {
-  const { schedule, totals, games = [], ...meta } = season;
+  const { schedule, draft, moves, rosters, totals, games = [], ...meta } = season;
   const rows = (list) => (list.length ? `\n${list.map((item) => '    ' + JSON.stringify(item)).join(',\n')}\n  ` : '');
   let out = JSON.stringify(meta, null, 2).replace(/\n}$/, '');
   if (schedule) out += `,\n  "schedule": [${rows(schedule)}]`; // one week per line
+  if (draft) out += `,\n  "draft": [${rows(draft)}]`; // one pick per line
+  if (moves) out += `,\n  "moves": [${rows(moves)}]`; // one player moving per line
+  if (rosters) out += `,\n  "rosters": [${rows(rosters)}]`; // one team per line
   if (totals) out += `,\n  "totals": [${rows(totals)}]`;
   return `${out},\n  "games": [${rows(games)}]\n}\n`;
 }

@@ -854,7 +854,8 @@ async function tabPlayers(el) {
     work(e.submitter, async () => {
       info = await updateJson(S.repo, 'data/players.json', {}, (all) => {
         const entry = Object.fromEntries(Object.entries(f).map(([k, v]) => [k, v.trim()]).filter(([, v]) => v));
-        if (Object.keys(entry).length) all[slug(who)] = entry;
+        const name = all[slug(who)]?.name;
+        if (Object.keys(entry).length || name) all[slug(who)] = { ...(name ? { name } : {}), ...entry };
         else delete all[slug(who)];
       }, `Player info: ${who}`);
       return `${who} saved.${whenLive()}`;

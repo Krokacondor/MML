@@ -3,6 +3,8 @@ import { C } from '../lib/statdefs.js';
 import { positions, pitched, teamsIn } from '../lib/aggregate.js';
 import { seriesGames, seriesLength } from './games.js';
 import { spoil, eye } from './spoilers.js';
+import { draftOf, teamMoves, lineupCard, who, ordinal, freeAgentAtEnd, teamHonors } from './transactions.js';
+import { gmLink } from './gms.js';
 import { teamVars, pennant, playerCell, teamCell, teamLogo, standings, progressNote, seasonClubs, streakOf, tabbedStats, tiles, gameWhen, notFound } from './ui.js';
 
 export function teamsView(ctx) {
@@ -34,7 +36,7 @@ export function teamView(ctx, id) {
   const played = S.teams.has(id) || shown.post.teams.has(id);
   const roster = [...S.players.values()]
     .filter((p) => p.byTeam.has(id))
-    .map((p) => ({ ...p.byTeam.get(id), name: p.name, slug: p.slug, moved: p.teamId !== id }))
+    .map((p) => ({ ...p.byTeam.get(id), name: p.name, slug: p.slug, moved: p.teamId !== id, released: freeAgentAtEnd(model, shown, p.name) }))
     .sort((a, b) => a.name.localeCompare(b.name));
   // Unneeded playoff slots are listed too, so the log does not give away how long a series went.
   const unneeded = shown.games
@@ -48,6 +50,9 @@ export function teamView(ctx, id) {
       .map((s) => ({ week: wk.week, s, opp: model.team(s.teams.find((t) => t !== id)), games: seriesGames(shown, wk.week, s.teams) })),
   );
   const head = shown;
+  // The team's draft picks and its trades and signings that season.
+  const picks = draftOf(shown).filter((d) => d.team === id);
+  const moves = teamMoves(model, shown, id);
   const conf = head.ungrouped ? null : (league.conferences || []).find((c) => c.id === team.conference);
   // The GM's club before this one (team "formerly"), and the one after.
   const before = team.formerly && model.teams.get(team.formerly);
@@ -74,17 +79,21 @@ export function teamView(ctx, id) {
         <div>
           <p class="teamhead__season">${head.name}${conf ? html` / ${conf.name}` : ''}</p>
           <h1>${team.name}</h1>
-          ${team.gm ? html`<p class="teamhead__gm">General Manager <b>${team.gm}</b></p>` : ''}
+          ${team.gm ? html`<p class="teamhead__gm">General Manager <b class="teamhead__gmname">${gmLink(team.gm)}</b></p>` : ''}
           ${before ? html`<p class="teamhead__gm">Previously <a class="teamhead__chip" href="#/team/${before.id}">${pennant(before)}${before.name}</a></p>` : ''}
           ${after ? html`<p class="teamhead__gm">Now <a class="teamhead__chip" href="#/team/${after.id}">${pennant(after)}${after.name}</a></p>` : ''}
-          ${shown.awards
-            .filter((a) => a.winners.some((w) => w.gm && w.team === id))
-            .map((a) => html`<p class="teamhead__honor"><a href="#/awards">${shown.name} ${a.title}</a></p>`)}
+          ${teamHonors(model, id).map((h) => html`<p class="teamhead__honor"><a href="${h.href}">${h.label}</a></p>`)}
           ${team.blurb ? html`<p class="teamhead__blurb">${team.blurb}</p>` : ''}
         </div>
       </header>
       ${played ? tiles(numbers) : ''}
       ${results.length ? progressNote(shown) : ''}
+      ${shown.rosters.some((r) => r.team === id)
+        ? html`<section class="panel">
+            <h2 class="panel__tab"><span>End-of-Season Lineup</span></h2>
+            ${lineupCard(model, shown, id)}
+          </section>`
+        : ''}
       <section class="panel">
         <h2 class="panel__tab"><span>Roster & Stats</span></h2>
         <div data-roster></div>
@@ -124,6 +133,19 @@ export function teamView(ctx, id) {
               </tr>`)}</tbody>
             </table></div>
           </section>`
+        : ''}
+      ${picks.length || moves.length
+        ? html`<section class="panel">
+            <h2 class="panel__tab"><span>Draft & Moves</span></h2>
+            <div class="dm">
+              ${picks.length
+                ? html`<div><h3 class="story-season">Draft</h3><ol class="story-lines">${picks.map((d) => html`<li><b>Round ${d.round}, Pick ${d.pick}</b> (${ordinal(d.overall)} overall): ${who(model, d.p)}</li>`)}</ol></div>`
+                : ''}
+              ${moves.length
+                ? html`<div><h3 class="story-season">Moves</h3><ul class="story-lines">${moves.map((m) => html`<li><b>${m.when}:</b> ${m.text}</li>`)}</ul></div>`
+                : ''}
+            </div>
+          </section>`
         : ''}`,
     mount(root) {
       tabbedStats(root.querySelector('[data-roster]'), {
@@ -131,7 +153,7 @@ export function teamView(ctx, id) {
         hideGames: !S.countsGames,
         rows: (view) => (view === 'pitching' ? roster.filter(pitched) : roster),
         lead: () => [
-          { id: 'name', label: 'Player', sort: (r) => r.name, cell: (r) => playerCell(r.name, r.moved ? html`<i class="tag">Moved on</i>` : '') },
+          { id: 'name', label: 'Player', sort: (r) => r.name, cell: (r) => playerCell(r.name, r.released ? html`<i class="tag tag--fa">Released</i>` : r.moved ? html`<i class="tag">Moved on</i>` : '') },
           // Positions come from game files, so seasons recorded as totals have none to show.
           ...(shown.tracked ? [] : [{ id: 'pos', label: 'Pos', sort: (r) => positions(r).join(), cell: (r) => positions(r).slice(0, 2).join(', ') }]),
         ],
