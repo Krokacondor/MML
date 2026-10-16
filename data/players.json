@@ -1,1 +1,374 @@
-{}
+{
+  "baby-daisy": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "baby-dk": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "baby-luigi": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "baby-mario": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "baby-peach": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "beef-boss": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "birdo": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "blooper": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "blue-dry-bones": {
+    "bats": "Left",
+    "throws": "Left"
+  },
+  "blue-kritter": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "blue-magikoopa": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "blue-noki": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "blue-pianta": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "blue-shy-guy": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "blue-toad": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "blue-yoshi": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "boo": {
+    "bats": "Left",
+    "throws": "Left"
+  },
+  "boo-tleg": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "boomerang-bro": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "bowser": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "bowser-jr": {
+    "bats": "Right",
+    "throws": "Left"
+  },
+  "brown-kritter": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "buttercup": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "callie": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "daisy": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "diddy-kong": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "dina": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "dixie-kong": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "donkey-kong": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "fire-bro": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "funky-kong": {
+    "bats": "Right",
+    "throws": "Left"
+  },
+  "goomba": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "gray-dry-bones": {
+    "bats": "Left",
+    "throws": "Left"
+  },
+  "gray-shy-guy": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "green-dry-bones": {
+    "bats": "Left",
+    "throws": "Left"
+  },
+  "green-koopa": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "green-kritter": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "green-magikoopa": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "green-noki": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "green-paratroopa": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "green-shy-guy": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "green-toad": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "grimace": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "hammer-bro": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "heisenberg": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "jimmy-neutron": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "king-boo": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "king-k-rool": {
+    "bats": "Right",
+    "throws": "Left"
+  },
+  "kukrushka": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "light-blue-yoshi": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "lightning-mcqueen": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "luigi": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "lynne": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "mario": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "may": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "monty-mole": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "naoto": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "numbuh-four": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "pablo-sanchez": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "paragoomba": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "peach": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "petey-piranha": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "pink-yoshi": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "purple-toad": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "red-dry-bones": {
+    "bats": "Left",
+    "throws": "Left"
+  },
+  "red-koopa": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "red-kritter": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "red-magikoopa": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "red-noki": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "red-paratroopa": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "red-pianta": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "red-shy-guy": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "red-toad": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "red-yoshi": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "sans": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "starfire": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "steve": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "terry-crews": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "tiny-kong": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "toadette": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "toadsworth": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "velma": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "vito": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "waluigi": {
+    "bats": "Left",
+    "throws": "Left"
+  },
+  "wario": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "weird-al": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "wiggler": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "yellow-magikoopa": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "yellow-pianta": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "yellow-shy-guy": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "yellow-toad": {
+    "bats": "Right",
+    "throws": "Right"
+  },
+  "yellow-yoshi": {
+    "bats": "Left",
+    "throws": "Right"
+  },
+  "yoshi": {
+    "bats": "Left",
+    "throws": "Right"
+  }
+}

@@ -77,7 +77,7 @@ const totals = table(sheet).map((r) => {
 // ---- All-Star ballots ------------------------------------------------------
 
 // Names the ballot spelled differently from the stats sheet ("Grey" is also read as "Gray").
-const SAME_PLAYER = { 'Numbuh 4': 'Numbah Four', 'Weird Al Yankovic': 'Weird Al' };
+const SAME_PLAYER = { 'Numbuh 4': 'Numbuh Four', 'Numbah Four': 'Numbuh Four', 'Weird Al Yankovic': 'Weird Al' };
 let allStars = null;
 if (ballotFile) {
   const [head, ...ballots] = (await open(ballotFile))[0].rows.filter((r) => r.length);

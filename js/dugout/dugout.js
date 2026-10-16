@@ -144,11 +144,12 @@ const TABS = {
   logins: ['Logins', tabLogins],
 };
 
-// Only the league's admins (league.json "admins", by login name) see the Logins
-// tab, plus anyone signed in with the key itself or in local mode. This hides the
-// tab; it is not a lock, since every login can reach the key.
+// Admins (league.json "admins", by login name, plus anyone signed in with the key
+// itself or in local mode) see every tab. Other staff see only the everyday ones.
+// This hides tabs; it is not a lock, since every login can reach the key.
+const STAFF_TABS = ['upload', 'games', 'articles', 'posts', 'players'];
 const isAdmin = () => S.who === 'Key holder' || S.who === 'Local mode' || (S.league.admins || []).some((name) => slug(name) === slug(S.who));
-const tabsFor = () => Object.entries(TABS).filter(([id]) => id !== 'logins' || isAdmin());
+const tabsFor = () => Object.entries(TABS).filter(([id]) => isAdmin() || STAFF_TABS.includes(id));
 
 function shell() {
   app.innerHTML = html`

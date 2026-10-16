@@ -228,7 +228,7 @@
                 "n": 2
               },
               {
-                "p": "Numbah Four",
+                "p": "Numbuh Four",
                 "team": "sarasaland-sandstorm",
                 "n": 2
               }
@@ -571,7 +571,7 @@
     {"team":"new-new-new-york-mets","p":"Steve","bat":{"ab":37,"pa":37,"h":19,"b1":18,"hr":1,"tb":22,"rbi":5}},
     {"team":"glitzville-glamours","p":"Fire Bro","bat":{"ab":49,"pa":49,"h":25,"b1":16,"hr":9,"tb":52,"rbi":28}},
     {"team":"ohio","p":"Baby DK","bat":{"ab":46,"pa":46,"h":23,"b1":22,"b2":1,"tb":24,"rbi":4}},
-    {"team":"sarasaland-sandstorm","p":"Numbah Four","bat":{"ab":14,"pa":14,"h":7,"b1":6,"b2":1,"tb":8,"rbi":3}},
+    {"team":"sarasaland-sandstorm","p":"Numbuh Four","bat":{"ab":14,"pa":14,"h":7,"b1":6,"b2":1,"tb":8,"rbi":3}},
     {"team":"star-road-superstars","p":"Yellow Toad","bat":{"ab":14,"pa":14,"h":7,"b1":7,"tb":7}},
     {"team":"goon-squad","p":"Wario","bat":{"ab":39,"pa":39,"h":19,"b1":17,"hr":2,"tb":25,"rbi":7}},
     {"team":"sarasaland-sandstorm","p":"Blue Dry Bones","bat":{"ab":27,"pa":27,"h":13,"b1":11,"b2":1,"hr":1,"tb":17,"rbi":5}},
