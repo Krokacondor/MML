@@ -339,7 +339,7 @@ export function tabbedStats(el, { tracked = null, views = viewsFor(tracked), row
 
 // Big-number tiles: [{ label, value }]
 export const tiles = (items) =>
-  html`<div class="tiles">${items.map((t) => html`<div class="tile"><b>${t.value}</b><span>${t.label}</span></div>`)}</div>`;
+  html`<div class="tiles">${items.map((t) => html`<div class="tile"><b>${t.value}</b><span>${t.label}</span>${t.rank ? html`<i class="tile__rank ${/^1st/.test(t.rank) ? 'is-top' : ''}">${t.rank}</i>` : ''}</div>`)}</div>`;
 
 export const notFound = (what = 'That page') => ({
   title: 'Not found',

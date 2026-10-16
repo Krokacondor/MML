@@ -156,6 +156,8 @@ select, input, button, textarea { font: inherit; color: inherit; border-radius: 
 .tile { padding: 13px 6px 9px; text-align: center; background: var(--chalk); border: var(--edge); }
 .tile b { display: block; font: 400 27px/1 var(--display); }
 .tile span { display: block; margin-top: 7px; font: 700 13px/1.1 var(--cond); letter-spacing: 1.5px; text-transform: uppercase; color: var(--red); }
+.tile__rank { display: inline-block; margin-top: 7px; padding: 3px 7px 2px; font: 700 12px/1 var(--cond); font-style: normal; letter-spacing: 1px; text-transform: uppercase; background: var(--ink); color: var(--chalk); }
+.tile__rank.is-top { background: var(--sun); color: var(--ink); }
 
 /* team ribbon */
 .pennant {
@@ -588,11 +590,17 @@ a.post__who:hover b { text-decoration: underline; }
 .story-season { margin: 14px 0 6px; font: 700 15px/1 var(--cond); letter-spacing: 2px; text-transform: uppercase; color: var(--red); }
 .story-season:first-of-type { margin-top: 2px; }
 .story-lines { margin: 0; padding-left: 18px; display: grid; gap: 6px; font: 500 17px/1.35 var(--cond); }
-.story-lines .tcell { display: inline-flex; vertical-align: middle; }
+.story-lines .tcell { display: inline-flex; align-items: baseline; vertical-align: baseline; }
+.story-lines .tcell .pennant { position: relative; top: -1px; }
 .story-lines a { font-weight: 700; }
 .dm { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 320px), 1fr)); gap: 0 34px; }
+.lineupwrap { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); gap: 24px 28px; }
+.lineupwrap .lineup { display: flex; flex-direction: column; }
+.lineupwrap .lineup__row { flex: 1; }
+.lineupwrap__field { display: flex; align-items: center; background: var(--grass-dark); border: var(--edge); box-shadow: 5px 5px 0 var(--ink); }
+.lineupwrap__field .field { flex: 1; margin-top: 0; border: 0; }
 /* the lineup as a TV graphic: one dark board, number, player, position */
-.lineup { list-style: none; max-width: 560px; margin: 0; padding: 0 0 8px; background: var(--grass-dark); border: var(--edge); box-shadow: 5px 5px 0 var(--ink); color: var(--chalk); }
+.lineup { list-style: none; margin: 0; padding: 0 0 8px; background: var(--grass-dark); border: var(--edge); box-shadow: 5px 5px 0 var(--ink); color: var(--chalk); }
 .lineup__head { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 4px; padding: 10px 16px 8px; background: var(--ink); border-bottom: 3px solid var(--sun); }
 .lineup__head span { font: 400 18px/1.1 var(--display); text-transform: uppercase; }
 .lineup__head b { font: 700 14px/1 var(--cond); letter-spacing: 2.5px; text-transform: uppercase; color: var(--sun); }

@@ -58,17 +58,26 @@ export function teamView(ctx, id) {
   const before = team.formerly && model.teams.get(team.formerly);
   const after = [...model.teams.values()].find((t) => t.formerly === id);
   const era = league.eraInnings === 7 ? C.p_era7 : C.p_era9;
+  // Where this team stands among the season's teams (lowest first when low is better).
+  const everyone = [...S.teams.values()];
+  const rankOf = (get, low = false) => {
+    const v = get(T);
+    if (v == null || !S.teams.has(id) || everyone.length < 2) return null;
+    const vals = everyone.map(get).filter((x) => x != null);
+    const ahead = vals.filter((x) => (low ? x < v : x > v)).length;
+    return `${vals.filter((x) => x === v).length > 1 ? 'T-' : ''}${ordinal(ahead + 1)} of ${vals.length}`;
+  };
   // Only the numbers this season actually recorded get a tile.
-  const stat = (label, col) => ({ label, value: col.val(T) == null ? null : col.fmt(col.val(T)) });
+  const stat = (label, col, ranked = true) => ({ label, value: col.val(T) == null ? null : col.fmt(col.val(T)), rank: ranked ? rankOf((t) => col.val(t)) : null });
   const numbers = [
     ...(results.length
-      ? [{ label: 'Record', value: `${T.w}-${T.l}${T.t ? '-' + T.t : ''}` }, { label: 'Streak', value: streakOf(T.results) }, { label: 'Runs scored', value: T.rs }, { label: 'Runs allowed', value: T.ra }]
+      ? [{ label: 'Record', value: `${T.w}-${T.l}${T.t ? '-' + T.t : ''}` }, { label: 'Streak', value: streakOf(T.results) }, { label: 'Runs scored', value: T.rs, rank: rankOf((t) => t.rs) }, { label: 'Runs allowed', value: T.ra, rank: rankOf((t) => t.ra, true) }]
       : []),
     stat('Team AVG', C.avg),
     stat('Team OPS', C.ops),
     stat('Home runs', C.hr),
     stat('RBI', C.rbi),
-    stat('Team ERA', era),
+    stat('Team ERA', era, false),
   ].filter((t) => t.value != null);
 
   return {

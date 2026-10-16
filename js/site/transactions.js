@@ -3,6 +3,7 @@
 
 import { html, slug } from '../lib/html.js';
 import { teamsIn } from '../lib/aggregate.js';
+import { diamond, fieldStar } from './field.js';
 import { mug, pennant, teamVars } from './ui.js';
 
 export const ordinal = (n) => {
@@ -184,5 +185,7 @@ export function lineupCard(model, season, id) {
     <span class="lineup__n ${sub ? 'lineup__n--sub' : ''}">${label}</span>${mug(model.canon(p), { size: 26, plate: true })}
     <span class="lineup__who">${who(model, p)}${same(model, r.captain, p) ? html`<i class="tag">Captain</i>` : ''}</span>
     <b class="lineup__pos">${pos}</b></li>`;
-  return html`<ol class="lineup"><li class="lineup__head"><span>${team.name}</span><b>Lineup</b></li>${r.lineup.map((l, i) => row(l.p, i + 1, l.pos))}${r.bench.map((p) => row(p, 'Sub', '', true))}</ol>`;
+  const board = html`<ol class="lineup"><li class="lineup__head"><span>${team.name}</span><b>Lineup</b></li>${r.lineup.map((l, i) => row(l.p, i + 1, l.pos))}${r.bench.map((p) => row(p, 'Sub', '', true))}</ol>`;
+  const field = diamond(r.lineup.map((l) => ({ pos: l.pos, stars: [fieldStar(model, l.p, l.pos, team, { abbr: false })] })));
+  return html`<div class="lineupwrap">${board}<div class="lineupwrap__field">${field}</div></div>`;
 }
