@@ -3,6 +3,7 @@
   "short": "MML",
   "tagline": "CPU vs CPU Mario Super Sluggers",
   "feedName": "League Banter",
+  "admins": ["krokacondor"],
   "currentSeason": "s3",
   "seasons": [
     { "id": "s2", "name": "Season 2", "logo": "assets/league/mml-s2.png" },

@@ -144,6 +144,12 @@ const TABS = {
   logins: ['Logins', tabLogins],
 };
 
+// Only the league's admins (league.json "admins", by login name) see the Logins
+// tab, plus anyone signed in with the key itself or in local mode. This hides the
+// tab; it is not a lock, since every login can reach the key.
+const isAdmin = () => S.who === 'Key holder' || S.who === 'Local mode' || (S.league.admins || []).some((name) => slug(name) === slug(S.who));
+const tabsFor = () => Object.entries(TABS).filter(([id]) => id !== 'logins' || isAdmin());
+
 function shell() {
   app.innerHTML = html`
     <header class="dbar">
@@ -152,7 +158,7 @@ function shell() {
       <a href="./">View the site</a>
       <button type="button" data-out>Sign out</button>
     </header>
-    <nav class="dtabs">${Object.entries(TABS).map(([id, [label]]) => html`<button type="button" data-tab="${id}">${label}</button>`)}</nav>
+    <nav class="dtabs">${tabsFor().map(([id, [label]]) => html`<button type="button" data-tab="${id}">${label}</button>`)}</nav>
     <div data-host></div>`;
   $('[data-out]').onclick = signOut;
   $('.dtabs').onclick = (e) => {
@@ -163,6 +169,7 @@ function shell() {
 }
 
 function openTab(id) {
+  if (!tabsFor().some(([tab]) => tab === id)) id = 'upload';
   S.tab = id;
   for (const btn of app.querySelectorAll('[data-tab]')) btn.classList.toggle('is-on', btn.dataset.tab === id);
   const el = document.createElement('section');
