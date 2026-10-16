@@ -3,11 +3,11 @@
   "name": "Season 3",
   "format": "Each team plays one 9-inning game a week. The league grows to 10 teams.",
   "preseason": "Rosters are set at the re-draft, which hasn't happened yet.",
-  "groups": false,
   "pending": [
     {
       "gm": "nima74",
-      "label": "To be announced"
+      "label": "To be announced",
+      "conference": "bk"
     },
     {
       "gm": "Joke Breaker",

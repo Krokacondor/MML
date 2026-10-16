@@ -92,6 +92,7 @@
     "name": "Petalburg Koopa Troopas",
     "abbr": "PKT",
     "gm": "Krokacondor",
+    "conference": "mk",
     "colors": ["#004aad", "#ff6011"],
     "logo": "assets/teams/petalburg-koopa-troopas.png",
     "seasons": ["s3"],

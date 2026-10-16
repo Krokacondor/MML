@@ -881,7 +881,8 @@ function tabLeague(el) {
           <label>Innings pitched per team game to qualify<input type="number" name="ip" min="0" step="0.1" value="${L.qualifiers?.ipPerTeamGame ?? 1}"></label>
         </div>
         <h3>Seasons</h3>
-        <p class="hint">The current season is the one the site opens on and the one new uploads go into.</p>
+        <p class="hint">The current season is the one new uploads go into.</p>
+        <label>Site opens on<select name="startSeason">${options(L.seasons.map((s) => [s.id, s.name]), L.startSeason || L.currentSeason)}</select></label>
         <div class="seasons">${L.seasons.map((s) => html`<label class="tick"><input type="radio" name="currentSeason" value="${s.id}" ${s.id === L.currentSeason ? 'checked' : ''}> <input name="season:${s.id}" value="${s.name}" required></label>`)}</div>
         <label>Start a new season <small>leave blank unless you are adding one</small><input name="newSeason" placeholder="New season name"></label>
         <h3>Player names</h3>
@@ -902,6 +903,7 @@ function tabLeague(el) {
         );
         for (const s of L.seasons) s.name = (f[`season:${s.id}`] || s.name).trim();
         L.currentSeason = f.currentSeason || L.currentSeason;
+        L.startSeason = f.startSeason || L.startSeason;
         if (f.newSeason.trim()) {
           let n = L.seasons.length + 1;
           while (L.seasons.some((s) => s.id === `s${n}`)) n++;

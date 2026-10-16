@@ -211,13 +211,22 @@ export const pendingCard = (p) =>
   </div>`;
 
 // A season's clubs: the announced teams (by group when the season has groups)
-// followed by the clubs still to be announced.
+// followed by the clubs still to be announced. A club not announced yet whose
+// conference is known ({ conference } in pending) waits in that conference.
 export function seasonClubs(ctx, teams = teamsIn(ctx.model, ctx.season)) {
-  const groups = byConference(ctx, teams);
+  const confs = ctx.league.conferences || [];
   const pending = ctx.season.pending || [];
-  return html`${groups.map(({ conf, teams: list }) => html`${confHead(conf)}<div class="teamgrid">${list.map((t) => teamCard(ctx, t))}</div>`)}
-    ${pending.length
-      ? html`${groups.length ? html`<h3 class="confhead"><span>Still to be announced</span></h3>` : ''}<div class="teamgrid">${pending.map(pendingCard)}</div>`
+  const placed = ctx.season.ungrouped ? [] : pending.filter((p) => confs.some((c) => c.id === p.conference));
+  const groups = byConference(ctx, teams);
+  for (const conf of confs) {
+    if (placed.some((p) => p.conference === conf.id) && !groups.some((g) => g.conf === conf)) groups.push({ conf, teams: [] });
+  }
+  const order = (g) => (g.conf ? confs.indexOf(g.conf) : confs.length);
+  groups.sort((a, b) => order(a) - order(b));
+  const open = pending.filter((p) => !placed.includes(p));
+  return html`${groups.map(({ conf, teams: list }) => html`${confHead(conf)}<div class="teamgrid">${list.map((t) => teamCard(ctx, t))}${placed.filter((p) => conf && p.conference === conf.id).map(pendingCard)}</div>`)}
+    ${open.length
+      ? html`${groups.length ? html`<h3 class="confhead"><span>Still to be announced</span></h3>` : ''}<div class="teamgrid">${open.map(pendingCard)}</div>`
       : ''}`;
 }
 

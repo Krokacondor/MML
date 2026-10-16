@@ -5,6 +5,7 @@
   "feedName": "League Banter",
   "admins": ["krokacondor"],
   "currentSeason": "s3",
+  "startSeason": "s2",
   "seasons": [
     { "id": "s2", "name": "Season 2", "logo": "assets/league/mml-s2.png" },
     { "id": "s3", "name": "Season 3" }

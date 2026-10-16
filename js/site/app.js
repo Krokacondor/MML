@@ -97,7 +97,9 @@ async function boot() {
     return;
   }
   const saved = sessionStorage.getItem('sl.season');
-  state.seasonId = seasons.some((s) => s.id === saved) ? saved : seasons.some((s) => s.id === league.currentSeason) ? league.currentSeason : seasons[seasons.length - 1].id;
+  // Visitors start on league.startSeason (the season to show first), else the current one.
+  const start = league.startSeason || league.currentSeason;
+  state.seasonId = seasons.some((s) => s.id === saved) ? saved : seasons.some((s) => s.id === start) ? start : seasons[seasons.length - 1].id;
 
   for (const el of document.querySelectorAll('[data-league-name]')) el.textContent = league.name;
   $('[data-league-tag]').textContent = league.tagline || '';
