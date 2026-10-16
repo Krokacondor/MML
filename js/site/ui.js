@@ -20,16 +20,6 @@ export const gameWhen = (game, opts, short = false) => {
   return parts.filter(Boolean).join(short ? ' ' : ', ');
 };
 
-// The chosen season if it passes the test, otherwise the most recent season
-// that does. Lets pages show last season's picture before a new one starts.
-// A short season label for panels showing an earlier season ("S2").
-export const seasonTag = (season) => {
-  const n = season.name.match(/\d+/);
-  return html`<i class="stag">${n ? `S${n[0]}` : season.name}</i>`;
-};
-
-export const lastSeasonWith = (model, season, test) => (test(season) ? season : [...model.seasons].reverse().find(test) || season);
-
 // ---- Team colors ----------------------------------------------------------
 
 const hex = (c, fallback) => (/^#[0-9a-f]{6}$/i.test(c || '') ? c : fallback);

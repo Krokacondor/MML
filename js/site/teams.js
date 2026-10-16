@@ -3,12 +3,12 @@ import { C } from '../lib/statdefs.js';
 import { positions, pitched, teamsIn } from '../lib/aggregate.js';
 import { seriesGames, seriesLength } from './games.js';
 import { spoil, eye } from './spoilers.js';
-import { teamVars, seasonTag, pennant, playerCell, teamCell, teamLogo, standings, progressNote, seasonClubs, streakOf, tabbedStats, tiles, gameWhen, notFound, lastSeasonWith } from './ui.js';
+import { teamVars, pennant, playerCell, teamCell, teamLogo, standings, progressNote, seasonClubs, streakOf, tabbedStats, tiles, gameWhen, notFound } from './ui.js';
 
 export function teamsView(ctx) {
   const { model, season } = ctx;
   // A season whose teams are not set yet shows the last season's clubs instead.
-  const shown = lastSeasonWith(model, season, (s) => teamsIn(model, s).length > 0 || s.pending.length > 0);
+  const shown = season;
   const sctx = { ...ctx, season: shown };
   const any = teamsIn(model, shown).length || shown.pending.length;
   return {
@@ -24,8 +24,11 @@ export function teamView(ctx, id) {
   const { model, season, league } = ctx;
   const team = model.teams.get(id);
   if (!team) return notFound('That team');
-  // A team that has not played in the chosen season shows its most recent one.
-  const shown = lastSeasonWith(model, season, (s) => s.reg.teams.has(id) || s.post.teams.has(id));
+  // A team in the chosen season shows only that season. A club that is not in
+  // it (one from an earlier season) shows its own last season instead.
+  const member = teamsIn(model, season).some((t) => t.id === id);
+  const own = [...model.seasons].reverse().find((s) => teamsIn(model, s).some((t) => t.id === id));
+  const shown = member ? season : own || season;
   const S = shown.reg;
   const T = S.teams.get(id) || { g: 0, gp: 0, w: 0, l: 0, t: 0, rs: 0, ra: 0, bat: {}, pit: {}, results: [] };
   const played = S.teams.has(id) || shown.post.teams.has(id);
@@ -44,10 +47,7 @@ export function teamView(ctx, id) {
       .filter((s) => s.teams.includes(id))
       .map((s) => ({ week: wk.week, s, opp: model.team(s.teams.find((t) => t !== id)), games: seriesGames(shown, wk.week, s.teams) })),
   );
-  // The header names the chosen season when the team is part of it; panels
-  // filled from an earlier season carry that season's tag (S2).
-  const head = team.seasons?.includes(season.id) || shown === season ? season : shown;
-  const old = shown !== season ? html` ${seasonTag(shown)}` : '';
+  const head = shown;
   const conf = head.ungrouped ? null : (league.conferences || []).find((c) => c.id === team.conference);
   // The GM's club before this one (team "formerly"), and the one after.
   const before = team.formerly && model.teams.get(team.formerly);
@@ -83,17 +83,16 @@ export function teamView(ctx, id) {
           ${team.blurb ? html`<p class="teamhead__blurb">${team.blurb}</p>` : ''}
         </div>
       </header>
-      ${played && !old ? tiles(numbers) : ''}
+      ${played ? tiles(numbers) : ''}
       ${results.length ? progressNote(shown) : ''}
       <section class="panel">
-        <h2 class="panel__tab"><span>Roster & Stats${old}</span></h2>
-        ${played && old ? tiles(numbers) : ''}
+        <h2 class="panel__tab"><span>Roster & Stats</span></h2>
         <div data-roster></div>
         ${shown.note ? html`<p class="note">${shown.note}</p>` : ''}
       </section>
       ${series.length
         ? html`<section class="panel">
-            <h2 class="panel__tab"><span>Schedule${old}</span></h2>
+            <h2 class="panel__tab"><span>Schedule</span></h2>
             <div class="tbl"><table class="st st--log">
               <thead><tr><th class="lead">Week</th><th class="lead">Opponent</th><th class="lead">Stadium</th><th class="lead">Games</th></tr></thead>
               <tbody>${series.map(({ week, s, opp, games }) => html`<tr>
@@ -114,7 +113,7 @@ export function teamView(ctx, id) {
         : ''}
       ${results.length
         ? html`<section class="panel">
-            <h2 class="panel__tab"><span>Game Log${old}</span></h2>
+            <h2 class="panel__tab"><span>Game Log</span></h2>
             <div class="tbl"><table class="st st--log">
               <thead><tr><th class="lead">Game</th><th class="lead">Opponent</th><th class="lead">Result</th><th></th></tr></thead>
               <tbody>${results.map((r) => html`<tr class="${spoil(r.game.id)}" data-spoil="${r.game.id}">

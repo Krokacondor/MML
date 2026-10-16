@@ -114,7 +114,6 @@ select, input, button, textarea { font: inherit; color: inherit; border-radius: 
 .empty { margin: 0; padding: 12px 4px; font: 600 18px/1.4 var(--cond); color: var(--ink-soft); }
 .empty--hero { padding: 28px; text-align: center; background: var(--chalk); border: 3px dashed var(--ink); color: var(--ink); }
 .note { margin: 6px 0 10px; font: 600 15px/1.3 var(--cond); letter-spacing: .6px; color: var(--ink-soft); }
-.stag { margin-left: 9px; padding: 2px 6px 1px; font: 400 14px/1 var(--display); font-style: normal; vertical-align: 2px; background: var(--sun); color: var(--ink); border: 2px solid var(--ink); }
 .tag { margin-left: 7px; padding: 3px 5px 2px; font: 700 11px/1 var(--cond); font-style: normal; letter-spacing: 1px; text-transform: uppercase; background: var(--ink); color: var(--chalk); }
 .vs { font: 600 13px/1 var(--cond); letter-spacing: 1px; text-transform: uppercase; color: var(--ink-soft); }
 .res--W { color: var(--win); }

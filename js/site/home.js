@@ -1,7 +1,7 @@
 import { html } from '../lib/html.js';
 import { leaderCats } from '../lib/statdefs.js';
 import { isQualified, pitched, teamsIn } from '../lib/aggregate.js';
-import { mug, portrait, pennant, teamVars, standings, scoreCard, clip, seasonClubs, lastSeasonWith } from './ui.js';
+import { mug, portrait, pennant, teamVars, standings, scoreCard, clip, seasonClubs } from './ui.js';
 import { awardCards } from './awards.js';
 
 // The top players in one category, best first.
@@ -42,17 +42,15 @@ function leaderBoard(ctx, cat) {
 
 export function home(ctx) {
   const { model, season, league } = ctx;
-  // Before a season's first game, the page shows how the last one ended.
-  const shown = lastSeasonWith(model, season, (s) => s.reg.players.size > 0);
-  const waiting = shown !== season;
-  const sctx = { ...ctx, season: shown };
+  // Only the chosen season: before its first game the boards are simply empty.
+  const shown = season;
+  const sctx = ctx;
   const cats = leaderCats(league).filter((c) => topPlayers(sctx, c, 1).length);
   const latest = [...season.games].reverse().slice(0, 4);
   const stories = model.articles.slice(0, 3);
-  // The clubs panel shows the coming season once any of its clubs are known.
-  const clubSeason = teamsIn(model, season).length || season.pending.length ? season : shown;
-  const cctx = { ...ctx, season: clubSeason };
-  const hasClubs = teamsIn(model, clubSeason).length || clubSeason.pending.length;
+  const clubSeason = season;
+  const cctx = ctx;
+  const hasClubs = teamsIn(model, season).length || season.pending.length;
 
   return {
     title: null,
@@ -60,7 +58,7 @@ export function home(ctx) {
       <section class="hero">
         <div class="hero__head">
           <div>
-            <p class="script">${shown.name}${waiting ? ' final' : ''}</p>
+            <p class="script">${season.name}</p>
             <h1>League Leaders</h1>
           </div>
           <div class="chips">${cats.map((c, i) => html`<button type="button" class="chip ${i ? '' : 'is-on'}" data-cat="${c.id}" title="${c.name}">${c.col.label}</button>`)}</div>

@@ -1,6 +1,6 @@
 import { html, slug } from '../lib/html.js';
 import { allStarsAt } from '../lib/aggregate.js';
-import { mug, pennant, teamVars, teamLogo, lastSeasonWith } from './ui.js';
+import { mug, pennant, teamVars, teamLogo } from './ui.js';
 import { spoil, eye } from './spoilers.js';
 
 // One card per award. A winner is a player ({ p }) or a general manager ({ gm, team }).
@@ -32,7 +32,7 @@ const SPOTS = { CF: [50, 17], LF: [17, 29], RF: [83, 29], SS: [35, 45], '2B': [6
 // Season awards, then each league's All-Stars on a diamond.
 export function awardsView(ctx) {
   const { model, season, league } = ctx;
-  const shown = lastSeasonWith(model, season, (s) => s.awards.length || s.allStars);
+  const shown = season;
   const vote = shown.allStars;
   const sctx = { ...ctx, season: shown };
   if (!shown.awards.length && !vote) {

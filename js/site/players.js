@@ -1,12 +1,13 @@
 import { html } from '../lib/html.js';
 import { C, viewsFor } from '../lib/statdefs.js';
 import { positions, pitched } from '../lib/aggregate.js';
-import { mug, portrait, pennant, teamVars, teamCell, tabbedStats, tiles, gameWhen, notFound, lastSeasonWith } from './ui.js';
+import { mug, portrait, pennant, teamVars, teamCell, tabbedStats, tiles, gameWhen, notFound } from './ui.js';
 import { spoil, eye } from './spoilers.js';
 
 export function playersView(ctx) {
-  const { model } = ctx;
-  const all = [...model.players.values()].sort((a, b) => a.name.localeCompare(b.name));
+  const { model, season } = ctx;
+  // Only the players who took part in the chosen season.
+  const all = [...model.players.values()].filter((P) => P.seasons.some((x) => x.season === season)).sort((a, b) => a.name.localeCompare(b.name));
   const card = (P) => {
     const team = model.team(P.last.teamId);
     return html`<a class="pcard" href="#/player/${P.slug}" style="${teamVars(team)}" data-name="${P.name.toLowerCase()} ${team.name.toLowerCase()} ${String(team.abbr || '').toLowerCase()}">
@@ -19,7 +20,7 @@ export function playersView(ctx) {
     title: 'Players',
     html: html`
       <header class="pagehead pagehead--row">
-        <div><p class="script">Every one of them</p><h1>Players</h1></div>
+        <div><p class="script">${season.name}</p><h1>Players</h1></div>
         <input class="search" type="search" placeholder="Find a player or team" aria-label="Find a player or team" data-find>
       </header>
       ${all.length
@@ -46,8 +47,7 @@ export function playerView(ctx, id) {
   const P = model.players.get(id);
   if (!P) return notFound('That player');
   const team = model.team(P.last.teamId);
-  // A player who has not played in the chosen season shows their most recent one.
-  const shown = lastSeasonWith(model, season, (s) => P.seasons.some((x) => x.season === s && x.reg));
+  const shown = season;
   const now = P.seasons.find((x) => x.season === shown);
   const cur = now?.reg;
   const career = P.career.reg;
@@ -127,7 +127,7 @@ export function playerView(ctx, id) {
         <div class="playertop__side">
           <section class="panel">
             <h2 class="panel__tab"><span>${shown.name}</span></h2>
-            ${headline ? tiles(headline) : html`<p class="empty">${P.name} has no stats yet.</p>`}
+            ${headline ? tiles(headline) : html`<p class="empty">No stats yet. Come back later!</p>`}
           </section>
           ${info.bio ? html`<section class="panel"><h2 class="panel__tab"><span>Scouting Report</span></h2><p class="bio">${info.bio}</p></section>` : ''}
           <section class="panel">
