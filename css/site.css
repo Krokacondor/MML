@@ -408,7 +408,8 @@ a.post__who:hover b { text-decoration: underline; }
 
 /* ---- Teams ------------------------------------------------------------- */
 
-.teamgrid { display: grid; grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); gap: 20px; margin: 14px 0 6px; }
+/* a conference's clubs share one row on wide screens, however many there are */
+.teamgrid { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 16px; margin: 14px 0 6px; }
 .teamhead, .matchup__team { position: relative; overflow: hidden; background: var(--c); color: var(--on); }
 .teamhead::before, .matchup__team::before {
   content: ''; position: absolute; inset: 0; opacity: .2;
@@ -427,8 +428,8 @@ a.post__who:hover b { text-decoration: underline; }
   background: linear-gradient(var(--c) 10px, var(--chalk) 10px); border: var(--edge); box-shadow: var(--drop); transition: transform .12s, box-shadow .12s;
 }
 .teamcard:hover { transform: translate(-2px, -2px); box-shadow: 8px 8px 0 var(--ink); }
-.teamcard .tlogo { width: 100%; height: 120px; margin-bottom: 6px; }
-.teamcard__name { font: 400 20px/1.08 var(--display); text-transform: uppercase; }
+.teamcard .tlogo { width: 100%; height: 110px; margin-bottom: 6px; }
+.teamcard__name { font: 400 18px/1.08 var(--display); text-transform: uppercase; overflow-wrap: anywhere; }
 .teamcard__gm { font: 700 13px/1.2 var(--cond); letter-spacing: 2px; text-transform: uppercase; color: var(--red); }
 /* GM names keep the capitalization they were typed with */
 .teamcard__gm b { margin-left: 4px; font-size: 18px; letter-spacing: .3px; text-transform: none; color: var(--ink); }
@@ -559,6 +560,7 @@ a.post__who:hover b { text-decoration: underline; }
   .split, .leaders, .playertop { grid-template-columns: 1fr; }
   .bcard { max-width: 420px; }
   .playertop__side .panel:first-child { margin-top: 30px; }
+  .teamgrid { grid-auto-flow: row; grid-template-columns: repeat(3, minmax(0, 1fr)); }
 }
 @media (max-width: 640px) {
   body { font-size: 16px; }
@@ -569,6 +571,15 @@ a.post__who:hover b { text-decoration: underline; }
   .nav a { padding: 10px 14px 9px; font-size: 17px; }
   .teamhead { flex-direction: column; align-items: flex-start; padding: 16px 18px 22px; }
   .teamhead .tlogo { width: 190px; height: 130px; }
+  .teamgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  /* an odd club out sits in the middle of its own row */
+  .teamgrid > :last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 6px); }
+  .teamcard { padding: 18px 8px 12px; box-shadow: 4px 4px 0 var(--ink); }
+  .teamcard .tlogo { height: 72px; }
+  .teamcard .tlogo--none::before { width: 60px; height: 60px; }
+  .teamcard__name { font-size: 15px; }
+  .teamcard__gm { font-size: 11px; letter-spacing: 1px; }
+  .teamcard__gm b { font-size: 15px; }
   .brand__logo { height: 70px; }
   .matchup { grid-template-columns: 1fr; }
   .matchup__at { padding: 5px; }

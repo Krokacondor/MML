@@ -93,10 +93,42 @@
     "abbr": "PKT",
     "gm": "Krokacondor",
     "conference": "mk",
-    "colors": ["#004aad", "#ff6011"],
+    "colors": ["#ff6011", "#004aad"],
     "logo": "assets/teams/petalburg-koopa-troopas.png",
     "seasons": ["s3"],
     "formerly": "new-new-new-york-mets",
+    "aliases": []
+  },
+  {
+    "id": "ohio-2",
+    "name": "OHIO 2",
+    "abbr": "OH2",
+    "gm": "nima74",
+    "conference": "bk",
+    "colors": ["#ad533b", "#f7c57a"],
+    "seasons": ["s3"],
+    "formerly": "ohio",
+    "aliases": []
+  },
+  {
+    "id": "flipside-flappers",
+    "name": "Flipside Flappers",
+    "abbr": "FF",
+    "gm": "Joke Breaker",
+    "conference": "mk",
+    "colors": ["#52de8c", "#f08ee2"],
+    "logo": "assets/teams/flipside-flappers-square.png",
+    "seasons": ["s3"],
+    "aliases": []
+  },
+  {
+    "id": "bean-bean-brigade",
+    "name": "Bean Bean Brigade",
+    "abbr": "BBB",
+    "gm": "Daxx",
+    "conference": "bk",
+    "colors": ["#3f7d33", "#f2c94c"],
+    "seasons": ["s3"],
     "aliases": []
   }
 ]
