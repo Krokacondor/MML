@@ -5,7 +5,7 @@ import { seriesGames, seriesLength } from './games.js';
 import { spoil, eye } from './spoilers.js';
 import { draftOf, teamMoves, lineupCard, who, ordinal, freeAgentAtEnd, teamHonors } from './transactions.js';
 import { gmLink } from './gms.js';
-import { teamVars, pennant, playerCell, teamCell, teamLogo, standings, progressNote, seasonClubs, streakOf, tabbedStats, tiles, gameWhen, notFound } from './ui.js';
+import { teamVars, pennant, playerCell, teamCell, teamLogo, standings, progressNote, seasonClubs, streakOf, tabbedStats, tiles, gameWhen, notFound, keepWords, confBadge } from './ui.js';
 
 export function teamsView(ctx) {
   const { model, season } = ctx;
@@ -87,7 +87,7 @@ export function teamView(ctx, id) {
         ${teamLogo(team)}
         <div>
           <p class="teamhead__season">${head.name}${conf ? html` / ${conf.name}` : ''}</p>
-          <h1>${team.name}</h1>
+          <h1>${keepWords(team.name, team.together)}</h1>
           ${team.gm ? html`<p class="teamhead__gm">General Manager <b class="teamhead__gmname">${gmLink(team.gm)}</b></p>` : ''}
           ${before ? html`<p class="teamhead__gm">Previously <a class="teamhead__chip" href="#/team/${before.id}">${pennant(before)}${before.name}</a></p>` : ''}
           ${after ? html`<p class="teamhead__gm">Now <a class="teamhead__chip" href="#/team/${after.id}">${pennant(after)}${after.name}</a></p>` : ''}
@@ -99,7 +99,7 @@ export function teamView(ctx, id) {
       ${results.length ? progressNote(shown) : ''}
       ${shown.rosters.some((r) => r.team === id)
         ? html`<section class="panel">
-            <h2 class="panel__tab"><span>End-of-Season Lineup</span></h2>
+            <h2 class="panel__tab"><span>${shown.id === league.currentSeason ? 'Lineup' : 'End-of-Season Lineup'}</span></h2>
             ${lineupCard(model, shown, id)}
           </section>`
         : ''}
@@ -115,7 +115,7 @@ export function teamView(ctx, id) {
               <thead><tr><th class="lead">Week</th><th class="lead">Opponent</th><th class="lead">Stadium</th><th class="lead">Games</th></tr></thead>
               <tbody>${series.map(({ week, s, opp, games }) => html`<tr>
                 <td class="lead">Week ${week}</td>
-                <td class="lead">${teamCell(opp)}</td>
+                <td class="lead">${s.home ? html`<span class="vs vs--at">${s.home === id ? 'vs' : '@'}</span>` : ''}${teamCell(opp)}${confBadge({ ...ctx, season: shown }, id, opp.id)}</td>
                 <td class="lead">${s.stadium || ''}</td>
                 <td class="lead">${games.length
                   ? html`${games.map((g, i) => {
@@ -154,6 +154,7 @@ export function teamView(ctx, id) {
                 ? html`<div><h3 class="story-season">Moves</h3><ul class="story-lines">${moves.map((m) => html`<li><b>${m.when}:</b> ${m.text}</li>`)}</ul></div>`
                 : ''}
             </div>
+            ${picks.length ? html`<p class="more"><a href="#/draft?season=${shown.id}">Full draft</a></p>` : ''}
           </section>`
         : ''}`,
     mount(root) {

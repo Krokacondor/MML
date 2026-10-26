@@ -102,3 +102,9 @@ fieldset.card { box-shadow: 4px 4px 0 var(--ink); }
 .drop img { display: block; max-width: 100%; max-height: 420px; }
 .kinds { display: flex; flex-wrap: wrap; gap: 8px 18px; margin: 0; padding: 0; border: 0; }
 .kinds legend { margin-bottom: 6px; padding: 0; font: 700 15px/1.2 var(--cond); letter-spacing: 1px; text-transform: uppercase; }
+
+/* Lineups tab: the batting order, one batter per row */
+.lineup-team { margin: 0; font: 400 22px/1 var(--display); text-transform: uppercase; }
+.order { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
+.order li { display: grid; grid-template-columns: 30px minmax(0, 1fr) 120px; gap: 10px; align-items: center; }
+.order li > b { text-align: right; font: 400 22px/1 var(--display); color: var(--red); }

@@ -82,7 +82,7 @@ export function portrait(name, size = 96) {
 export const playerCell = (name, extra = '') =>
   html`<a class="pcell" href="#/player/${slug(name)}">${mug(name, { size: 30 })}<span>${name}</span>${extra}</a>`;
 
-export const teamCell = (team) => html`<a class="tcell" href="#/team/${team.id}">${pennant(team)}<span>${team.name}</span></a>`;
+export const teamCell = (team) => html`<a class="tcell" href="#/team/${team.id}">${pennant(team)}<span>${keepWords(team.name, team.together)}</span></a>`;
 
 // ---- Scoreboard -----------------------------------------------------------
 
@@ -167,6 +167,14 @@ export function byConference(ctx, teams = teamsIn(ctx.model, ctx.season)) {
   return [...groups.filter((g) => g.teams.length), ...(rest.length ? [{ conf: null, teams: rest }] : [])];
 }
 
+// The conference's icon when two teams share a conference that season, else nothing.
+export function confBadge(ctx, a, b) {
+  if (ctx.season.ungrouped) return '';
+  const [x, y] = [a, b].map((id) => ctx.model.team(id)?.conference);
+  const conf = x && x === y && (ctx.league.conferences || []).find((c) => c.id === x);
+  return conf?.logo ? html`<img class="confbadge" src="${conf.logo}" alt="${conf.name}" title="${conf.name} game">` : '';
+}
+
 export const confHead = (conf) =>
   conf ? html`<h3 class="confhead">${conf.logo ? html`<img src="${conf.logo}" alt="">` : ''}<span>${conf.name}</span></h3>` : '';
 
@@ -193,6 +201,14 @@ export function progressNote(season) {
   return html`<p class="note">${season.tracked
     ? `Results are still being entered: ${played} of ${scheduled} games so far. Records and runs cover those games only.`
     : `Through ${played} of ${scheduled} scheduled games.`}</p>`;
+}
+
+// A name whose hyphenated words ("1-Uppers") and listed phrases (a team's
+// "together" in data/teams.json, like "Koopa Troopas") stay whole on one line.
+export function keepWords(name, together = []) {
+  const phrases = together.map((p) => p.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'));
+  const split = new RegExp(`(${[...phrases, '\\S*-\\S*'].join('|')})`);
+  return html`${String(name).split(split).map((part, i) => (i % 2 ? html`<span class="nowrap">${part}</span>` : part))}`;
 }
 
 // A team's logo, or its short name on a base-shaped plate when it has none.
@@ -235,7 +251,7 @@ export function teamCard(ctx, team) {
   const rec = ctx.season.reg.teams.get(team.id);
   return html`<a class="teamcard" href="#/team/${team.id}" style="${teamVars(team)}">
     ${teamLogo(team)}
-    <span class="teamcard__name">${team.name}</span>
+    <span class="teamcard__name">${keepWords(team.name, team.together)}</span>
     ${team.gm ? html`<span class="teamcard__gm">GM <b>${team.gm}</b></span>` : ''}
     ${ctx.season.reg.hasResults && rec ? html`<span class="teamcard__rec">${rec.w}-${rec.l}</span>` : ''}
   </a>`;

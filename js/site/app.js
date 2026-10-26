@@ -13,6 +13,7 @@ import { newsView, articleView } from './news.js';
 import { feedView, feedName } from './feed.js';
 import { gmView } from './gms.js';
 import { awardsView } from './awards.js';
+import { draftView } from './draft.js';
 import { spoil, watchSpoilers } from './spoilers.js';
 
 const ROUTES = [
@@ -25,6 +26,7 @@ const ROUTES = [
   [/^\/games$/, gamesView, 'games'],
   [/^\/game\/([^/]+)$/, gameView, 'games'],
   [/^\/(?:awards|allstars)$/, awardsView, 'awards'],
+  [/^\/draft$/, draftView, 'draft'],
   [/^\/news$/, newsView, 'news'],
   [/^\/news\/([^/]+)$/, articleView, 'news'],
   [/^\/feed$/, feedView, 'feed'],
@@ -115,6 +117,7 @@ async function boot() {
     route();
   };
   $('[data-nav="awards"]').hidden = !seasons.some((s) => s.allStars || s.awards.length);
+  $('[data-nav="draft"]').hidden = !seasons.some((s) => s.draft.length || s.draftOrder.length);
   $('[data-feed-name]').textContent = feedName(league);
 
   drawLogo();

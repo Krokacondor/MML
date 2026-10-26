@@ -136,7 +136,8 @@ export const FREE_AGENT = { id: '', name: 'Free agent', abbr: 'FA', colors: ['#7
 // True when a season has end-of-season rosters and the player is on none of
 // them: released and never signed again, or never on a team at all.
 export function freeAgentAtEnd(model, season, name) {
-  return season.rosters.length > 0 && !finishOf(model, season, name);
+  const all = teamsIn(model, season).every((t) => season.rosters.some((r) => r.team === t.id));
+  return season.rosters.length > 0 && all && !finishOf(model, season, name);
 }
 
 // One season of a player's story: drafted, traded or signed, and where they finished.

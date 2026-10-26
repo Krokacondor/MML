@@ -204,6 +204,9 @@ export function buildLeague({ league, teams = [], players = {}, articles = [], a
       // The draft ({ round, pick, team, p }), in-season moves ({ deal, when, p,
       // from, to }, "" being free agency) and end-of-season rosters.
       draft: file.draft || [],
+      draftOrder: file.draftOrder || [],
+      draftRounds: file.draftRounds || 0,
+      draftNote: file.draftNote || '',
       moves: file.moves || [],
       rosters: file.rosters || [],
       format: file.format || '',

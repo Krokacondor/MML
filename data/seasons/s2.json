@@ -96,6 +96,7 @@
     }
   ],
   "format": "Each week was a three-game series against one opponent. Games were 5 innings, with a 10-run mercy rule applied at the end of an inning.",
+  "draftNote": "Note: Season 2's draft required a captain pick in the first round.",
   "allStars": {
     "ballots": 11,
     "seats": 1,

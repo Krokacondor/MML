@@ -3,6 +3,7 @@ import { leaderCats } from '../lib/statdefs.js';
 import { isQualified, pitched, teamsIn } from '../lib/aggregate.js';
 import { mug, portrait, pennant, teamVars, standings, scoreCard, clip, seasonClubs } from './ui.js';
 import { awardCards } from './awards.js';
+import { draftOrderList } from './draft.js';
 
 // The top players in one category, best first.
 function topPlayers(ctx, cat, count) {
@@ -87,6 +88,13 @@ export function home(ctx) {
                 <h2 class="panel__tab"><span>${clubSeason.name} Clubs</span></h2>
                 ${seasonClubs(cctx)}
                 <p class="more"><a href="#/teams">All teams</a></p>
+              </section>`
+            : ''}
+          ${season.draftOrder.length && !season.draft.length
+            ? html`<section class="panel">
+                <h2 class="panel__tab"><span>Draft Order</span></h2>
+                ${draftOrderList(model, season.draftOrder)}
+                <p class="more"><a href="#/draft">The draft</a></p>
               </section>`
             : ''}
           ${shown.awards.length

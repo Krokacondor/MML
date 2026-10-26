@@ -8,7 +8,7 @@
   "startSeason": "s2",
   "seasons": [
     { "id": "s2", "name": "Season 2", "logo": "assets/league/mml-s2.png" },
-    { "id": "s3", "name": "Season 3" }
+    { "id": "s3", "name": "Season 3", "logo": "assets/league/mml-s3.png" }
   ],
   "conferences": [
     { "id": "mk", "name": "Mushroom Conference", "logo": "assets/conferences/mushroom-kingdom.png" },

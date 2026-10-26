@@ -116,6 +116,12 @@ select, input, button, textarea { font: inherit; color: inherit; border-radius: 
 .note { margin: 6px 0 10px; font: 600 15px/1.3 var(--cond); letter-spacing: .6px; color: var(--ink-soft); }
 .tag { margin-left: 7px; padding: 3px 5px 2px; font: 700 11px/1 var(--cond); font-style: normal; letter-spacing: 1px; text-transform: uppercase; background: var(--ink); color: var(--chalk); }
 .vs { font: 600 13px/1 var(--cond); letter-spacing: 1px; text-transform: uppercase; color: var(--ink-soft); }
+.vs--at { display: inline-block; min-width: 22px; margin-right: 4px; }
+.nowrap { white-space: nowrap; }
+.draftorder { display: grid; grid-template-columns: minmax(0, 1fr); max-width: 640px; gap: 8px; margin: 0 auto; padding: 0; list-style: none; counter-reset: none; }
+.draftorder li { display: flex; align-items: center; gap: 12px; min-width: 0; padding: 8px 12px; background: var(--chalk); border: 2px solid var(--ink); }
+.draftorder li > b { flex: none; width: 44px; text-align: center; font: 400 24px/1 var(--display); color: var(--red); }
+.draftorder li > span { margin-left: auto; font: 600 14px/1 var(--cond); color: var(--ink-soft); white-space: nowrap; }
 .res--W { color: var(--win); }
 .res--L { color: var(--red); }
 .btn {
@@ -267,7 +273,13 @@ select, input, button, textarea { font: inherit; color: inherit; border-radius: 
 .day__date::after { content: ''; flex: 1; border-top: var(--edge); }
 /* a scheduled series: two teams, where they play, and the results once they are in */
 .serieses { display: grid; grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); gap: 16px; }
-.series { display: grid; align-content: start; gap: 8px; padding: 12px 12px 10px; background: var(--chalk); border: var(--edge); }
+@media (min-width: 1000px) { .serieses { grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; } }
+.series { position: relative; display: grid; align-content: start; gap: 8px; padding: 12px 12px 10px; background: var(--chalk); border: var(--edge); }
+/* the conference icon on a same-conference game */
+.confbadge { width: 24px; height: 24px; object-fit: contain; vertical-align: middle; }
+.series > .confbadge { position: absolute; top: 8px; right: 8px; }
+.series:has(> .confbadge) .series__teams { padding-right: 26px; }
+.st--log .confbadge { margin-left: 8px; }
 .series__teams { display: grid; justify-items: start; gap: 5px; font: 600 18px/1.2 var(--cond); }
 .series__teams .vs { margin-left: 4px; }
 .series__where { margin: 0; padding-top: 7px; font: 700 13px/1.2 var(--cond); letter-spacing: 1.4px; text-transform: uppercase; color: var(--red); border-top: 2px dashed rgba(20, 47, 69, .22); }
@@ -560,7 +572,11 @@ a.post__who:hover b { text-decoration: underline; }
   .split, .leaders, .playertop { grid-template-columns: 1fr; }
   .bcard { max-width: 420px; }
   .playertop__side .panel:first-child { margin-top: 30px; }
-  .teamgrid { grid-auto-flow: row; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  .teamgrid { grid-auto-flow: row; grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .teamgrid > * { grid-column: span 2; }
+  /* a short last row sits in the middle */
+  .teamgrid > :last-child:nth-child(3n + 1) { grid-column: 3 / span 2; }
+  .teamgrid > :nth-last-child(2):nth-child(3n + 1) { grid-column: 2 / span 2; }
 }
 @media (max-width: 640px) {
   body { font-size: 16px; }
@@ -572,6 +588,9 @@ a.post__who:hover b { text-decoration: underline; }
   .teamhead { flex-direction: column; align-items: flex-start; padding: 16px 18px 22px; }
   .teamhead .tlogo { width: 190px; height: 130px; }
   .teamgrid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+  .draftorder li { gap: 8px; padding: 8px 10px; }
+  .draftorder li > b { width: 34px; font-size: 22px; }
+  .teamgrid > *, .teamgrid > :last-child:nth-child(3n + 1), .teamgrid > :nth-last-child(2):nth-child(3n + 1) { grid-column: auto; }
   /* an odd club out sits in the middle of its own row */
   .teamgrid > :last-child:nth-child(odd) { grid-column: 1 / -1; justify-self: center; width: calc(50% - 6px); }
   .teamcard { padding: 18px 8px 12px; box-shadow: 4px 4px 0 var(--ink); }
@@ -642,3 +661,37 @@ a.post__who:hover b { text-decoration: underline; }
 .gm__role { margin: 0 6px 12px; font: 700 14px/1 var(--cond); letter-spacing: 2.5px; text-transform: uppercase; color: var(--red); }
 .teamhead__gmname a { color: inherit; text-decoration: none; }
 .teamhead__gmname a:hover { text-decoration: underline; }
+
+/* ---- Draft (draft.js) -------------------------------------------------- */
+/* the board: a round number, then one column per team in first-round order */
+.draftboard { display: grid; grid-template-columns: 34px repeat(var(--teams), minmax(0, 1fr)); gap: 18px 16px; }
+.draftboard__team { margin-bottom: -6px; }
+.draftnote { margin: 0 0 16px; padding: 9px 14px 8px; font: 600 16px/1.3 var(--cond); background: var(--chalk); border: 2px solid var(--ink); border-left: 8px solid var(--sun); }
+.draftboard__team { display: grid; justify-items: center; gap: 6px; padding: 8px 4px 6px; text-decoration: none; background: var(--c); border: 2px solid var(--ink); }
+.draftboard__team .tlogo { width: 100%; height: 58px; padding: 4px; background: var(--chalk); border: 2px solid var(--ink); }
+.draftboard__abbr { width: 100%; text-align: center; font: 700 13px/1 var(--cond); letter-spacing: 1px; color: var(--on); }
+.draftboard__round { align-self: center; text-align: center; font: 400 24px/1 var(--display); color: var(--red); }
+.dpick { position: relative; display: grid; justify-items: center; align-content: start; gap: 5px; min-width: 0; padding: 8px 4px 7px; text-align: center; background: var(--chalk); border: 2px solid var(--ink); border-top: 6px solid var(--c); }
+.dpick__no { font: 700 12px/1 var(--cond); letter-spacing: 1px; color: var(--ink-soft); }
+.dpick .dpick__no { position: absolute; top: 4px; left: 5px; }
+.dpick__who { min-width: 0; font: 700 14px/1.1 var(--cond); overflow-wrap: anywhere; }
+.dpick__who a { color: inherit; text-decoration: none; }
+.dpick__who a:hover { text-decoration: underline; }
+.dpick--open { min-height: 92px; align-content: center; background: transparent; border-style: dashed; border-top-style: solid; }
+.dpick--open .dpick__no { position: static; font: 400 22px/1 var(--display); color: var(--ink-soft); opacity: .6; }
+/* arrows that follow the snake: along the round, then down to the next one */
+.dpick--right::after, .dpick--left::after, .dpick--down::after { content: ''; position: absolute; border: 7px solid transparent; }
+.dpick--right::after { top: 50%; right: -16px; margin-top: -7px; border-right: 0; border-left: 9px solid var(--red); }
+.dpick--left::after { top: 50%; left: -16px; margin-top: -7px; border-left: 0; border-right: 9px solid var(--red); }
+.dpick--down::after { left: 50%; bottom: -19px; margin-left: -7px; border-bottom: 0; border-top: 9px solid var(--red); }
+/* phones and tablets: round by round */
+.draftrounds { display: none; }
+.draftrounds__list { display: grid; gap: 6px; margin: 0 0 6px; padding: 0; list-style: none; }
+.draftrounds__list li { display: flex; align-items: center; gap: 10px; min-width: 0; padding: 6px 10px; background: var(--chalk); border: 2px solid var(--ink); border-left: 8px solid var(--c); }
+.draftrounds__list .dpick__no { flex: none; width: 36px; }
+.draftrounds__list .pennant { flex: none; }
+.draftrounds__list .dpick__who { font-size: 17px; }
+@media (max-width: 900px) {
+  .draftboard { display: none; }
+  .draftrounds { display: block; }
+}

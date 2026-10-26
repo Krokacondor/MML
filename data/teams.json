@@ -5,7 +5,7 @@
     "abbr": "SRS",
     "gm": "Rory Dawn",
     "conference": "mk",
-    "colors": ["#19708e", "#f2c14b"],
+    "colors": ["#19298c", "#f2c14b"],
     "logo": "assets/teams/star-road-superstars.png",
     "seasons": ["s2", "s3"],
     "aliases": []
@@ -58,6 +58,7 @@
     "id": "wild-woods-1-uppers",
     "name": "Wild Woods 1-Uppers",
     "abbr": "WW",
+    "together": ["Wild Woods"],
     "gm": "Typh",
     "conference": "bk",
     "colors": ["#66c475", "#063168"],
@@ -91,10 +92,11 @@
     "id": "petalburg-koopa-troopas",
     "name": "Petalburg Koopa Troopas",
     "abbr": "PKT",
+    "together": ["Koopa Troopas"],
     "gm": "Krokacondor",
     "conference": "mk",
     "colors": ["#ff6011", "#004aad"],
-    "logo": "assets/teams/petalburg-koopa-troopas.png",
+    "logo": "assets/teams/petalburg-koopa-troopas-icon.png",
     "seasons": ["s3"],
     "formerly": "new-new-new-york-mets",
     "aliases": []
@@ -105,7 +107,8 @@
     "abbr": "OH2",
     "gm": "nima74",
     "conference": "bk",
-    "colors": ["#ad533b", "#f7c57a"],
+    "colors": ["#81c3d5", "#175989"],
+    "logo": "assets/teams/ohio-2.png",
     "seasons": ["s3"],
     "formerly": "ohio",
     "aliases": []
@@ -128,6 +131,7 @@
     "gm": "Daxx",
     "conference": "bk",
     "colors": ["#3f7d33", "#f2c94c"],
+    "logo": "assets/teams/bean-bean-brigade.png",
     "seasons": ["s3"],
     "aliases": []
   }

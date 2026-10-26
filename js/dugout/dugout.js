@@ -139,6 +139,7 @@ const TABS = {
   articles: ['Articles', tabArticles],
   posts: ['Social posts', tabPosts],
   teams: ['Teams', tabTeams],
+  lineups: ['Lineups', tabLineups],
   players: ['Players', tabPlayers],
   league: ['League', tabLeague],
   logins: ['Logins', tabLogins],
@@ -147,7 +148,7 @@ const TABS = {
 // Admins (league.json "admins", by login name, plus anyone signed in with the key
 // itself or in local mode) see every tab. Other staff see only the everyday ones.
 // This hides tabs; it is not a lock, since every login can reach the key.
-const STAFF_TABS = ['upload', 'games', 'articles', 'posts', 'players'];
+const STAFF_TABS = ['upload', 'games', 'articles', 'posts', 'lineups', 'players'];
 const isAdmin = () => S.who === 'Key holder' || S.who === 'Local mode' || (S.league.admins || []).some((name) => slug(name) === slug(S.who));
 const tabsFor = () => Object.entries(TABS).filter(([id]) => isAdmin() || STAFF_TABS.includes(id));
 
@@ -811,6 +812,106 @@ function tabTeams(el) {
       }, 'Update teams');
       draw();
       return `Teams saved.${whenLive()}`;
+    });
+  };
+  draw();
+}
+
+// ---- Lineups ---------------------------------------------------------------
+
+const POSITIONS = ['P', 'C', '1B', '2B', '3B', 'SS', 'LF', 'CF', 'RF'];
+
+// A team's players in a season: its draft picks, then its trades and signings in order.
+function rosterOf(season, teamId) {
+  const names = new Map();
+  for (const d of season.draft || []) if (d.team === teamId) names.set(slug(d.p), d.p);
+  for (const m of season.moves || []) {
+    if (m.from === teamId) names.delete(slug(m.p));
+    if (m.to === teamId) names.set(slug(m.p), m.p);
+  }
+  return [...names.values()];
+}
+
+// A team's batting order, positions and captain for the current season. A login
+// named like a team's general manager sets only that team's; admins and shared
+// logins (like "staff") can set any team's. The site shows it on the team page.
+async function tabLineups(el) {
+  const sid = S.league.currentSeason;
+  const meta = S.league.seasons.find((s) => s.id === sid) || { id: sid, name: sid };
+  const path = `data/seasons/${sid}.json`;
+  let season = await readJson(path, { rosters: [] });
+  const model = await loadLeague().catch(() => null);
+  const everyone = model ? [...model.players.values()].map((p) => p.name).sort((a, b) => a.localeCompare(b)) : [];
+  const inSeason = S.teams
+    .filter((t) => (t.seasons ? t.seasons.includes(sid) : t.active !== false))
+    .sort((a, b) => a.name.localeCompare(b.name));
+  const own = inSeason.filter((t) => t.gm && slug(t.gm) === slug(S.who));
+  const mine = isAdmin() || !own.length ? inSeason : own;
+  let teamId = mine[0]?.id || '';
+
+  const draw = () => {
+    if (!mine.length) {
+      el.innerHTML = html`<h2>Lineups</h2>
+        <p class="hint">No teams in ${meta.name} yet.</p>`;
+      return;
+    }
+    const team = mine.find((t) => t.id === teamId);
+    const roster = rosterOf(season, teamId);
+    const pool = roster.length ? roster : everyone;
+    const saved = (season.rosters || []).find((r) => r.team === teamId);
+    const lineup = saved?.lineup || roster.slice(0, 9).map((p) => ({ p, pos: '' }));
+    const pick = (name, chosen, blank) => html`<select name="${name}">${options([['', blank], ...pool.map((n) => [n, n])], chosen || '')}</select>`;
+    el.innerHTML = html`
+      <h2>Lineups</h2>
+      <p class="hint">${meta.name}: the batting order top to bottom, each batter's position, and the captain.</p>
+      <form class="card" data-lineup>
+        ${mine.length > 1
+          ? html`<label>Team<select name="team">${options(mine.map((t) => [t.id, t.name]), teamId)}</select></label>`
+          : html`<p class="lineup-team">${team.name}</p>`}
+        <ol class="order">${Array.from({ length: 9 }, (_, i) => html`<li>
+          <b>${i + 1}</b>${pick(`p${i}`, lineup[i]?.p, 'Choose a player')}
+          <select name="pos${i}">${options([['', 'Position'], ...POSITIONS.map((x) => [x, x])], lineup[i]?.pos || '')}</select>
+        </li>`)}</ol>
+        ${roster.length
+          ? html`<p class="hint">Everyone else on the roster is a sub. Roster: ${roster.join(', ')}.</p>`
+          : html`<p class="hint">The roster fills in from the draft once it's entered. Until then, choose from every player.</p>
+            <div class="grid">${[0, 1].map((i) => html`<label>Sub ${i + 1}${pick(`b${i}`, saved?.bench[i], 'None')}</label>`)}</div>`}
+        <label>Captain${pick('captain', saved?.captain, 'Choose the captain')}</label>
+        <button class="btn">Save lineup</button>
+      </form>`;
+  };
+
+  el.onchange = (e) => {
+    if (!e.target.matches('[name="team"]')) return;
+    teamId = e.target.value;
+    draw();
+  };
+  el.onsubmit = (e) => {
+    e.preventDefault();
+    const f = fields(e.target);
+    work(e.submitter, async () => {
+      const team = mine.find((t) => t.id === teamId);
+      const roster = rosterOf(season, teamId);
+      const lineup = Array.from({ length: 9 }, (_, i) => ({ p: f[`p${i}`], pos: f[`pos${i}`] }));
+      if (lineup.some((l) => !l.p || !l.pos)) throw new Error('Fill in all nine batters and their positions.');
+      const twice = lineup.find((l, i) => lineup.findIndex((x) => slug(x.p) === slug(l.p)) !== i);
+      if (twice) throw new Error(`${twice.p} is in the lineup twice.`);
+      const pos = POSITIONS.find((x) => lineup.filter((l) => l.pos === x).length !== 1);
+      if (pos) throw new Error(`Every position needs exactly one player. Check ${pos}.`);
+      const batting = new Set(lineup.map((l) => slug(l.p)));
+      const bench = roster.length ? roster.filter((p) => !batting.has(slug(p))) : [f.b0, f.b1].filter(Boolean);
+      if (bench.some((p) => batting.has(slug(p))) || new Set(bench.map(slug)).size !== bench.length) throw new Error('A sub is also batting, or picked twice.');
+      if (!f.captain) throw new Error('Choose a captain.');
+      if (![...lineup.map((l) => l.p), ...bench].some((p) => slug(p) === slug(f.captain))) throw new Error('The captain has to be in the lineup or a sub.');
+      season = await updateJson(S.repo, path, { id: sid, name: meta.name, games: [] }, (s) => {
+        s.rosters ||= [];
+        const entry = { team: teamId, captain: f.captain, lineup, bench };
+        const at = s.rosters.findIndex((r) => r.team === teamId);
+        if (at >= 0) s.rosters[at] = entry;
+        else s.rosters.push(entry);
+      }, `Lineup: ${team.name} (saved by ${S.who})`, serializeSeason);
+      draw();
+      return `${team.name} lineup saved.${whenLive()}`;
     });
   };
   draw();

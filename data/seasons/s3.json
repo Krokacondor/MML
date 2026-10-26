@@ -2,6 +2,30 @@
   "id": "s3",
   "name": "Season 3",
   "format": "Each team plays one 9-inning game a week. The league grows to 10 teams.",
+  "draftNote": "Note: Season 3's draft required a captain pick within the first 3 rounds.",
+  "draftRounds": 9,
   "preseason": "Rosters are set at the re-draft, which hasn't happened yet.",
+  "draftOrder": [
+    "petalburg-koopa-troopas",
+    "wild-woods-1-uppers",
+    "star-road-superstars",
+    "bean-bean-brigade",
+    "pi-illo-island-dreamers",
+    "ohio-2",
+    "flipside-flappers",
+    "glitzville-glamours",
+    "sarasaland-sandstorm",
+    "goon-squad"
+  ],
+  "schedule": [
+    {"week":1,"series":[{"teams":["petalburg-koopa-troopas","pi-illo-island-dreamers"],"home":"pi-illo-island-dreamers"},{"teams":["sarasaland-sandstorm","star-road-superstars"],"home":"star-road-superstars"},{"teams":["wild-woods-1-uppers","glitzville-glamours"],"home":"glitzville-glamours"},{"teams":["goon-squad","ohio-2"],"home":"ohio-2"},{"teams":["bean-bean-brigade","flipside-flappers"],"home":"flipside-flappers"}]},
+    {"week":2,"series":[{"teams":["sarasaland-sandstorm","petalburg-koopa-troopas"],"home":"petalburg-koopa-troopas"},{"teams":["pi-illo-island-dreamers","flipside-flappers"],"home":"flipside-flappers"},{"teams":["ohio-2","glitzville-glamours"],"home":"glitzville-glamours"},{"teams":["bean-bean-brigade","wild-woods-1-uppers"],"home":"wild-woods-1-uppers"},{"teams":["star-road-superstars","goon-squad"],"home":"goon-squad"}]},
+    {"week":3,"series":[{"teams":["star-road-superstars","petalburg-koopa-troopas"],"home":"petalburg-koopa-troopas"},{"teams":["pi-illo-island-dreamers","bean-bean-brigade"],"home":"bean-bean-brigade"},{"teams":["sarasaland-sandstorm","ohio-2"],"home":"ohio-2"},{"teams":["wild-woods-1-uppers","flipside-flappers"],"home":"flipside-flappers"},{"teams":["glitzville-glamours","goon-squad"],"home":"goon-squad"}]},
+    {"week":4,"series":[{"teams":["flipside-flappers","petalburg-koopa-troopas"],"home":"petalburg-koopa-troopas"},{"teams":["pi-illo-island-dreamers","ohio-2"],"home":"ohio-2"},{"teams":["goon-squad","sarasaland-sandstorm"],"home":"sarasaland-sandstorm"},{"teams":["wild-woods-1-uppers","star-road-superstars"],"home":"star-road-superstars"},{"teams":["glitzville-glamours","bean-bean-brigade"],"home":"bean-bean-brigade"}]},
+    {"week":5,"series":[{"teams":["sarasaland-sandstorm","pi-illo-island-dreamers"],"home":"pi-illo-island-dreamers"},{"teams":["ohio-2","wild-woods-1-uppers"],"home":"wild-woods-1-uppers"},{"teams":["petalburg-koopa-troopas","goon-squad"],"home":"goon-squad"},{"teams":["bean-bean-brigade","star-road-superstars"],"home":"star-road-superstars"},{"teams":["flipside-flappers","glitzville-glamours"],"home":"glitzville-glamours"}]},
+    {"week":6,"series":[{"teams":["flipside-flappers","sarasaland-sandstorm"],"home":"sarasaland-sandstorm"},{"teams":["ohio-2","bean-bean-brigade"],"home":"bean-bean-brigade"},{"teams":["petalburg-koopa-troopas","wild-woods-1-uppers"],"home":"wild-woods-1-uppers"},{"teams":["pi-illo-island-dreamers","goon-squad"],"home":"goon-squad"},{"teams":["star-road-superstars","glitzville-glamours"],"home":"glitzville-glamours"}]},
+    {"week":7,"series":[{"teams":["flipside-flappers","star-road-superstars"],"home":"star-road-superstars"},{"teams":["goon-squad","bean-bean-brigade"],"home":"bean-bean-brigade"},{"teams":["petalburg-koopa-troopas","ohio-2"],"home":"ohio-2"},{"teams":["glitzville-glamours","pi-illo-island-dreamers"],"home":"pi-illo-island-dreamers"},{"teams":["wild-woods-1-uppers","sarasaland-sandstorm"],"home":"sarasaland-sandstorm"}]},
+    {"week":8,"series":[{"teams":["star-road-superstars","pi-illo-island-dreamers"],"home":"pi-illo-island-dreamers"},{"teams":["goon-squad","wild-woods-1-uppers"],"home":"wild-woods-1-uppers"},{"teams":["bean-bean-brigade","petalburg-koopa-troopas"],"home":"petalburg-koopa-troopas"},{"teams":["glitzville-glamours","sarasaland-sandstorm"],"home":"sarasaland-sandstorm"},{"teams":["ohio-2","flipside-flappers"],"home":"flipside-flappers"}]}
+  ],
   "games": []
 }
