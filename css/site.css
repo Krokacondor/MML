@@ -50,7 +50,8 @@ select, input, button, textarea { font: inherit; color: inherit; border-radius: 
   gap: 16px 20px; align-items: center;
 }
 .brand { grid-area: brand; display: flex; align-items: center; gap: 18px; text-decoration: none; min-width: 0; }
-.brand__logo { flex: none; width: auto; height: 96px; margin: -8px 0 -4px; }
+/* one fixed spot for every season's logo, so switching seasons moves nothing */
+.brand__logo { flex: none; width: 106px; height: 96px; object-fit: contain; margin: -8px 0 -4px; }
 .brand__name { display: block; font: 400 clamp(23px, 4.2vw, 40px)/1 var(--display); text-transform: uppercase; letter-spacing: .5px; text-shadow: 3px 3px 0 var(--red); }
 .brand__tag { display: block; margin-top: 7px; font: 400 clamp(17px, 2.2vw, 23px)/1.1 var(--script); color: var(--sun); transform: rotate(-1.5deg); transform-origin: left; }
 .season-pick { grid-area: season; display: flex; align-items: center; gap: 8px; font: 700 14px/1 var(--cond); letter-spacing: 2px; text-transform: uppercase; color: var(--sun); }
@@ -599,7 +600,7 @@ a.post__who:hover b { text-decoration: underline; }
   .teamcard__name { font-size: 15px; }
   .teamcard__gm { font-size: 11px; letter-spacing: 1px; }
   .teamcard__gm b { font-size: 15px; }
-  .brand__logo { height: 70px; }
+  .brand__logo { width: 77px; height: 70px; }
   .matchup { grid-template-columns: 1fr; }
   .matchup__at { padding: 5px; }
   .leader { gap: 8px; padding: 4px 10px 4px 18px; }
