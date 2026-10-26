@@ -126,7 +126,6 @@ export function teamView(ctx, id) {
                   : seriesLength(s) || '1 game'}</td>
               </tr>`)}</tbody>
             </table></div>
-            ${shown.format ? html`<p class="note">${shown.format}</p>` : ''}
           </section>`
         : ''}
       ${results.length
