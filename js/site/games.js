@@ -1,7 +1,7 @@
 import { html, slug } from '../lib/html.js';
 import { BAT_KEYS, viewsFor, colsFor } from '../lib/statdefs.js';
 import { scheduleProgress } from '../lib/aggregate.js';
-import { teamVars, pennant, playerCell, teamCell, lineScore, scoreCard, tabbedStats, renderTable, fmtDate, notFound, runs, finalWord, confBadge } from './ui.js';
+import { teamVars, pennant, playerCell, teamCell, lineScore, scoreCard, tabbedStats, renderTable, fmtDate, notFound, runs, finalWord, confBadge, useMiiColors } from './ui.js';
 import { spoil, eye } from './spoilers.js';
 
 // The games played between two teams in one scheduled week.
@@ -79,6 +79,8 @@ export function gameView(ctx, id) {
   const game = model.seasons.flatMap((s) => s.games).find((g) => g.id === id);
   if (!game) return notFound('That game');
   const season = model.seasons.find((s) => s.games.includes(game));
+  // Miis in the box score wear the colors of the game's season, whichever season is picked.
+  useMiiColors(model, season);
   const sides = [['a', game.away, game.home], ['h', game.home, game.away]];
   const teamOf = { a: model.team(game.away.team), h: model.team(game.home.team) };
   const head = (side, other) => {

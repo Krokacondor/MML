@@ -57,6 +57,21 @@ const MUG_ALIAS = {
   'princess-peach': 'peach', 'princess-daisy': 'daisy', 'k-rool': 'king-k-rool',
 };
 
+// A Mii wears one of the game's 12 shirt colors, and may wear a different one
+// each season (the season file's "miiColors"). Its pictures carry a circle in
+// that season's color.
+export const MII_COLORS = {
+  Red: '#d21e14', Orange: '#ff6e19', Yellow: '#ffd820', 'Light Green': '#78d220', Green: '#007830', Blue: '#0a48b4',
+  'Light Blue': '#3caade', Pink: '#f55a7d', Purple: '#7328ad', Brown: '#483818', White: '#e0e0e0', Black: '#181818',
+};
+let miiColorOf = new Map();
+
+// Which season's Mii colors the pictures follow. app.js sets the chosen season
+// before drawing each page; a game page switches to the game's own season.
+export function useMiiColors(model, season) {
+  miiColorOf = new Map(Object.entries(season?.miiColors || {}).map(([name, color]) => [slug(model.canon(name)), color]));
+}
+
 // Every spot uses the xBR-enlarged icon (or the Mii's picture); anyone with no
 // picture ends on the stand-in.
 export function mug(name, { size = 40, plate = false } = {}) {
@@ -64,10 +79,14 @@ export function mug(name, { size = 40, plate = false } = {}) {
   const file = MUG_ALIAS[s] || s;
   const initials = name.split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
   const tries = [`assets/mugshots/${file}.png`, 'assets/mugshots/_mii.png'];
-  return html`<span class="mug ${plate ? 'mug--plate' : 'mug--chip'}" style="--s:${size}px"><i>${initials}</i><img
+  const color = miiColorOf.get(s);
+  const hex = MII_COLORS[color];
+  return html`<span class="mug ${plate ? 'mug--plate' : 'mug--chip'}${hex ? ' has-mii' : ''}" style="--s:${size}px"><i>${initials}</i><img
     src="${tries[0]}" data-next="${tries.slice(1).join('|')}" alt=""
     onload="this.parentNode.classList.add('is-loaded');if(this.naturalWidth>64)this.classList.add('is-photo')"
-    onerror="const n=this.dataset.next.split('|').filter(Boolean);if(n.length){this.dataset.next=n.slice(1).join('|');this.src=n[0]}else{this.remove()}"></span>`;
+    onerror="const n=this.dataset.next.split('|').filter(Boolean);if(n.length){this.dataset.next=n.slice(1).join('|');this.src=n[0]}else{this.remove()}">${hex
+    ? html`<span class="mug__mii" style="--mii:${hex}" role="img" aria-label="${color} Mii" title="${color} Mii"></span>`
+    : ''}</span>`;
 }
 
 // The big picture of a player, for the spots where a 48-pixel sprite would have

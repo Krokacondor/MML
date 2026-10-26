@@ -192,6 +192,17 @@ select, input, button, textarea { font: inherit; color: inherit; border-radius: 
   background: var(--c, var(--sun)); border: var(--edge); box-shadow: 4px 4px 0 var(--ink);
 }
 .mug--plate img { width: 100%; height: 100%; object-fit: contain; object-position: center bottom; }
+/* A Mii's shirt color that season: a circle centered on the picture's top right
+   corner. The frame lets it hang over the edge and clips the picture instead. */
+.mug.has-mii { overflow: visible; }
+.mug--plate.has-mii img { clip-path: inset(0); }
+.mug--chip.has-mii img { clip-path: circle(50%); }
+.mug__mii {
+  position: absolute; z-index: 2; top: 0; right: 0; transform: translate(50%, -50%);
+  width: max(12px, calc(var(--s) * .3)); height: max(12px, calc(var(--s) * .3));
+  background: var(--mii); border: 2px solid var(--ink); border-radius: 50%; box-shadow: 0 0 0 2px var(--chalk);
+}
+.mug--chip .mug__mii { width: 12px; height: 12px; border-width: 1.5px; }
 /* big spots show a full-body picture when one exists, and fall back to the plate */
 .portrait { position: relative; display: inline-grid; place-items: center; max-width: 100%; }
 .portrait__full { display: none; max-width: 100%; max-height: calc(var(--s) * 2.4); object-fit: contain; filter: drop-shadow(4px 4px 0 rgba(20, 47, 69, .55)); }

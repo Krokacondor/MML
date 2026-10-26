@@ -207,6 +207,8 @@ export function buildLeague({ league, teams = [], players = {}, articles = [], a
       draftOrder: file.draftOrder || [],
       draftRounds: file.draftRounds || 0,
       draftNote: file.draftNote || '',
+      // The shirt color each Mii wore that season: { "Weird Al": "Pink" }.
+      miiColors: file.miiColors || {},
       moves: file.moves || [],
       rosters: file.rosters || [],
       format: file.format || '',
