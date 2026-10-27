@@ -849,6 +849,9 @@ async function tabLineups(el) {
   const own = inSeason.filter((t) => t.gm && slug(t.gm) === slug(S.who));
   const mine = isAdmin() || !own.length ? inSeason : own;
   let teamId = mine[0]?.id || '';
+  // The draft names Miis by shirt ("Red Mii (F)"); show who wears it this season.
+  // The shirt is what gets saved, so the site follows any later renaming.
+  const miiName = (n) => season.miiNames?.[n] || n;
 
   const draw = () => {
     if (!mine.length) {
@@ -861,7 +864,7 @@ async function tabLineups(el) {
     const pool = roster.length ? roster : everyone;
     const saved = (season.rosters || []).find((r) => r.team === teamId);
     const lineup = saved?.lineup || roster.slice(0, 9).map((p) => ({ p, pos: '' }));
-    const pick = (name, chosen, blank, from = pool) => html`<select name="${name}">${options([['', blank], ...from.map((n) => [n, n])], chosen || '')}</select>`;
+    const pick = (name, chosen, blank, from = pool) => html`<select name="${name}">${options([['', blank], ...from.map((n) => [n, miiName(n)])], chosen || '')}</select>`;
     el.innerHTML = html`
       <h2>Lineups</h2>
       <p class="hint">${meta.name}: the batting order top to bottom, each batter's position, the captain and the star (any player but a Mii).</p>
@@ -874,7 +877,7 @@ async function tabLineups(el) {
           <select name="pos${i}">${options([['', 'Position'], ...POSITIONS.map((x) => [x, x])], lineup[i]?.pos || '')}</select>
         </li>`)}</ol>
         ${roster.length
-          ? html`<p class="hint">Everyone else on the roster is a sub. Roster: ${roster.join(', ')}.</p>`
+          ? html`<p class="hint">Everyone else on the roster is a sub. Roster: ${roster.map(miiName).join(', ')}.</p>`
           : html`<p class="hint">The roster fills in from the draft once it's entered. Until then, choose from every player.</p>
             <div class="grid">${[0, 1].map((i) => html`<label>Sub ${i + 1}${pick(`b${i}`, saved?.bench[i], 'None')}</label>`)}</div>`}
         <label>Captain${pick('captain', saved?.captain, 'Choose the captain')}</label>
@@ -897,7 +900,7 @@ async function tabLineups(el) {
       const lineup = Array.from({ length: 9 }, (_, i) => ({ p: f[`p${i}`], pos: f[`pos${i}`] }));
       if (lineup.some((l) => !l.p || !l.pos)) throw new Error('Fill in all nine batters and their positions.');
       const twice = lineup.find((l, i) => lineup.findIndex((x) => slug(x.p) === slug(l.p)) !== i);
-      if (twice) throw new Error(`${twice.p} is in the lineup twice.`);
+      if (twice) throw new Error(`${miiName(twice.p)} is in the lineup twice.`);
       const pos = POSITIONS.find((x) => lineup.filter((l) => l.pos === x).length !== 1);
       if (pos) throw new Error(`Every position needs exactly one player. Check ${pos}.`);
       const batting = new Set(lineup.map((l) => slug(l.p)));
