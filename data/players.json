@@ -166,6 +166,11 @@
     "throws": "Right",
     "type": "Balanced"
   },
+  "dio": {
+    "bats": "Right",
+    "throws": "Right",
+    "type": "Balanced"
+  },
   "dixie-kong": {
     "name": "Dixie Kong",
     "bats": "Left",
@@ -338,6 +343,11 @@
     "throws": "Right",
     "type": "Speed"
   },
+  "mr-bean": {
+    "bats": "Right",
+    "throws": "Right",
+    "type": "Balanced"
+  },
   "naoto": {
     "bats": "Left",
     "throws": "Right",
@@ -483,6 +493,11 @@
   "tiny-kong": {
     "name": "Tiny Kong",
     "bats": "Left",
+    "throws": "Right",
+    "type": "Balanced"
+  },
+  "toa-tokuchi": {
+    "bats": "Right",
     "throws": "Right",
     "type": "Balanced"
   },
