@@ -230,6 +230,8 @@ export function buildLeague({ league, teams = [], players = {}, articles = [], a
       },
       moves: file.moves || [],
       rosters: file.rosters || [],
+      // Miis in the free agent pool, which data/players.json can't list by shirt.
+      freeAgents: file.freeAgents || [],
       format: file.format || '',
       // Before a season starts: a note on where things stand, clubs not yet
       // announced ({ gm, label, note }), and whether it uses the league's groups.
@@ -294,6 +296,7 @@ export function buildLeague({ league, teams = [], players = {}, articles = [], a
       for (const d of season.draft) add(d.p);
       for (const m of season.moves) add(m.p);
       for (const r of season.rosters) [...r.lineup.map((l) => l.p), ...r.bench].forEach(add);
+      season.freeAgents.forEach(add);
       for (const [s, i] of Object.entries(players)) if (i.name && !names.has(s)) names.set(s, i.name);
       const same = (a, s) => slug(canon(a)) === s;
       for (const [s, name] of names) {

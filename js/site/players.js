@@ -14,11 +14,17 @@ export function playersView(ctx) {
   const { model, season } = ctx;
   // Only the players who took part in the chosen season.
   const all = [...model.players.values()].filter((P) => P.seasons.some((x) => x.season === season)).sort((a, b) => a.name.localeCompare(b.name));
-  const card = (P) => {
-    // Released and unsigned at the end of this season: gray, no team.
+  // Released and unsigned at the end of this season: gray, no team.
+  const teamOf = (P) => {
     const teamId = P.seasons.find((x) => x.season === season).teamId;
-    const team = !teamId || freeAgentAtEnd(model, season, P.name) ? FREE_AGENT : model.team(teamId);
-    return html`<a class="pcard" href="#/player/${P.slug}" style="${teamVars(team)}" data-name="${P.name.toLowerCase()} ${team.name.toLowerCase()} ${String(team.abbr || '').toLowerCase()}">
+    return !teamId || freeAgentAtEnd(model, season, P.name) ? FREE_AGENT : model.team(teamId);
+  };
+  // A Mii: still named by its shirt, or listed in data/players.json without a game name.
+  const isMii = (P) => / Mii \([MF]\)$/.test(P.name) || (Object.keys(P.info).length > 0 && !P.info.name);
+  const teams = [...new Set(all.map(teamOf))].filter((t) => t !== FREE_AGENT).sort((a, b) => a.name.localeCompare(b.name));
+  const card = (P) => {
+    const team = teamOf(P);
+    return html`<a class="pcard" href="#/player/${P.slug}" style="${teamVars(team)}" data-kind="${isMii(P) ? 'mii' : 'char'}" data-team="${team === FREE_AGENT ? 'fa' : team.id}" data-name="${P.name.toLowerCase()} ${team.name.toLowerCase()} ${String(team.abbr || '').toLowerCase()}">
       ${mug(P.name, { size: 48, plate: true })}
       <span class="pcard__name">${pname(P.name)}</span>
       <span class="pcard__team">${pennant(team)}${positions(P.career.reg).slice(0, 2).join(' / ')}</span>
@@ -32,20 +38,36 @@ export function playersView(ctx) {
         <input class="search" type="search" placeholder="Find a player or team" aria-label="Find a player or team" data-find>
       </header>
       ${all.length
-        ? html`<div class="pgrid">${all.map(card)}</div><p class="empty" data-none hidden>No players match that search.</p>`
+        ? html`<div class="toolbar">
+            <div class="seg" data-seg="kind">${[['', 'All'], ['mii', 'Miis'], ['char', 'Non-Miis']].map(([v, label]) => html`<button type="button" data-value="${v}">${label}</button>`)}</div>
+            <select data-team aria-label="Team">
+              <option value="">All teams</option>
+              ${teams.map((t) => html`<option value="${t.id}">${t.name}</option>`)}
+              <option value="fa">Free agents</option>
+            </select>
+          </div>
+          <div class="pgrid">${all.map(card)}</div><p class="empty" data-none hidden>No players match.</p>`
         : html`<p class="empty">No players yet. Come back later!</p>`}`,
     mount(root) {
-      const find = root.querySelector('[data-find]');
-      find.oninput = () => {
-        const want = find.value.trim().toLowerCase();
+      if (!all.length) return;
+      const $ = (sel) => root.querySelector(sel);
+      const st = { kind: '', team: '', find: '' };
+      const draw = () => {
+        for (const b of root.querySelectorAll('[data-seg] button')) b.classList.toggle('is-on', b.dataset.value === st.kind);
         let shown = 0;
         for (const el of root.querySelectorAll('.pcard')) {
-          el.hidden = !el.dataset.name.includes(want);
+          el.hidden = (st.kind && el.dataset.kind !== st.kind) || (st.team && el.dataset.team !== st.team) || !el.dataset.name.includes(st.find);
           if (!el.hidden) shown++;
         }
-        const none = root.querySelector('[data-none]');
-        if (none) none.hidden = shown > 0;
+        $('[data-none]').hidden = shown > 0;
       };
+      $('[data-seg]').onclick = (e) => {
+        const btn = e.target.closest('button');
+        if (btn) { st.kind = btn.dataset.value; draw(); }
+      };
+      $('[data-team]').onchange = (e) => { st.team = e.target.value; draw(); };
+      $('[data-find]').oninput = (e) => { st.find = e.target.value.trim().toLowerCase(); draw(); };
+      draw();
     },
   };
 }
@@ -58,8 +80,9 @@ export function playerView(ctx, id) {
   const now = P.seasons.find((x) => x.season === shown);
   // The team this season: none yet when the player has no part in it.
   const finish = now ? finishOf(model, season, P.name) : null;
-  const freeAgent = Boolean(now) && freeAgentAtEnd(model, season, P.name);
   const teamId = now ? now.reg?.teamId || finish?.team || now.teamId || '' : '';
+  // Released at the end, or never on a team in a season that had a draft.
+  const freeAgent = Boolean(now) && (freeAgentAtEnd(model, season, P.name) || (!teamId && season.draft.length > 0));
   const team = freeAgent ? FREE_AGENT : teamId ? model.team(teamId) : NO_TEAM;
   // The player's other seasons, each a link that switches the site to it.
   const others = P.seasons.filter((x) => x.season !== season);

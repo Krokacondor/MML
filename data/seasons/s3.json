@@ -24,6 +24,7 @@
     "Yellow Mii (M)": "DIO",
     "Green Mii (M)": "Toa Tokuchi"
   },
+  "freeAgents": ["Orange Mii (M)", "Orange Mii (F)", "Purple Mii (M)", "Purple Mii (F)"],
   "preseason": "Rosters are set at the re-draft, which hasn't happened yet.",
   "draftOrder": [
     "petalburg-koopa-troopas",
