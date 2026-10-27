@@ -139,7 +139,8 @@
   "rosters": [
     {"team":"petalburg-koopa-troopas","captain":"Light Green Mii (M)","star":"King Boo","lineup":[{"p":"Waluigi","pos":"3B"},{"p":"Blooper","pos":"C"},{"p":"Light Green Mii (M)","pos":"2B"},{"p":"Light Green Mii (F)","pos":"1B"},{"p":"Petey Piranha","pos":"SS"},{"p":"King Boo","pos":"P"},{"p":"Brown Mii (F)","pos":"LF"},{"p":"Goomba","pos":"CF"},{"p":"Green Koopa","pos":"RF"}],"bench":[]},
     {"team":"wild-woods-1-uppers","captain":"Wiggler","star":"King K. Rool","lineup":[{"p":"Yellow Yoshi","pos":"RF"},{"p":"Baby Daisy","pos":"1B"},{"p":"King K. Rool","pos":"C"},{"p":"Wiggler","pos":"P"},{"p":"Yellow Toad","pos":"LF"},{"p":"Yellow Pianta","pos":"2B"},{"p":"Yellow Mii (F)","pos":"CF"},{"p":"Yellow Magikoopa","pos":"SS"},{"p":"Wario","pos":"3B"}],"bench":[]},
-    {"team":"star-road-superstars","captain":"Bowser","star":"Bowser","lineup":[{"p":"Red Mii (M)","pos":"CF"},{"p":"Red Dry Bones","pos":"RF"},{"p":"Bowser","pos":"P"},{"p":"Blue Shy Guy","pos":"SS"},{"p":"Blue Mii (M)","pos":"1B"},{"p":"Boomerang Bro","pos":"2B"},{"p":"Gray Dry Bones","pos":"3B"},{"p":"Blue Dry Bones","pos":"C"},{"p":"Red Noki","pos":"LF"}],"bench":[]}
+    {"team":"star-road-superstars","captain":"Bowser","star":"Bowser","lineup":[{"p":"Red Mii (M)","pos":"CF"},{"p":"Red Dry Bones","pos":"RF"},{"p":"Bowser","pos":"P"},{"p":"Blue Shy Guy","pos":"SS"},{"p":"Blue Mii (M)","pos":"1B"},{"p":"Boomerang Bro","pos":"2B"},{"p":"Gray Dry Bones","pos":"3B"},{"p":"Blue Dry Bones","pos":"C"},{"p":"Red Noki","pos":"LF"}],"bench":[]},
+    {"team":"sarasaland-sandstorm","captain":"Mario","star":"Toadsworth","lineup":[{"p":"Green Toad","pos":"1B"},{"p":"Green Mii (F)","pos":"C"},{"p":"Yoshi","pos":"SS"},{"p":"Mario","pos":"2B"},{"p":"Dixie Kong","pos":"LF"},{"p":"Baby Peach","pos":"3B"},{"p":"Pink Mii (F)","pos":"CF"},{"p":"Toadette","pos":"RF"},{"p":"Toadsworth","pos":"P"}],"bench":[]}
   ],
   "games": []
 }
