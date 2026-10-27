@@ -1,5 +1,17 @@
 [
   {
+    "id": "2026-10-26-baby-daisy",
+    "date": "2026-10-26",
+    "by": {
+      "kind": "player",
+      "name": "Baby Daisy"
+    },
+    "team": "wild-woods-1-uppers",
+    "image": "assets/posts/2026-10-26-baby-daisy-mvq5554h.png",
+    "width": 1200,
+    "height": 669
+  },
+  {
     "id": "2026-10-26-wiggler",
     "date": "2026-10-26",
     "by": {
