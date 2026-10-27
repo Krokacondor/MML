@@ -1,4 +1,4 @@
-import { html } from '../lib/html.js';
+import { html, slug } from '../lib/html.js';
 import { C } from '../lib/statdefs.js';
 import { positions, pitched, teamsIn, blankLine } from '../lib/aggregate.js';
 import { seriesGames, seriesLength } from './games.js';
@@ -43,6 +43,12 @@ export function teamView(ctx, id) {
     if (row && !row.reg && row.teamId === id) roster.push({ teamId: id, ...blankLine(), name: P.name, slug: P.slug, moved: false, released: false });
   }
   roster.sort((a, b) => a.name.localeCompare(b.name));
+  // This season's lineup: the roster table starts in batting order (bench after)
+  // and shows lineup positions until games give it real ones.
+  const lineup = shown.id === league.currentSeason && shown.rosters.find((r) => r.team === id);
+  const spot = new Map(lineup ? [...lineup.lineup.map((l) => l.p), ...lineup.bench].map((p, i) => [slug(model.canon(p)), i]) : []);
+  const lineupPos = new Map(lineup ? lineup.lineup.map((l) => [slug(model.canon(l.p)), l.pos]) : []);
+  if (lineup) roster.sort((a, b) => (spot.get(a.slug) ?? 99) - (spot.get(b.slug) ?? 99));
   // Unneeded playoff slots are listed too, so the log does not give away how long a series went.
   const unneeded = shown.games
     .filter((g) => g.notPlayed && (g.home.team === id || g.away.team === id))
@@ -169,9 +175,9 @@ export function teamView(ctx, id) {
         lead: () => [
           { id: 'name', label: 'Player', sort: (r) => r.name, cell: (r) => playerCell(r.name, r.released ? html`<i class="tag tag--fa">Released</i>` : r.moved ? html`<i class="tag">Moved on</i>` : '') },
           // Positions come from game files, so seasons recorded as totals have none to show.
-          ...(shown.tracked ? [] : [{ id: 'pos', label: 'Pos', sort: (r) => positions(r).join(), cell: (r) => positions(r).slice(0, 2).join(', ') }]),
+          ...(shown.tracked ? [] : [{ id: 'pos', label: 'Pos', sort: (r) => positions(r).join() || lineupPos.get(r.slug) || '', cell: (r) => positions(r).slice(0, 2).join(', ') || lineupPos.get(r.slug) || '' }]),
         ],
-        sortBy: { batting: 'avg', pitching: 'p_k' },
+        sortBy: { batting: lineup ? null : 'avg', pitching: 'p_k' },
         foot: () => ({ label: 'Team totals', row: T }),
         empty: 'No stats yet. Come back later!',
       });

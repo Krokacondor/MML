@@ -196,7 +196,8 @@ select, input, button, textarea { font: inherit; color: inherit; border-radius: 
    corner. The frame lets it hang over the edge and clips the picture instead. */
 .mug.has-mii { overflow: visible; }
 .mug--plate.has-mii img { clip-path: inset(0); }
-.mug--chip.has-mii img { clip-path: circle(50%); }
+/* A Mii's picture is a full square photo, so in a round chip it fills the circle exactly. */
+.mug--chip.has-mii img { width: 100%; height: 100%; margin: 0; border-radius: 50%; object-fit: cover; }
 .mug__mii {
   position: absolute; z-index: 2; top: 0; right: 0; transform: translate(50%, -50%);
   width: max(12px, calc(var(--s) * .3)); height: max(12px, calc(var(--s) * .3));
@@ -664,6 +665,7 @@ a.post__who:hover b { text-decoration: underline; }
 .lineup__n--sub { font: 700 13px/1 var(--cond); letter-spacing: 1.2px; text-transform: uppercase; color: rgba(255, 248, 226, .7); }
 
 .tag--fa { background: #7b838a; color: #fff; }
+.lineup__who .tag--star { background: var(--red); color: var(--chalk); }
 
 /* World Series rings on the player card: gold for the champions, silver for the runners-up */
 .rings { display: flex; flex-wrap: wrap; gap: 6px; margin: -4px 6px 12px; }

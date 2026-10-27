@@ -177,14 +177,14 @@ export function teamMoves(model, season, id) {
   });
 }
 
-// The end-of-season lineup card: batting order, positions, captain and bench.
+// The end-of-season lineup card: batting order, positions, captain, star and bench.
 export function lineupCard(model, season, id) {
   const r = season.rosters.find((x) => x.team === id);
   if (!r) return '';
   const team = model.team(id);
   const row = (p, label, pos, sub = false) => html`<li class="lineup__row" style="${teamVars(team)}">
     <span class="lineup__n ${sub ? 'lineup__n--sub' : ''}">${label}</span>${mug(model.canon(p), { size: 26, plate: true })}
-    <span class="lineup__who">${who(model, p)}${same(model, r.captain, p) ? html`<i class="tag">Captain</i>` : ''}</span>
+    <span class="lineup__who">${who(model, p)}${same(model, r.captain, p) ? html`<i class="tag">Captain</i>` : ''}${r.star && same(model, r.star, p) ? html`<i class="tag tag--star" title="Star player: gets a boost in the game">★ Star</i>` : ''}</span>
     <b class="lineup__pos">${pos}</b></li>`;
   const board = html`<ol class="lineup"><li class="lineup__head"><span>${team.name}</span><b>Lineup</b></li>${r.lineup.map((l, i) => row(l.p, i + 1, l.pos))}${r.bench.map((p) => row(p, 'Sub', '', true))}</ol>`;
   const field = diamond(r.lineup.map((l) => ({ pos: l.pos, stars: [fieldStar(model, l.p, l.pos, team, { abbr: false })] })));

@@ -68,6 +68,10 @@ export function toStoredGame(parsed, { id, date, week, type, awayTeam, homeTeam 
   };
 }
 
+// A Mii: a shirt label ("Red Mii (F)") or a player data/players.json lists
+// without a game "name". Miis can't be a lineup's star.
+export const isMii = (name, players = {}) => / Mii \([MF]\)$/.test(name) || Boolean(players[slug(name)] && !players[slug(name)].name);
+
 export const pretty = (data) => JSON.stringify(data, null, 2) + '\n';
 
 // Season files keep one game (or one player's season line) per row of text, so

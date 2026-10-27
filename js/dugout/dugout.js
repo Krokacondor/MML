@@ -8,7 +8,7 @@ import { parseGame } from '../lib/parse-game.js';
 import { markdown } from '../lib/markdown.js';
 import { fmtIP } from '../lib/statdefs.js';
 import { loadLeague } from '../lib/load.js';
-import { GAME_TYPES, matchTeam, makeTeam, learnAliases, nextGameId, toStoredGame, serializeSeason, pretty, todayISO } from '../lib/league-ops.js';
+import { GAME_TYPES, matchTeam, makeTeam, learnAliases, nextGameId, toStoredGame, serializeSeason, pretty, todayISO, isMii } from '../lib/league-ops.js';
 import { GitHubRepo, LocalRepo, updateJson } from './github.js';
 import { seal, unseal } from './vault.js';
 
@@ -832,7 +832,7 @@ function rosterOf(season, teamId) {
   return [...names.values()];
 }
 
-// A team's batting order, positions and captain for the current season. A login
+// A team's batting order, positions, captain and star for the current season. A login
 // named like a team's general manager sets only that team's; admins and shared
 // logins (like "staff") can set any team's. The site shows it on the team page.
 async function tabLineups(el) {
@@ -842,6 +842,7 @@ async function tabLineups(el) {
   let season = await readJson(path, { rosters: [] });
   const model = await loadLeague().catch(() => null);
   const everyone = model ? [...model.players.values()].map((p) => p.name).sort((a, b) => a.localeCompare(b)) : [];
+  const players = await readJson('data/players.json', {});
   const inSeason = S.teams
     .filter((t) => (t.seasons ? t.seasons.includes(sid) : t.active !== false))
     .sort((a, b) => a.name.localeCompare(b.name));
@@ -860,10 +861,10 @@ async function tabLineups(el) {
     const pool = roster.length ? roster : everyone;
     const saved = (season.rosters || []).find((r) => r.team === teamId);
     const lineup = saved?.lineup || roster.slice(0, 9).map((p) => ({ p, pos: '' }));
-    const pick = (name, chosen, blank) => html`<select name="${name}">${options([['', blank], ...pool.map((n) => [n, n])], chosen || '')}</select>`;
+    const pick = (name, chosen, blank, from = pool) => html`<select name="${name}">${options([['', blank], ...from.map((n) => [n, n])], chosen || '')}</select>`;
     el.innerHTML = html`
       <h2>Lineups</h2>
-      <p class="hint">${meta.name}: the batting order top to bottom, each batter's position, and the captain.</p>
+      <p class="hint">${meta.name}: the batting order top to bottom, each batter's position, the captain and the star (any player but a Mii).</p>
       <form class="card" data-lineup>
         ${mine.length > 1
           ? html`<label>Team<select name="team">${options(mine.map((t) => [t.id, t.name]), teamId)}</select></label>`
@@ -877,6 +878,7 @@ async function tabLineups(el) {
           : html`<p class="hint">The roster fills in from the draft once it's entered. Until then, choose from every player.</p>
             <div class="grid">${[0, 1].map((i) => html`<label>Sub ${i + 1}${pick(`b${i}`, saved?.bench[i], 'None')}</label>`)}</div>`}
         <label>Captain${pick('captain', saved?.captain, 'Choose the captain')}</label>
+        <label>Star${pick('star', saved?.star, 'Choose the star', pool.filter((n) => !isMii(n, players)))}</label>
         <button class="btn">Save lineup</button>
       </form>`;
   };
@@ -903,9 +905,12 @@ async function tabLineups(el) {
       if (bench.some((p) => batting.has(slug(p))) || new Set(bench.map(slug)).size !== bench.length) throw new Error('A sub is also batting, or picked twice.');
       if (!f.captain) throw new Error('Choose a captain.');
       if (![...lineup.map((l) => l.p), ...bench].some((p) => slug(p) === slug(f.captain))) throw new Error('The captain has to be in the lineup or a sub.');
+      if (!f.star) throw new Error('Choose a star.');
+      if (isMii(f.star, players)) throw new Error('A Mii can\'t be the star.');
+      if (![...lineup.map((l) => l.p), ...bench].some((p) => slug(p) === slug(f.star))) throw new Error('The star has to be in the lineup or a sub.');
       season = await updateJson(S.repo, path, { id: sid, name: meta.name, games: [] }, (s) => {
         s.rosters ||= [];
-        const entry = { team: teamId, captain: f.captain, lineup, bench };
+        const entry = { team: teamId, captain: f.captain, star: f.star, lineup, bench };
         const at = s.rosters.findIndex((r) => r.team === teamId);
         if (at >= 0) s.rosters[at] = entry;
         else s.rosters.push(entry);
