@@ -138,7 +138,7 @@
   ],
   "rosters": [
     {"team":"petalburg-koopa-troopas","captain":"Light Green Mii (M)","star":"King Boo","lineup":[{"p":"Waluigi","pos":"3B"},{"p":"Blooper","pos":"C"},{"p":"Light Green Mii (M)","pos":"2B"},{"p":"Light Green Mii (F)","pos":"1B"},{"p":"Petey Piranha","pos":"SS"},{"p":"King Boo","pos":"P"},{"p":"Brown Mii (F)","pos":"LF"},{"p":"Goomba","pos":"CF"},{"p":"Green Koopa","pos":"RF"}],"bench":[]},
-    {"team":"wild-woods-1-uppers","captain":"Wiggler","star":"King K. Rool","lineup":[{"p":"Yellow Yoshi","pos":"RF"},{"p":"Baby Daisy","pos":"1B"},{"p":"King K. Rool","pos":"C"},{"p":"Wiggler","pos":"P"},{"p":"Yellow Toad","pos":"LF"},{"p":"Yellow Pianta","pos":"2B"},{"p":"Yellow Magikoopa","pos":"SS"},{"p":"Wario","pos":"3B"},{"p":"Yellow Mii (F)","pos":"CF"}],"bench":[]}
+    {"team":"wild-woods-1-uppers","captain":"Wiggler","star":"King K. Rool","lineup":[{"p":"Yellow Yoshi","pos":"RF"},{"p":"Baby Daisy","pos":"1B"},{"p":"King K. Rool","pos":"C"},{"p":"Wiggler","pos":"P"},{"p":"Yellow Toad","pos":"LF"},{"p":"Yellow Pianta","pos":"2B"},{"p":"Yellow Mii (F)","pos":"CF"},{"p":"Yellow Magikoopa","pos":"SS"},{"p":"Wario","pos":"3B"}],"bench":[]}
   ],
   "games": []
 }
