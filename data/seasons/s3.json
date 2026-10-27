@@ -137,7 +137,7 @@
     {"round":9,"pick":10,"team":"goon-squad","p":"Yellow Shy Guy"}
   ],
   "rosters": [
-    {"team":"petalburg-koopa-troopas","captain":"Light Green Mii (M)","lineup":[{"p":"Waluigi","pos":"3B"},{"p":"Blooper","pos":"C"},{"p":"Light Green Mii (M)","pos":"2B"},{"p":"Light Green Mii (F)","pos":"1B"},{"p":"Petey Piranha","pos":"SS"},{"p":"King Boo","pos":"P"},{"p":"Brown Mii (F)","pos":"LF"},{"p":"Goomba","pos":"CF"},{"p":"Green Koopa","pos":"RF"}],"bench":[]}
+    {"team":"petalburg-koopa-troopas","captain":"Light Green Mii (M)","star":"King Boo","lineup":[{"p":"Waluigi","pos":"3B"},{"p":"Blooper","pos":"C"},{"p":"Light Green Mii (M)","pos":"2B"},{"p":"Light Green Mii (F)","pos":"1B"},{"p":"Petey Piranha","pos":"SS"},{"p":"King Boo","pos":"P"},{"p":"Brown Mii (F)","pos":"LF"},{"p":"Goomba","pos":"CF"},{"p":"Green Koopa","pos":"RF"}],"bench":[]}
   ],
   "games": []
 }
