@@ -4,7 +4,7 @@
 import { html, slug } from '../lib/html.js';
 import { teamsIn } from '../lib/aggregate.js';
 import { diamond, fieldStar } from './field.js';
-import { mug, pennant, teamVars } from './ui.js';
+import { mug, pennant, teamVars, pname } from './ui.js';
 
 export const ordinal = (n) => {
   const tens = n % 100;
@@ -28,7 +28,7 @@ const same = (model, a, b) => slug(model.canon(a)) === slug(model.canon(b));
 // A player's name, linked when the player has a page.
 export function who(model, name) {
   const s = slug(model.canon(name));
-  return model.players.has(s) ? html`<a href="#/player/${s}">${model.canon(name)}</a>` : html`${name}`;
+  return model.players.has(s) ? html`<a href="#/player/${s}">${pname(model.canon(name))}</a>` : html`${name}`;
 }
 const list = (model, names) => html`${names.map((n, i) => html`${i ? (i === names.length - 1 ? ' and ' : ', ') : ''}${who(model, n)}`)}`;
 const chip = (model, id) => {

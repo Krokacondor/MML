@@ -2,7 +2,7 @@
 // All-Star rosters (awards.js) and each team's end-of-season lineup (teams.js).
 
 import { html, slug } from '../lib/html.js';
-import { mug, teamVars } from './ui.js';
+import { mug, teamVars, pname } from './ui.js';
 
 // Where each position stands: [left %, top] in the drawing's units
 // (100 wide, FIELD_H tall), home plate at 50, 88.
@@ -15,7 +15,7 @@ export function fieldStar(model, name, pos, team, { abbr = true } = {}) {
   return html`<a class="field__star" href="#/player/${slug(model.canon(name))}" style="${teamVars(team)}">
     ${mug(model.canon(name), { size: 40, plate: true })}
     <span class="field__pos">${pos}</span>
-    <span class="field__name">${name}</span>
+    <span class="field__name">${pname(model.canon(name))}</span>
     ${abbr ? html`<span class="field__team">${team.abbr}</span>` : ''}
   </a>`;
 }

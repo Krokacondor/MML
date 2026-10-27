@@ -1,7 +1,7 @@
 import { html } from '../lib/html.js';
 import { leaderCats } from '../lib/statdefs.js';
 import { isQualified, pitched, teamsIn } from '../lib/aggregate.js';
-import { mug, portrait, pennant, teamVars, standings, scoreCard, clip, seasonClubs } from './ui.js';
+import { mug, portrait, pennant, teamVars, standings, scoreCard, clip, seasonClubs, pname } from './ui.js';
 import { awardCards } from './awards.js';
 import { draftOrderList } from './draft.js';
 
@@ -34,7 +34,7 @@ function leaderBoard(ctx, cat) {
     return html`<a class="leader ${top ? 'leader--top' : ''}" href="#/player/${p.slug}" style="${teamVars(team)}">
       <span class="plate"><b>${rank}</b></span>
       ${top ? portrait(p.name, 96) : mug(p.name, { size: 48, plate: true })}
-      <span class="leader__who"><span class="leader__name">${p.name}</span><span class="leader__team">${pennant(team)}${team.name}</span></span>
+      <span class="leader__who"><span class="leader__name">${pname(p.name)}</span><span class="leader__team">${pennant(team)}${team.name}</span></span>
       <span class="leader__val">${cat.col.fmt(v)}<small>${cat.col.label}</small></span>
     </a>`;
   };

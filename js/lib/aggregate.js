@@ -14,7 +14,7 @@ import { BAT_KEYS, PIT_KEYS } from './statdefs.js';
 const addInto = (into, row, keys) => {
   for (const k of keys) if (row?.[k]) into[k] = (into[k] || 0) + row[k];
 };
-const blankLine = () => ({ g: 0, gp: 0, bat: {}, pit: {}, pos: {} });
+export const blankLine = () => ({ g: 0, gp: 0, bat: {}, pit: {}, pos: {} });
 
 export const sortGames = (games) =>
   [...games].sort((a, b) => String(a.date || '').localeCompare(String(b.date || '')) || String(a.id).localeCompare(String(b.id)));
@@ -165,6 +165,21 @@ export function teamsIn(model, season) {
   return [...ids].map((id) => model.team(id));
 }
 
+// Game files and the draft name a Mii by its shirt ("Red Mii (F)"); the season
+// file's "miiNames" ({ "Red Mii (F)": "May" }) says who wore it that season.
+// Renaming the whole file covers games, the draft, moves and rosters alike.
+function withMiiNames(file) {
+  const names = file.miiNames || {};
+  if (!Object.keys(names).length) return file;
+  const rename = (v) =>
+    typeof v === 'string' ? names[v] ?? v
+      : Array.isArray(v) ? v.map(rename)
+        : v && typeof v === 'object' ? Object.fromEntries(Object.entries(v).map(([k, x]) => [k, rename(x)]))
+          : v;
+  const { miiNames, ...rest } = file;
+  return { ...rename(rest), miiNames };
+}
+
 export function buildLeague({ league, teams = [], players = {}, articles = [], authors = [], posts = [], seasons = {} }) {
   // Each story carries its writer's picture, from data/authors.json.
   const writer = new Map(authors.map((a) => [slug(a.name), a]));
@@ -188,7 +203,7 @@ export function buildLeague({ league, teams = [], players = {}, articles = [], a
   };
 
   for (const meta of league.seasons || []) {
-    const file = seasons[meta.id] || {};
+    const file = withMiiNames(seasons[meta.id] || {});
     const games = sortGames(file.games || []);
     // Slots for playoff games a series never needed ("notPlayed") are shown on
     // the Scores page so nobody can count games, but they count for nothing.
@@ -207,8 +222,12 @@ export function buildLeague({ league, teams = [], players = {}, articles = [], a
       draftOrder: file.draftOrder || [],
       draftRounds: file.draftRounds || 0,
       draftNote: file.draftNote || '',
-      // The shirt color each Mii wore that season: { "Weird Al": "Pink" }.
-      miiColors: file.miiColors || {},
+      // The shirt color each Mii wore that season: { "Weird Al": "Pink" }, from
+      // "miiColors" or read off the "miiNames" labels.
+      miiColors: {
+        ...Object.fromEntries(Object.entries(file.miiNames || {}).map(([label, name]) => [name, label.replace(/ Mii \([MF]\)$/, '')])),
+        ...file.miiColors,
+      },
       moves: file.moves || [],
       rosters: file.rosters || [],
       format: file.format || '',
@@ -240,6 +259,7 @@ export function buildLeague({ league, teams = [], players = {}, articles = [], a
         let row = P.seasons.find((x) => x.season === season);
         if (!row) P.seasons.push((row = { season, reg: null, post: null }));
         row[part] = rec;
+        row.teamId = rec.teamId; // the team they finished the season with
 
         const total = P.career[part];
         total.parts.push(rec);
@@ -291,10 +311,10 @@ export function buildLeague({ league, teams = [], players = {}, articles = [], a
         }
         const P = model.players.get(s);
         if (P.seasons.some((x) => x.season === season)) continue; // has stats already
-        P.seasons.push({ season, reg: null, post: null });
         // Their teams that season: drafted by, then each move's new team.
         const pick = season.draft.find((d) => same(d.p, s));
-        const teams = [pick?.team, ...season.moves.filter((m) => same(m.p, s)).map((m) => m.to)].filter(Boolean);
+        const moved = season.moves.filter((m) => same(m.p, s));
+        const teams = [pick?.team, ...moved.map((m) => m.to)].filter(Boolean);
         for (const teamId of teams) {
           const lastStint = P.stints[P.stints.length - 1];
           if (lastStint?.teamId === teamId) {
@@ -304,7 +324,10 @@ export function buildLeague({ league, teams = [], players = {}, articles = [], a
           }
         }
         const roster = season.rosters.find((r) => [...r.lineup.map((l) => l.p), ...r.bench].some((p) => same(p, s)));
-        P.last = { season, teamId: roster?.team || '' };
+        // Their team: the lineup they're in, or else where the draft and moves left them.
+        const teamId = roster ? roster.team : moved.length ? moved[moved.length - 1].to : pick?.team || '';
+        P.seasons.push({ season, reg: null, post: null, teamId });
+        P.last = { season, teamId };
       }
     }
 

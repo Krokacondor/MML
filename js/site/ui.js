@@ -72,6 +72,17 @@ export function useMiiColors(model, season) {
   miiColorOf = new Map(Object.entries(season?.miiColors || {}).map(([name, color]) => [slug(model.canon(name)), color]));
 }
 
+// A few players have their own lettering (players.json "font": "papyrus" or
+// "comic"); pname() wraps their name in it, everyone else's is plain text.
+let fontOf = new Map();
+export function useNameFonts(model) {
+  fontOf = new Map([...model.players].filter(([, P]) => P.info.font).map(([s, P]) => [s, P.info.font]));
+}
+export function pname(name) {
+  const font = fontOf.get(slug(name));
+  return font ? html`<span class="pname pname--${font}">${name}</span>` : name;
+}
+
 // Every spot uses the xBR-enlarged icon (or the Mii's picture); anyone with no
 // picture ends on the stand-in.
 export function mug(name, { size = 40, plate = false } = {}) {
@@ -79,7 +90,8 @@ export function mug(name, { size = 40, plate = false } = {}) {
   const file = MUG_ALIAS[s] || s;
   const initials = name.split(/\s+/).map((w) => w[0]).join('').slice(0, 2).toUpperCase();
   const tries = [`assets/mugshots/${file}.png`, 'assets/mugshots/_mii.png'];
-  const color = miiColorOf.get(s);
+  // A Mii not yet named for the season still goes by its shirt ("Brown Mii (M)").
+  const color = miiColorOf.get(s) || name.match(/^(.+) Mii \([MF]\)$/)?.[1];
   const hex = MII_COLORS[color];
   return html`<span class="mug ${plate ? 'mug--plate' : 'mug--chip'}${hex ? ' has-mii' : ''}" style="--s:${size}px"><i>${initials}</i><img
     src="${tries[0]}" data-next="${tries.slice(1).join('|')}" alt=""
@@ -99,7 +111,7 @@ export function portrait(name, size = 96) {
 }
 
 export const playerCell = (name, extra = '') =>
-  html`<a class="pcell" href="#/player/${slug(name)}">${mug(name, { size: 30 })}<span>${name}</span>${extra}</a>`;
+  html`<a class="pcell" href="#/player/${slug(name)}">${mug(name, { size: 30 })}<span>${pname(name)}</span>${extra}</a>`;
 
 export const teamCell = (team) => html`<a class="tcell" href="#/team/${team.id}">${pennant(team)}<span>${keepWords(team.name, team.together)}</span></a>`;
 

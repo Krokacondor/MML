@@ -203,6 +203,12 @@ select, input, button, textarea { font: inherit; color: inherit; border-radius: 
   background: var(--mii); border: 2px solid var(--ink); border-radius: 50%; box-shadow: 0 0 0 2px var(--chalk);
 }
 .mug--chip .mug__mii { width: 12px; height: 12px; border-width: 1.5px; }
+
+/* Players with their own lettering (players.json "font"). Papyrus has no web
+   copy, so phones without it fall back to a fantasy face. */
+.pname--papyrus { font-family: Papyrus, fantasy; text-transform: uppercase; letter-spacing: .02em; }
+.dpick__who .pname--papyrus { font-size: .8em; }
+.pname--comic { font-family: 'Comic Sans MS', 'Comic Neue', cursive; text-transform: lowercase; letter-spacing: 0; }
 /* big spots show a full-body picture when one exists, and fall back to the plate */
 .portrait { position: relative; display: inline-grid; place-items: center; max-width: 100%; }
 .portrait__full { display: none; max-width: 100%; max-height: calc(var(--s) * 2.4); object-fit: contain; filter: drop-shadow(4px 4px 0 rgba(20, 47, 69, .55)); }

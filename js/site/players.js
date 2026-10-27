@@ -1,7 +1,7 @@
 import { html } from '../lib/html.js';
 import { C, viewsFor } from '../lib/statdefs.js';
 import { positions, pitched } from '../lib/aggregate.js';
-import { mug, portrait, pennant, teamVars, teamCell, tabbedStats, tiles, gameWhen, notFound } from './ui.js';
+import { mug, portrait, pennant, teamVars, teamCell, tabbedStats, tiles, gameWhen, notFound, pname } from './ui.js';
 import { spoil, eye } from './spoilers.js';
 import { pickOf, finishOf, playerStory, seasonShort, ordinal, freeAgentAtEnd, FREE_AGENT, ringsFor } from './transactions.js';
 
@@ -16,10 +16,11 @@ export function playersView(ctx) {
   const all = [...model.players.values()].filter((P) => P.seasons.some((x) => x.season === season)).sort((a, b) => a.name.localeCompare(b.name));
   const card = (P) => {
     // Released and unsigned at the end of this season: gray, no team.
-    const team = freeAgentAtEnd(model, season, P.name) ? FREE_AGENT : model.team(P.last.teamId);
+    const teamId = P.seasons.find((x) => x.season === season).teamId;
+    const team = !teamId || freeAgentAtEnd(model, season, P.name) ? FREE_AGENT : model.team(teamId);
     return html`<a class="pcard" href="#/player/${P.slug}" style="${teamVars(team)}" data-name="${P.name.toLowerCase()} ${team.name.toLowerCase()} ${String(team.abbr || '').toLowerCase()}">
       ${mug(P.name, { size: 48, plate: true })}
-      <span class="pcard__name">${P.name}</span>
+      <span class="pcard__name">${pname(P.name)}</span>
       <span class="pcard__team">${pennant(team)}${positions(P.career.reg).slice(0, 2).join(' / ')}</span>
     </a>`;
   };
@@ -58,7 +59,7 @@ export function playerView(ctx, id) {
   // The team this season: none yet when the player has no part in it.
   const finish = now ? finishOf(model, season, P.name) : null;
   const freeAgent = Boolean(now) && freeAgentAtEnd(model, season, P.name);
-  const teamId = now ? now.reg?.teamId || finish?.team || (P.last.season === season ? P.last.teamId : '') : '';
+  const teamId = now ? now.reg?.teamId || finish?.team || now.teamId || '' : '';
   const team = freeAgent ? FREE_AGENT : teamId ? model.team(teamId) : NO_TEAM;
   // The player's other seasons, each a link that switches the site to it.
   const others = P.seasons.filter((x) => x.season !== season);
@@ -147,7 +148,7 @@ export function playerView(ctx, id) {
       <div class="playertop">
         <div class="bcard" style="${teamVars(team)}">
           <div class="bcard__art">${portrait(P.name, 96)}${posList[0] ? html`<span class="bcard__pos">${posList[0]}</span>` : ''}</div>
-          <h1 class="bcard__name">${P.name}</h1>
+          <h1 class="bcard__name">${pname(P.name)}</h1>
           ${rings.length
             ? html`<p class="rings">${rings.map((r) => {
                 const label = `${r.season.name} World Series ${r.won ? 'champion' : 'runner-up'}`;

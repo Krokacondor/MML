@@ -3,7 +3,7 @@
 
 import { html } from '../lib/html.js';
 import { loadLeague } from '../lib/load.js';
-import { pennant, notFound, useMiiColors } from './ui.js';
+import { pennant, notFound, useMiiColors, useNameFonts } from './ui.js';
 import { home } from './home.js';
 import { teamsView, teamView } from './teams.js';
 import { playersView, playerView } from './players.js';
@@ -71,6 +71,7 @@ function route() {
   }
   const ctx = { model: state.model, league: state.model.league, season: currentSeason(), q: Object.fromEntries(new URLSearchParams(query)) };
   useMiiColors(ctx.model, ctx.season);
+  useNameFonts(ctx.model);
   let page = notFound();
   let nav = '';
   for (const [pattern, make, key] of ROUTES) {

@@ -1,4 +1,9 @@
 {
+  "aya-brea": {
+    "bats": "Left",
+    "throws": "Right",
+    "type": "Balanced"
+  },
   "baby-daisy": {
     "name": "Baby Daisy",
     "bats": "Left",
@@ -163,6 +168,11 @@
   },
   "dixie-kong": {
     "name": "Dixie Kong",
+    "bats": "Left",
+    "throws": "Right",
+    "type": "Balanced"
+  },
+  "dolly-parton": {
     "bats": "Left",
     "throws": "Right",
     "type": "Balanced"
@@ -333,6 +343,11 @@
     "throws": "Right",
     "type": "Balanced"
   },
+  "nightmare": {
+    "bats": "Left",
+    "throws": "Right",
+    "type": "Balanced"
+  },
   "numbuh-four": {
     "bats": "Right",
     "throws": "Right",
@@ -342,6 +357,12 @@
     "bats": "Right",
     "throws": "Right",
     "type": "Balanced"
+  },
+  "papyrus": {
+    "bats": "Right",
+    "throws": "Right",
+    "type": "Balanced",
+    "font": "papyrus"
   },
   "paragoomba": {
     "name": "Paragoomba",
@@ -441,7 +462,8 @@
   "sans": {
     "bats": "Right",
     "throws": "Right",
-    "type": "Balanced"
+    "type": "Balanced",
+    "font": "comic"
   },
   "starfire": {
     "bats": "Left",
@@ -476,7 +498,17 @@
     "throws": "Right",
     "type": "Balanced"
   },
+  "tony-soprano": {
+    "bats": "Right",
+    "throws": "Right",
+    "type": "Balanced"
+  },
   "velma": {
+    "bats": "Left",
+    "throws": "Right",
+    "type": "Balanced"
+  },
+  "vi": {
     "bats": "Left",
     "throws": "Right",
     "type": "Balanced"

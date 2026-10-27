@@ -1,6 +1,6 @@
 import { html, slug } from '../lib/html.js';
 import { allStarsAt } from '../lib/aggregate.js';
-import { mug, pennant, teamVars, teamLogo } from './ui.js';
+import { mug, pennant, teamVars, teamLogo, pname } from './ui.js';
 import { diamond as field, fieldStar } from './field.js';
 import { spoil, eye } from './spoilers.js';
 
@@ -17,7 +17,7 @@ export function awardCards(ctx) {
     const name = model.canon(w.p);
     const team = model.team(season.reg.players.get(slug(name))?.teamId);
     return html`<a class="award__who" href="#/player/${slug(name)}" style="${teamVars(team)}">
-      ${mug(name, { size: 48, plate: true })}<span class="award__name">${w.p}</span><span class="award__team">${pennant(team)}${team.name}</span>
+      ${mug(name, { size: 48, plate: true })}<span class="award__name">${pname(name)}</span><span class="award__team">${pennant(team)}${team.name}</span>
     </a>`;
   };
   return html`<div class="awards">${season.awards.map(

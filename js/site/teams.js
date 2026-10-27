@@ -1,6 +1,6 @@
 import { html } from '../lib/html.js';
 import { C } from '../lib/statdefs.js';
-import { positions, pitched, teamsIn } from '../lib/aggregate.js';
+import { positions, pitched, teamsIn, blankLine } from '../lib/aggregate.js';
 import { seriesGames, seriesLength } from './games.js';
 import { spoil, eye } from './spoilers.js';
 import { draftOf, teamMoves, lineupCard, who, ordinal, freeAgentAtEnd, teamHonors } from './transactions.js';
@@ -36,8 +36,13 @@ export function teamView(ctx, id) {
   const played = S.teams.has(id) || shown.post.teams.has(id);
   const roster = [...S.players.values()]
     .filter((p) => p.byTeam.has(id))
-    .map((p) => ({ ...p.byTeam.get(id), name: p.name, slug: p.slug, moved: p.teamId !== id, released: freeAgentAtEnd(model, shown, p.name) }))
-    .sort((a, b) => a.name.localeCompare(b.name));
+    .map((p) => ({ ...p.byTeam.get(id), name: p.name, slug: p.slug, moved: p.teamId !== id, released: freeAgentAtEnd(model, shown, p.name) }));
+  // Before the team's first game (straight after the draft), its players with an empty line each.
+  if (!played) for (const P of model.players.values()) {
+    const row = P.seasons.find((x) => x.season === shown);
+    if (row && !row.reg && row.teamId === id) roster.push({ teamId: id, ...blankLine(), name: P.name, slug: P.slug, moved: false, released: false });
+  }
+  roster.sort((a, b) => a.name.localeCompare(b.name));
   // Unneeded playoff slots are listed too, so the log does not give away how long a series went.
   const unneeded = shown.games
     .filter((g) => g.notPlayed && (g.home.team === id || g.away.team === id))
