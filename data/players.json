@@ -287,6 +287,11 @@
     "throws": "Right",
     "type": "Balanced"
   },
+  "katara": {
+    "bats": "Left",
+    "throws": "Right",
+    "type": "Balanced"
+  },
   "king-boo": {
     "name": "King Boo",
     "bats": "Right",
@@ -391,6 +396,11 @@
     "bats": "Left",
     "throws": "Right",
     "type": "Power"
+  },
+  "phi": {
+    "bats": "Left",
+    "throws": "Right",
+    "type": "Balanced"
   },
   "pink-yoshi": {
     "name": "Pink Yoshi",
