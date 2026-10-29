@@ -60,7 +60,7 @@ export function gamesView(ctx) {
     title: weeks.length ? 'Schedule' : 'Scores',
     html: html`
       <header class="pagehead"><p class="script">${season.name}</p><h1>${weeks.length ? 'Schedule & Scores' : 'Scores'}</h1></header>
-      ${about ? html`<p class="banner"><b>${season.games.length || weeks.length ? `About ${season.name}.` : `${season.name} has no games yet.`}</b> ${about}</p>` : ''}
+      ${about ? html`<p class="banner"><b>${season.games.length || weeks.length ? `${season.name} Scheduling:` : `${season.name} has no games yet.`}</b> ${about}</p>` : ''}
       ${season.games.length
         ? html`<p class="spoilnote">Scores are hidden. ${eye(season.games.map((g) => g.id), 'every score')} <span>Every score</span></p>`
         : ''}

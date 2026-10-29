@@ -1,7 +1,7 @@
 {
   "id": "s3",
   "name": "Season 3",
-  "format": "Each team plays one 9-inning game a week. The league grows to 10 teams.",
+  "format": "One 9-inning game per week.",
   "draftNote": "Note: Season 3's draft required a captain pick within the first 3 rounds.",
   "draftRounds": 9,
   "miiNames": {

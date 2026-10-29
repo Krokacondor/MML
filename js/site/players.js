@@ -135,12 +135,13 @@ export function playerView(ctx, id) {
       : html`<b class="res res--${won ? 'W' : 'L'}">${won ? 'W' : 'L'}</b> ${r.mine.score}-${r.theirs.score}`}</span></span>`;
   };
 
-  // Headline numbers, skipping anything that season did not record.
-  const headline = cur
-    ? [[C.g, 'Games'], [C.avg], [C.hr], [C.rbi], [C.ops], [C.sb], ...(pitched(cur) ? [[C.p_ip], [era, 'ERA'], [C.p_k]] : [])]
-        .map(([col, label]) => ({ label: label || col.label, value: col.val(cur) == null ? null : col.fmt(col.val(cur)) }))
-        .filter((t) => t.value != null)
-    : null;
+  // Each of the player's seasons, newest first.
+  const newest = [...P.seasons].reverse();
+  // Headline numbers for one season, skipping anything that season did not record.
+  const headline = (rec) =>
+    [[C.g, 'Games'], [C.avg], [C.hr], [C.rbi], [C.ops], [C.sb], ...(pitched(rec) ? [[C.p_ip], [era, 'ERA'], [C.p_k]] : [])]
+      .map(([col, label]) => ({ label: label || col.label, value: col.val(rec) == null ? null : col.fmt(col.val(rec)) }))
+      .filter((t) => t.value != null);
 
   // This season's positions from its games, or else its lineup spot.
   const posList = cur && positions(cur).length ? positions(cur) : finish?.pos ? [finish.pos] : [];
@@ -151,8 +152,7 @@ export function playerView(ctx, id) {
     : pick
       ? html`Round ${pick.round}, Pick ${pick.pick} <small>(${ordinalOf(pick)} overall)</small>`
       : 'Undrafted';
-  const storyLines = now ? playerStory(model, season, P.name) : [];
-  const story = storyLines.length ? [{ season, lines: storyLines }] : [];
+  const story = newest.map((x) => ({ season: x.season, lines: playerStory(model, x.season, P.name) })).filter((x) => x.lines.length);
   const facts = [
     ['Team', freeAgent ? 'Free agent' : teamId ? teamCell(team) : 'N/A'],
     posList.length && ['Position', posList.slice(0, 3).join(', ')],
@@ -182,10 +182,10 @@ export function playerView(ctx, id) {
           <dl class="bcard__facts">${facts.map(([k, v]) => html`<div><dt>${k}</dt><dd>${v}</dd></div>`)}</dl>
         </div>
         <div class="playertop__side">
-          <section class="panel">
-            <h2 class="panel__tab"><span>${shown.name}</span></h2>
-            ${headline ? tiles(headline) : html`<p class="empty">${shown.reg.hasResults ? 'Did not play this season.' : 'No stats yet. Come back later!'}</p>`}
-          </section>
+          ${newest.map((x) => html`<section class="panel">
+            <h2 class="panel__tab"><span>${x.season.name}</span></h2>
+            ${x.reg ? tiles(headline(x.reg)) : html`<p class="empty">${x.season.reg.hasResults ? 'Did not play this season.' : 'No stats yet. Come back later!'}</p>`}
+          </section>`)}
           ${info.bio ? html`<section class="panel"><h2 class="panel__tab"><span>Scouting Report</span></h2><p class="bio">${info.bio}</p></section>` : ''}
           ${story.length
             ? html`<section class="panel">
