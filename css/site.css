@@ -66,6 +66,7 @@ select, input, button, textarea { font: inherit; color: inherit; border-radius: 
 .nav a span { display: block; transform: skewX(12deg); }
 .nav a:hover { background: rgba(255, 248, 226, .14); }
 .nav a.is-on { background: var(--red); border-color: var(--red); }
+@media (max-width: 1180px) { .nav a { padding-left: 12px; padding-right: 12px; font-size: 18px; letter-spacing: 1px; } }
 
 .ticker { background: var(--grass-dark); color: var(--chalk); border-bottom: var(--edge); }
 .ticker__in { max-width: 1200px; margin: 0 auto; padding: 7px 20px; display: flex; align-items: center; gap: 16px; overflow-x: auto; white-space: nowrap; scrollbar-width: none; font: 700 18px/1 var(--cond); }
