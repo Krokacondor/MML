@@ -392,18 +392,23 @@ i.sp { font-style: normal; }
 .press__head h2 { font-size: clamp(34px, 5.5vw, 56px); text-shadow: 4px 4px 0 var(--sun); }
 .clips { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 34px 26px; margin-top: 30px; }
 .clips--all { margin-top: 34px; }
-/* a newspaper clipping: taped on, torn along the bottom */
-.clip {
-  position: relative; display: block; text-decoration: none; transform: rotate(var(--tilt, -.6deg)); transition: transform .15s;
+/* a newspaper clipping: taped on, torn along the bottom. Only the paper
+   behind the words tilts; tilting the words with it (under the outline
+   filter) made the browser draw them blurry. */
+.clip { position: relative; display: block; text-decoration: none; transition: transform .15s; }
+.clip:hover { transform: translateY(-3px); }
+.clip__bg {
+  position: absolute; inset: 0; transform: rotate(var(--tilt, -.6deg)); transition: transform .15s;
   filter: drop-shadow(2px 0 0 var(--ink)) drop-shadow(-2px 0 0 var(--ink)) drop-shadow(0 2px 0 var(--ink)) drop-shadow(0 -2px 0 var(--ink)) drop-shadow(4px 5px 0 rgba(20, 47, 69, .35));
 }
-.clip:hover { transform: rotate(0deg) translateY(-3px); }
-.clip::before { content: ''; position: absolute; z-index: 1; top: -13px; left: 50%; width: 96px; height: 26px; margin-left: -48px; background: var(--sun); transform: rotate(-3deg); }
-.clip__paper {
-  display: block; height: 100%; padding: 24px 20px 30px; background: #fffbea;
+.clip:hover .clip__bg { transform: rotate(0deg); }
+.clip__sheet {
+  display: block; height: 100%; background: #fffbea;
   -webkit-mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 18px 100%;
   mask: conic-gradient(from -45deg at bottom, #0000, #000 1deg 89deg, #0000 90deg) 50% / 18px 100%;
 }
+.clip::before { content: ''; position: absolute; z-index: 1; top: -13px; left: 50%; width: 96px; height: 26px; margin-left: -48px; background: var(--sun); transform: rotate(-3deg); }
+.clip__paper { position: relative; display: block; height: 100%; padding: 24px 20px 30px; }
 .dateline { display: block; margin: 0; font: 700 13px/1.2 var(--cond); letter-spacing: 1.6px; text-transform: uppercase; color: var(--red); }
 .clip__pic { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; margin-bottom: 12px; border: 2px solid var(--ink); }
 .byline { display: flex; align-items: center; gap: 8px; }

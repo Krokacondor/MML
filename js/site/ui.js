@@ -300,7 +300,7 @@ export const byline = (a, size = 30) =>
   a.authorPicture ? html`<img class="byline__pic" src="${a.authorPicture}" alt="" style="--b:${size}px">` : '';
 
 export const clip = (a, i = 0) =>
-  html`<a class="clip" href="#/news/${a.id}" style="--tilt:${[-0.8, 0.6, -0.4][i % 3]}deg"><span class="clip__paper">
+  html`<a class="clip" href="#/news/${a.id}" style="--tilt:${[-0.8, 0.6, -0.4][i % 3]}deg"><span class="clip__bg"><span class="clip__sheet"></span></span><span class="clip__paper">
     ${a.image ? html`<img class="clip__pic" src="${a.image}" alt="" loading="lazy">` : ''}
     <span class="dateline byline">${byline(a)}<span>${fmtDate(a.date)}${a.author ? ` / ${a.author}` : ''}</span></span>
     <h3>${a.title}</h3>
