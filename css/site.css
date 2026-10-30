@@ -715,3 +715,6 @@ a.post__who:hover b { text-decoration: underline; }
   .draftboard { display: none; }
   .draftrounds { display: block; }
 }
+
+/* GM names, one per line, first letters lined up (co-managed teams) */
+b.gmstack { display: inline-grid; justify-items: start; vertical-align: middle; text-align: left; }

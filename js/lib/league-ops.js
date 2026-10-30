@@ -89,6 +89,10 @@ export const TIME_ICON = { day: '☀️', night: '🌙' };
 // A scheduled game's stadium as shown: "Mario Stadium ☀️".
 export const stadiumLabel = (s) => (s.stadium ? `${s.stadium}${TIME_ICON[s.time] ? ` ${TIME_ICON[s.time]}` : ''}` : '');
 
+// A team's general managers. "gm" is one name, or a list for a co-managed team.
+export const gmsOf = (team) => [].concat(team?.gm || []).filter(Boolean);
+export const gmLabel = (team) => gmsOf(team).join(', ');
+
 export const pretty = (data) => JSON.stringify(data, null, 2) + '\n';
 
 // Season files keep one game (or one player's season line) per row of text, so

@@ -4,6 +4,7 @@
 import { html, slug } from '../lib/html.js';
 import { mug, pennant, teamVars, fmtDate } from './ui.js';
 import { spoil, eye } from './spoilers.js';
+import { gmLabel } from '../lib/league-ops.js';
 
 export const feedName = (league) => league.feedName || 'League Banter';
 
@@ -20,7 +21,7 @@ function poster(model, post) {
   }
   if (by.kind === 'gm' && team) {
     return html`<a class="post__who" href="#/team/${team.id}" style="${teamVars(team)}">
-      <span class="post__gm">GM</span><span><b>${by.name || team.gm}</b><small>${pennant(team)}</small></span></a>`;
+      <span class="post__gm">GM</span><span><b>${by.name || gmLabel(team)}</b><small>${pennant(team)}</small></span></a>`;
   }
   return html`<span class="post__who"><span class="post__gm post__gm--other">${(by.name || '?').slice(0, 1)}</span><span><b>${by.name || 'Unknown'}</b>${team ? html`<small>${pennant(team)}</small>` : ''}</span></span>`;
 }

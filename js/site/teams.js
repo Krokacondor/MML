@@ -1,12 +1,12 @@
 import { html, slug } from '../lib/html.js';
 import { C } from '../lib/statdefs.js';
 import { positions, pitched, teamsIn, blankLine } from '../lib/aggregate.js';
-import { stadiumLabel } from '../lib/league-ops.js';
+import { stadiumLabel, gmsOf } from '../lib/league-ops.js';
 import { seriesGames, seriesLength } from './games.js';
 import { spoil, eye } from './spoilers.js';
 import { draftOf, teamMoves, lineupCard, who, ordinal, freeAgentAtEnd, teamHonors } from './transactions.js';
 import { gmLink } from './gms.js';
-import { teamVars, pennant, playerCell, teamCell, teamLogo, standings, progressNote, seasonClubs, streakOf, tabbedStats, tiles, gameWhen, notFound, keepWords, confBadge } from './ui.js';
+import { teamVars, pennant, playerCell, teamCell, teamLogo, standings, progressNote, seasonClubs, streakOf, tabbedStats, tiles, gameWhen, notFound, keepWords, confBadge, gmStack } from './ui.js';
 
 export function teamsView(ctx) {
   const { model, season } = ctx;
@@ -100,7 +100,7 @@ export function teamView(ctx, id) {
         <div>
           <p class="teamhead__season">${head.name}${conf ? html` / ${conf.name}` : ''}</p>
           <h1>${keepWords(team.name, team.together)}</h1>
-          ${team.gm ? html`<p class="teamhead__gm">General Manager <b class="teamhead__gmname">${gmLink(team.gm)}</b></p>` : ''}
+          ${gmsOf(team).length ? html`<p class="teamhead__gm">${gmsOf(team).length > 1 ? 'General Managers' : 'General Manager'} ${gmStack(team, 'teamhead__gmname', gmLink)}</p>` : ''}
           ${before ? html`<p class="teamhead__gm">Previously <a class="teamhead__chip" href="#/team/${before.id}">${pennant(before)}${before.name}</a></p>` : ''}
           ${after ? html`<p class="teamhead__gm">Now <a class="teamhead__chip" href="#/team/${after.id}">${pennant(after)}${after.name}</a></p>` : ''}
           ${teamHonors(model, id).map((h) => html`<p class="teamhead__honor"><a href="${h.href}">${h.label}</a></p>`)}

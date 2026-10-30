@@ -3,14 +3,15 @@
 // phones. Before the picks are in it shows the draft order.
 
 import { html } from '../lib/html.js';
-import { mug, pennant, teamLogo, teamVars, teamCell } from './ui.js';
+import { gmsOf } from '../lib/league-ops.js';
+import { mug, pennant, teamLogo, teamVars, teamCell, gmStack } from './ui.js';
 import { draftOf, who, ordinal } from './transactions.js';
 
 // The first-round order as a numbered list of teams and their GMs.
 export function draftOrderList(model, ids) {
   return html`<ol class="draftorder">${ids.map((id, i) => {
     const team = model.team(id);
-    return html`<li><b>${i + 1}</b>${teamCell(team)}${team.gm ? html`<span>${team.gm}</span>` : ''}</li>`;
+    return html`<li><b>${i + 1}</b>${teamCell(team)}${gmsOf(team).length ? html`<span>${gmStack(team)}</span>` : ''}</li>`;
   })}</ol>`;
 }
 

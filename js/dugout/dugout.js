@@ -8,7 +8,7 @@ import { parseGame } from '../lib/parse-game.js';
 import { markdown } from '../lib/markdown.js';
 import { fmtIP } from '../lib/statdefs.js';
 import { loadLeague } from '../lib/load.js';
-import { GAME_TYPES, matchTeam, makeTeam, learnAliases, nextGameId, toStoredGame, serializeSeason, pretty, todayISO, isMii, STADIUMS, TIME_ICON, stadiumLabel } from '../lib/league-ops.js';
+import { GAME_TYPES, matchTeam, makeTeam, learnAliases, nextGameId, toStoredGame, serializeSeason, pretty, todayISO, isMii, STADIUMS, TIME_ICON, stadiumLabel, gmsOf, gmLabel } from '../lib/league-ops.js';
 import { GitHubRepo, LocalRepo, updateJson } from './github.js';
 import { seal, unseal } from './vault.js';
 
@@ -624,7 +624,7 @@ async function tabPosts(el) {
               </fieldset>
               <label data-for="player">Player <small>start typing a name</small><input name="player" list="post-players" value="${kind === 'player' ? cur.by?.name || '' : ''}" autocomplete="off"></label>
               <datalist id="post-players">${players.map((n) => html`<option value="${n}"></option>`)}</datalist>
-              <label data-for="gm">GM<select name="gm">${teams.map((t) => html`<option value="${t.id}" ${kind === 'gm' && cur.team === t.id ? 'selected' : ''}>${t.gm || 'No GM'} (${t.name})</option>`)}</select></label>
+              <label data-for="gm">GM<select name="gm">${teams.flatMap((t) => (gmsOf(t).length ? gmsOf(t) : ['']).map((g) => html`<option value="${t.id}|${g}" ${kind === 'gm' && cur.team === t.id && (!g || slug(g) === slug(cur.by?.name || '') || gmsOf(t).length === 1) ? 'selected' : ''}>${g || 'No GM'} (${t.name})</option>`))}</select></label>
               <label data-for="other">Name <small>a reporter, a fan, a sponsor...</small><input name="other" value="${kind === 'other' ? cur.by?.name || '' : ''}"></label>
               <div class="grid">
                 <label>Team <small>used by the team filter</small><select name="team"><option value="">No team</option>${teams.map((t) => html`<option value="${t.id}" ${cur.team === t.id ? 'selected' : ''}>${t.name}</option>`)}</select></label>
@@ -645,7 +645,7 @@ async function tabPosts(el) {
       const k = form.kind.value;
       for (const box of form.querySelectorAll('[data-for]')) box.hidden = box.dataset.for !== k;
       if (!fillTeam) return;
-      if (k === 'gm') form.team.value = form.gm.value;
+      if (k === 'gm') form.team.value = form.gm.value.split('|')[0];
       if (k === 'player' && teamOfPlayer(form.player.value)) form.team.value = teamOfPlayer(form.player.value);
     };
     sync(false);
@@ -703,8 +703,9 @@ async function tabPosts(el) {
     e.preventDefault();
     const f = fields(e.target);
     const kind = f.kind;
-    const gmTeam = teams.find((t) => t.id === f.gm);
-    const name = kind === 'player' ? (model ? model.canon(f.player.trim()) : f.player.trim()) : kind === 'gm' ? gmTeam?.gm || '' : f.other.trim();
+    // A GM option is "team id|GM name": co-managed teams list each GM.
+    const [gmTeam, gmName] = f.gm.split('|');
+    const name = kind === 'player' ? (model ? model.canon(f.player.trim()) : f.player.trim()) : kind === 'gm' ? gmName || '' : f.other.trim();
     work(e.submitter, async () => {
       if (!name) throw new Error(kind === 'player' ? 'Type the player who is posting.' : kind === 'gm' ? 'That team has no GM yet.' : 'Type who is posting.');
       if (!picked && !cur.image) throw new Error('Add the picture first: paste it, drag it in, or choose a file.');
@@ -725,7 +726,7 @@ async function tabPosts(el) {
       }
       list = await updateJson(S.repo, 'data/posts.json', [], (all) => {
         const post = {
-          id, date: f.date, by: { kind, name }, team: kind === 'gm' ? f.gm : f.team, image, ...size,
+          id, date: f.date, by: { kind, name }, team: kind === 'gm' ? gmTeam : f.team, image, ...size,
           ...(f.text.trim() ? { text: f.text.trim() } : {}),
           ...(f.spoiler ? { spoiler: true } : {}),
         };
@@ -751,7 +752,7 @@ function tabTeams(el) {
     <div class="grid">
       <label>Team name<input name="name" value="${t.name}" required></label>
       <label>Short name <small>up to 5 letters</small><input name="abbr" value="${t.abbr || ''}" maxlength="5"></label>
-      <label>General manager<input name="gm" value="${t.gm || ''}"></label>
+      <label>General manager <small>co-GMs: put a comma between names</small><input name="gm" value="${gmLabel(t)}"></label>
       ${(S.league.conferences || []).length
         ? html`<label>Conference<select name="conference">${options([['', 'None'], ...S.league.conferences.map((c) => [c.id, c.name])], t.conference || '')}</select></label>`
         : ''}
@@ -785,12 +786,13 @@ function tabTeams(el) {
     e.preventDefault();
     const edits = [...el.querySelectorAll('fieldset.team')].map((fs) => {
       const v = (name) => $(`[name="${name}"]`, fs)?.value.trim() ?? '';
+      const gms = v('gm').split(',').map((s) => s.trim()).filter(Boolean);
       return {
         id: fs.dataset.id,
         optional: { conference: v('conference'), logo: v('logo'), blurb: v('blurb') },
         name: v('name'),
         abbr: v('abbr').toUpperCase(),
-        gm: v('gm'),
+        gm: gms.length > 1 ? gms : gms[0] || '',
         colors: [v('c1'), v('c2')],
         aliases: v('aliases').split(',').map((s) => s.trim()).filter(Boolean),
         active: $('[name="active"]', fs).checked,
@@ -847,7 +849,7 @@ async function tabLineups(el) {
   const inSeason = S.teams
     .filter((t) => (t.seasons ? t.seasons.includes(sid) : t.active !== false))
     .sort((a, b) => a.name.localeCompare(b.name));
-  const own = inSeason.filter((t) => t.gm && slug(t.gm) === slug(S.who));
+  const own = inSeason.filter((t) => gmsOf(t).some((g) => slug(g) === slug(S.who)));
   const mine = isAdmin() || !own.length ? inSeason : own;
   let teamId = mine[0]?.id || '';
   // The draft names Miis by shirt ("Red Mii (F)"); show who wears it this season.
@@ -937,7 +939,7 @@ async function tabStadiums(el) {
   let season = await readJson(path, { schedule: [] });
   const name = (id) => S.teams.find((t) => t.id === id)?.name || id;
   // A team's GM sets their own home games; everyone else can set any game.
-  const own = S.teams.filter((t) => t.gm && slug(t.gm) === slug(S.who)).map((t) => t.id);
+  const own = S.teams.filter((t) => gmsOf(t).some((g) => slug(g) === slug(S.who))).map((t) => t.id);
   const canSet = (s) => isAdmin() || !own.length || own.includes(s.home);
   const valueOf = (s) => (s.stadium ? `${s.stadium}|${s.time || ''}` : '');
   const choices = [['', 'Not chosen yet'], ...STADIUMS.flatMap(([n, times]) => times.map((t) => [`${n}|${t}`, `${n} ${TIME_ICON[t]}`]))];

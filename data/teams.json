@@ -117,7 +117,10 @@
     "id": "flipside-flappers",
     "name": "Flipside Flappers",
     "abbr": "FF",
-    "gm": "Joke Breaker",
+    "gm": [
+      "Joke Breaker",
+      "sunnyleemur"
+    ],
     "conference": "mk",
     "colors": ["#52de8c", "#f08ee2"],
     "logo": "assets/teams/flipside-flappers-square.png",

@@ -3,6 +3,7 @@
 
 import { html, slug } from '../lib/html.js';
 import { teamsIn } from '../lib/aggregate.js';
+import { gmsOf } from '../lib/league-ops.js';
 import { diamond, fieldStar } from './field.js';
 import { mug, pennant, teamVars, pname } from './ui.js';
 
@@ -100,7 +101,7 @@ export function teamHonors(model, id) {
 // Every GM the site knows: team GMs and GMs of clubs still to be announced. slug -> name
 export function gmNames(model) {
   const names = new Map();
-  for (const t of model.teams.values()) if (t.gm) names.set(slug(t.gm), t.gm);
+  for (const t of model.teams.values()) for (const g of gmsOf(t)) names.set(slug(g), g);
   for (const s of model.seasons) for (const p of s.pending) if (p.gm && !names.has(slug(p.gm))) names.set(slug(p.gm), p.gm);
   return names;
 }
@@ -108,7 +109,7 @@ export function gmNames(model) {
 // The teams a GM has run: [{ team, seasons }], oldest first.
 export function gmTeams(model, gm) {
   return [...model.teams.values()]
-    .filter((t) => t.gm && slug(t.gm) === slug(gm))
+    .filter((t) => gmsOf(t).some((g) => slug(g) === slug(gm)))
     .map((team) => ({ team, seasons: model.seasons.filter((s) => teamsIn(model, s).some((x) => x.id === team.id)) }))
     .filter((x) => x.seasons.length)
     .sort((a, b) => model.seasons.indexOf(a.seasons[0]) - model.seasons.indexOf(b.seasons[0]));

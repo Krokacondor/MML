@@ -5,6 +5,11 @@ import { html, slug, raw, esc } from '../lib/html.js';
 import { COLSETS, RATES, fmtAvg, colsFor, viewsFor } from '../lib/statdefs.js';
 import { teamsIn, scheduleProgress } from '../lib/aggregate.js';
 import { excerpt } from '../lib/markdown.js';
+import { gmsOf } from '../lib/league-ops.js';
+
+// A team's GMs, one name per line with their first letters lined up.
+export const gmStack = (team, cls = '', show = (g) => g) =>
+  html`<b class="gmstack ${cls}">${gmsOf(team).map((g) => html`<span>${show(g)}</span>`)}</b>`;
 import { spoil, eye } from './spoilers.js';
 
 export const fmtDate = (iso, opts = { month: 'short', day: 'numeric', year: 'numeric' }) => {
@@ -283,7 +288,7 @@ export function teamCard(ctx, team) {
   return html`<a class="teamcard" href="#/team/${team.id}" style="${teamVars(team)}">
     ${teamLogo(team)}
     <span class="teamcard__name">${keepWords(team.name, team.together)}</span>
-    ${team.gm ? html`<span class="teamcard__gm">GM <b>${team.gm}</b></span>` : ''}
+    ${gmsOf(team).length ? html`<span class="teamcard__gm">${gmsOf(team).length > 1 ? 'GMs' : 'GM'} ${gmStack(team)}</span>` : ''}
     ${ctx.season.reg.hasResults && rec ? html`<span class="teamcard__rec">${rec.w}-${rec.l}</span>` : ''}
   </a>`;
 }
