@@ -1,6 +1,7 @@
 import { html, slug } from '../lib/html.js';
 import { C } from '../lib/statdefs.js';
 import { positions, pitched, teamsIn, blankLine } from '../lib/aggregate.js';
+import { stadiumLabel } from '../lib/league-ops.js';
 import { seriesGames, seriesLength } from './games.js';
 import { spoil, eye } from './spoilers.js';
 import { draftOf, teamMoves, lineupCard, who, ordinal, freeAgentAtEnd, teamHonors } from './transactions.js';
@@ -127,7 +128,7 @@ export function teamView(ctx, id) {
               <tbody>${series.map(({ week, s, opp, games }) => html`<tr>
                 <td class="lead">Week ${week}</td>
                 <td class="lead">${s.home ? html`<span class="vs vs--at">${s.home === id ? 'vs' : '@'}</span>` : ''}${teamCell(opp)}${confBadge({ ...ctx, season: shown }, id, opp.id)}</td>
-                <td class="lead">${s.stadium || ''}</td>
+                <td class="lead">${stadiumLabel(s)}</td>
                 <td class="lead">${games.length
                   ? html`${games.map((g, i) => {
                       const mine = g.home.team === id ? g.home : g.away;

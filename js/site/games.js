@@ -1,6 +1,7 @@
 import { html, slug } from '../lib/html.js';
 import { BAT_KEYS, viewsFor, colsFor } from '../lib/statdefs.js';
 import { scheduleProgress } from '../lib/aggregate.js';
+import { stadiumLabel } from '../lib/league-ops.js';
 import { teamVars, pennant, playerCell, teamCell, lineScore, scoreCard, tabbedStats, renderTable, fmtDate, notFound, runs, finalWord, confBadge, useMiiColors } from './ui.js';
 import { spoil, eye } from './spoilers.js';
 
@@ -27,7 +28,7 @@ export function gamesView(ctx) {
       ${head(`Week ${wk.week}`, inWeek.flat())}
       <div class="serieses">${wk.series.map((s, i) => html`<div class="series">${confBadge(ctx, s.teams[0], s.teams[1])}
         <div class="series__teams">${teamCell(model.team(s.teams[0]))}<span class="vs">${s.home ? '@' : 'vs'}</span>${teamCell(model.team(s.teams[1]))}</div>
-        <p class="series__where">${[s.stadium, seriesLength(s)].filter(Boolean).join(' / ')}</p>
+        <p class="series__where">${[stadiumLabel(s), seriesLength(s)].filter(Boolean).join(' / ')}</p>
         ${inWeek[i].length ? html`<div class="scores">${inWeek[i].map((g) => scoreCard(g, model))}</div>` : ''}
       </div>`)}</div>
     </section>`;

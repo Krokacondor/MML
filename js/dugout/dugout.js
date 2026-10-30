@@ -8,7 +8,7 @@ import { parseGame } from '../lib/parse-game.js';
 import { markdown } from '../lib/markdown.js';
 import { fmtIP } from '../lib/statdefs.js';
 import { loadLeague } from '../lib/load.js';
-import { GAME_TYPES, matchTeam, makeTeam, learnAliases, nextGameId, toStoredGame, serializeSeason, pretty, todayISO, isMii } from '../lib/league-ops.js';
+import { GAME_TYPES, matchTeam, makeTeam, learnAliases, nextGameId, toStoredGame, serializeSeason, pretty, todayISO, isMii, STADIUMS, TIME_ICON, stadiumLabel } from '../lib/league-ops.js';
 import { GitHubRepo, LocalRepo, updateJson } from './github.js';
 import { seal, unseal } from './vault.js';
 
@@ -140,6 +140,7 @@ const TABS = {
   posts: ['Social posts', tabPosts],
   teams: ['Teams', tabTeams],
   lineups: ['Lineups', tabLineups],
+  stadiums: ['Stadiums', tabStadiums],
   players: ['Players', tabPlayers],
   league: ['League', tabLeague],
   logins: ['Logins', tabLogins],
@@ -148,7 +149,7 @@ const TABS = {
 // Admins (league.json "admins", by login name, plus anyone signed in with the key
 // itself or in local mode) see every tab. Other staff see only the everyday ones.
 // This hides tabs; it is not a lock, since every login can reach the key.
-const STAFF_TABS = ['upload', 'games', 'articles', 'posts', 'lineups', 'players'];
+const STAFF_TABS = ['upload', 'games', 'articles', 'posts', 'lineups', 'stadiums', 'players'];
 const isAdmin = () => S.who === 'Key holder' || S.who === 'Local mode' || (S.league.admins || []).some((name) => slug(name) === slug(S.who));
 const tabsFor = () => Object.entries(TABS).filter(([id]) => isAdmin() || STAFF_TABS.includes(id));
 
@@ -920,6 +921,93 @@ async function tabLineups(el) {
       }, `Lineup: ${team.name} (saved by ${S.who})`, serializeSeason);
       draw();
       return `${team.name} lineup saved.${whenLive()}`;
+    });
+  };
+  draw();
+}
+
+// ---- Stadiums --------------------------------------------------------------
+
+// Where each of a week's games is played. The home team picks the week of the
+// game, and a stadium (day or night) can be used only once a week.
+async function tabStadiums(el) {
+  const sid = S.league.currentSeason;
+  const meta = S.league.seasons.find((s) => s.id === sid) || { id: sid, name: sid };
+  const path = `data/seasons/${sid}.json`;
+  let season = await readJson(path, { schedule: [] });
+  const name = (id) => S.teams.find((t) => t.id === id)?.name || id;
+  // A team's GM sets their own home games; everyone else can set any game.
+  const own = S.teams.filter((t) => t.gm && slug(t.gm) === slug(S.who)).map((t) => t.id);
+  const canSet = (s) => isAdmin() || !own.length || own.includes(s.home);
+  const valueOf = (s) => (s.stadium ? `${s.stadium}|${s.time || ''}` : '');
+  const choices = [['', 'Not chosen yet'], ...STADIUMS.flatMap(([n, times]) => times.map((t) => [`${n}|${t}`, `${n} ${TIME_ICON[t]}`]))];
+  // Start on the first week with a game still missing its stadium.
+  let week = (season.schedule?.find((w) => w.series.some((s) => !s.stadium)) || season.schedule?.[0])?.week;
+  const thisWeek = () => season.schedule.find((w) => w.week === week);
+
+  // Grays out each stadium another game this week already has, day or night.
+  const lockTaken = () => {
+    const games = thisWeek().series;
+    const taken = games.map((s, i) => ($(`[name="g${i}"]`, el)?.value ?? valueOf(s)).split('|')[0]);
+    games.forEach((s, i) => {
+      const box = $(`[name="g${i}"]`, el);
+      if (!box) return;
+      for (const o of box.options) o.disabled = Boolean(o.value) && taken.some((n, j) => j !== i && n === o.value.split('|')[0]);
+    });
+  };
+
+  const draw = () => {
+    if (!week) {
+      el.innerHTML = html`<h2>Stadiums</h2>
+        <p class="hint">${meta.name} has no schedule yet.</p>`;
+      return;
+    }
+    el.innerHTML = html`
+      <h2>Stadiums</h2>
+      <p class="hint">${meta.name}: the home team picks the stadium the week of the game. ${TIME_ICON.day} is day and ${TIME_ICON.night} is night. Each stadium can be used once a week, day or night.</p>
+      <form class="card" data-stadiums>
+        <label>Week<select name="week">${options(season.schedule.map((w) => [String(w.week), `Week ${w.week}`]), String(week))}</select></label>
+        <ol class="venues">${thisWeek().series.map((s, i) => html`<li>
+          <span><b>Game ${i + 1}</b> ${name(s.teams[0])} @ ${name(s.teams[1])}</span>
+          ${canSet(s) ? html`<select name="g${i}">${options(choices, valueOf(s))}</select>` : html`<span>${stadiumLabel(s) || 'Not chosen yet'}</span>`}
+        </li>`)}</ol>
+        <button class="btn">Save stadiums</button>
+      </form>`;
+    lockTaken();
+  };
+
+  el.onchange = (e) => {
+    if (e.target.matches('[name="week"]')) {
+      week = Number(e.target.value);
+      draw();
+    } else if (e.target.matches('[name^="g"]')) {
+      lockTaken();
+    }
+  };
+  el.onsubmit = (e) => {
+    e.preventDefault();
+    const f = fields(e.target);
+    work(e.submitter, async () => {
+      // Each game's choice, by its home team, so a reordered file still lines up.
+      const want = thisWeek().series.filter(canSet).map((s) => [s.home, f[`g${thisWeek().series.indexOf(s)}`] || '']);
+      season = await updateJson(S.repo, path, { id: sid, name: meta.name, games: [] }, (file) => {
+        const live = file.schedule?.find((w) => w.week === week);
+        if (!live) throw new Error(`Week ${week} is missing from the schedule.`);
+        for (const [home, value] of want) {
+          const s = live.series.find((x) => x.home === home);
+          if (!s) continue;
+          const [stadium, time] = value.split('|');
+          delete s.stadium;
+          delete s.time;
+          if (stadium) Object.assign(s, { stadium, time });
+        }
+        // Checked against the saved file, in case someone else picked one meanwhile.
+        const used = live.series.map((s) => s.stadium).filter(Boolean);
+        const twice = used.find((n, i) => used.indexOf(n) !== i);
+        if (twice) throw new Error(`${twice} is picked twice in Week ${week}. Each stadium can be used once a week.`);
+      }, `Stadiums: Week ${week} (saved by ${S.who})`, serializeSeason);
+      draw();
+      return `Week ${week} stadiums saved.${whenLive()}`;
     });
   };
   draw();

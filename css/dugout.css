@@ -108,3 +108,9 @@ fieldset.card { box-shadow: 4px 4px 0 var(--ink); }
 .order { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; }
 .order li { display: grid; grid-template-columns: 30px minmax(0, 1fr) 120px; gap: 10px; align-items: center; }
 .order li > b { text-align: right; font: 400 22px/1 var(--display); color: var(--red); }
+
+/* Stadiums tab: one row per game in the week */
+.venues { display: grid; gap: 10px; margin: 0; padding: 0; list-style: none; }
+.venues li { display: grid; grid-template-columns: minmax(0, 1fr) minmax(210px, 260px); gap: 6px 12px; align-items: center; }
+.venues li b { margin-right: 6px; color: var(--red); }
+@media (max-width: 560px) { .venues li { grid-template-columns: 1fr; } }

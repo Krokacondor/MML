@@ -72,6 +72,23 @@ export function toStoredGame(parsed, { id, date, week, type, awayTeam, homeTeam 
 // without a game "name". Miis can't be a lineup's star.
 export const isMii = (name, players = {}) => / Mii \([MF]\)$/.test(name) || Boolean(players[slug(name)] && !players[slug(name)].name);
 
+// The game's stadiums and whether each is played by day, at night, or both.
+// A week's games each pick one, and no stadium is used twice in a week.
+export const STADIUMS = [
+  ['Bowser Castle', ['night']],
+  ['Bowser Jr. Playroom', ['day']],
+  ['Daisy Cruiser', ['day', 'night']],
+  ['DK Jungle', ['day', 'night']],
+  ["Luigi's Mansion", ['night']],
+  ['Mario Stadium', ['day', 'night']],
+  ['Peach Ice Garden', ['day', 'night']],
+  ['Wario City', ['day', 'night']],
+  ['Yoshi Park', ['day', 'night']],
+];
+export const TIME_ICON = { day: '☀️', night: '🌙' };
+// A scheduled game's stadium as shown: "Mario Stadium ☀️".
+export const stadiumLabel = (s) => (s.stadium ? `${s.stadium}${TIME_ICON[s.time] ? ` ${TIME_ICON[s.time]}` : ''}` : '');
+
 export const pretty = (data) => JSON.stringify(data, null, 2) + '\n';
 
 // Season files keep one game (or one player's season line) per row of text, so
