@@ -24,7 +24,11 @@
     "Yellow Mii (M)": "DIO",
     "Green Mii (M)": "Toa Tokuchi",
     "Light Blue Mii (F)": "Phi",
-    "Blue Mii (F)": "Katara"
+    "Blue Mii (F)": "Katara",
+    "Orange Mii (M)": "Numbuh Four",
+    "Orange Mii (F)": "Velma",
+    "Purple Mii (M)": "Grimace",
+    "Purple Mii (F)": "Starfire"
   },
   "freeAgents": [
     "Orange Mii (M)",

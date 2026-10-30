@@ -144,8 +144,10 @@ export function freeAgentAtEnd(model, season, name) {
 export function playerStory(model, season, name) {
   const lines = [];
   const pick = pickOf(model, season, name);
-  if (!pick && freeAgentAtEnd(model, season, name) && !season.moves.some((m) => same(model, m.p, name))) {
-    return season.draft.length ? [html`Free agent all season`] : [];
+  // Never drafted, signed or on a team: "Undrafted" until the World Series is played.
+  if (!pick && !finishOf(model, season, name) && !season.moves.some((m) => same(model, m.p, name))) {
+    if (!season.draft.length) return [];
+    return [worldSeries(season) && freeAgentAtEnd(model, season, name) ? html`Free agent all season` : html`Undrafted`];
   }
   if (pick) lines.push(html`Drafted by ${chip(model, pick.team)} in round ${pick.round}, pick ${pick.pick} (${ordinal(pick.overall)} overall)`);
   for (const m of season.moves.filter((x) => same(model, x.p, name))) {
