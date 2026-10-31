@@ -1,5 +1,18 @@
 [
   {
+    "id": "2026-10-30-red-pianta",
+    "date": "2026-10-30",
+    "by": {
+      "kind": "player",
+      "name": "Red Pianta"
+    },
+    "team": "pi-illo-island-dreamers",
+    "image": "assets/posts/2026-10-30-red-pianta-mvvsxksr.png",
+    "width": 596,
+    "height": 303,
+    "text": "I've managed to find my fire since last season... and I'm ready to chuck that ball right out of the park."
+  },
+  {
     "id": "2026-10-30-daffy",
     "date": "2026-10-30",
     "by": {
