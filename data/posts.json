@@ -1,5 +1,17 @@
 [
   {
+    "id": "2026-11-02-green-noki",
+    "date": "2026-11-02",
+    "by": {
+      "kind": "player",
+      "name": "Green Noki"
+    },
+    "team": "bean-bean-brigade",
+    "image": "assets/posts/2026-11-02-green-noki-mvzgj3lz.png",
+    "width": 1044,
+    "height": 689
+  },
+  {
     "id": "2026-10-30-red-kritter",
     "date": "2026-10-30",
     "by": {
