@@ -1,5 +1,17 @@
 [
   {
+    "id": "2026-11-02-yellow-yoshi",
+    "date": "2026-11-02",
+    "by": {
+      "kind": "player",
+      "name": "Yellow Yoshi"
+    },
+    "team": "wild-woods-1-uppers",
+    "image": "assets/posts/2026-11-02-yellow-yoshi-mvzrji1w.png",
+    "width": 1200,
+    "height": 729
+  },
+  {
     "id": "2026-11-02-petey-piranha",
     "date": "2026-11-02",
     "by": {
