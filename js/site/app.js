@@ -15,6 +15,7 @@ import { gmView } from './gms.js';
 import { awardsView } from './awards.js';
 import { draftView } from './draft.js';
 import { spoil, watchSpoilers } from './spoilers.js';
+import { watchTheme } from './theme.js';
 
 const ROUTES = [
   [/^\/$/, home, 'home'],
@@ -129,4 +130,5 @@ async function boot() {
   route();
 }
 
+watchTheme();
 boot();

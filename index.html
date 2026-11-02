@@ -10,6 +10,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@400;500;600;700&family=Barlow+Condensed:wght@500;600;700&family=Bowlby+One&family=Comic+Neue:wght@700&family=Yellowtail&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/site.css">
+  <!-- light or dark before the first paint (js/site/theme.js keeps it up to date) -->
+  <script>try { document.documentElement.dataset.theme = localStorage.getItem('sl.theme') || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'); } catch (e) {}</script>
 </head>
 <body>
   <header class="mast">
@@ -21,7 +23,10 @@
           <span class="brand__tag" data-league-tag></span>
         </span>
       </a>
-      <label class="season-pick" hidden><span>Season</span><select data-season></select></label>
+      <div class="mast__tools">
+        <label class="season-pick" hidden><span>Season</span><select data-season></select></label>
+        <button class="themebtn" type="button" data-theme-toggle aria-label="Dark mode" aria-pressed="false"><span class="themebtn__moon" aria-hidden="true">&#x263E;&#xFE0E;</span><span class="themebtn__sun" aria-hidden="true">&#x2600;&#xFE0E;</span></button>
+      </div>
       <nav class="nav" aria-label="Main">
         <a href="#/" data-nav="home"><span>Home</span></a>
         <a href="#/teams" data-nav="teams"><span>Teams</span></a>
