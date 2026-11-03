@@ -1,5 +1,17 @@
 [
   {
+    "id": "2026-11-02-mr-bean",
+    "date": "2026-11-02",
+    "by": {
+      "kind": "player",
+      "name": "Mr. Bean"
+    },
+    "team": "bean-bean-brigade",
+    "image": "assets/posts/2026-11-02-mr-bean-mw030uxh.jpg",
+    "width": 664,
+    "height": 1200
+  },
+  {
     "id": "2026-11-02-yellow-yoshi",
     "date": "2026-11-02",
     "by": {
