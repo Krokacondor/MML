@@ -14,7 +14,9 @@
       "s2",
       "s3"
     ],
-    "aliases": []
+    "aliases": [
+      "Monsters"
+    ]
   },
   {
     "id": "new-new-new-york-mets",
@@ -203,7 +205,9 @@
     "seasons": [
       "s3"
     ],
-    "aliases": []
+    "aliases": [
+      "Knights"
+    ]
   },
   {
     "id": "bean-bean-brigade",
