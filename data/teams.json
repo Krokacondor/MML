@@ -141,7 +141,9 @@
       "s2",
       "s3"
     ],
-    "aliases": []
+    "aliases": [
+      "Monkeys"
+    ]
   },
   {
     "id": "petalburg-koopa-troopas",
@@ -217,6 +219,8 @@
     "seasons": [
       "s3"
     ],
-    "aliases": []
+    "aliases": [
+      "Wilds"
+    ]
   }
 ]
