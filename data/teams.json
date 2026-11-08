@@ -71,7 +71,10 @@
       "s2",
       "s3"
     ],
-    "aliases": []
+    "aliases": [
+      "Glitzville Glamours",
+      "Rookies"
+    ]
   },
   {
     "id": "glitzville-glamours",
@@ -88,7 +91,10 @@
       "s2",
       "s3"
     ],
-    "aliases": []
+    "aliases": [
+      "Sarasaland Sandstorm",
+      "Fireballs"
+    ]
   },
   {
     "id": "wild-woods-1-uppers",
