@@ -5,9 +5,15 @@
     "abbr": "SRS",
     "gm": "Rory Dawn",
     "conference": "mk",
-    "colors": ["#19298c", "#f2c14b"],
+    "colors": [
+      "#19298c",
+      "#f2c14b"
+    ],
     "logo": "assets/teams/star-road-superstars.png",
-    "seasons": ["s2", "s3"],
+    "seasons": [
+      "s2",
+      "s3"
+    ],
     "aliases": []
   },
   {
@@ -16,10 +22,17 @@
     "abbr": "NNNYM",
     "gm": "Krokacondor",
     "conference": "mk",
-    "colors": ["#ec6f2d", "#002d72"],
+    "colors": [
+      "#ec6f2d",
+      "#002d72"
+    ],
     "logo": "assets/teams/new-new-new-york-mets.png",
-    "seasons": ["s2"],
-    "aliases": ["NNNYM"]
+    "seasons": [
+      "s2"
+    ],
+    "aliases": [
+      "NNNYM"
+    ]
   },
   {
     "id": "pi-illo-island-dreamers",
@@ -27,10 +40,18 @@
     "abbr": "PID",
     "gm": "Daffy",
     "conference": "mk",
-    "colors": ["#f93b3a", "#7df2ab"],
+    "colors": [
+      "#f93b3a",
+      "#7df2ab"
+    ],
     "logo": "assets/teams/pi-illo-island-dreamers.png",
-    "seasons": ["s2", "s3"],
-    "aliases": ["Piillo Island Dreamers"]
+    "seasons": [
+      "s2",
+      "s3"
+    ],
+    "aliases": [
+      "Piillo Island Dreamers"
+    ]
   },
   {
     "id": "sarasaland-sandstorm",
@@ -38,9 +59,15 @@
     "abbr": "SS",
     "gm": "J-Ray",
     "conference": "mk",
-    "colors": ["#e2b838", "#ea7206"],
+    "colors": [
+      "#e2b838",
+      "#ea7206"
+    ],
     "logo": "assets/teams/sarasaland-sandstorm.png",
-    "seasons": ["s2", "s3"],
+    "seasons": [
+      "s2",
+      "s3"
+    ],
     "aliases": []
   },
   {
@@ -49,22 +76,38 @@
     "abbr": "GG",
     "gm": "froggydojo",
     "conference": "bk",
-    "colors": ["#f783b3", "#ffe94d"],
+    "colors": [
+      "#f783b3",
+      "#ffe94d"
+    ],
     "logo": "assets/teams/glitzville-glamours-square.png",
-    "seasons": ["s2", "s3"],
+    "seasons": [
+      "s2",
+      "s3"
+    ],
     "aliases": []
   },
   {
     "id": "wild-woods-1-uppers",
     "name": "Wild Woods 1-Uppers",
     "abbr": "WW",
-    "together": ["Wild Woods"],
+    "together": [
+      "Wild Woods"
+    ],
     "gm": "Typh",
     "conference": "bk",
-    "colors": ["#66c475", "#063168"],
+    "colors": [
+      "#66c475",
+      "#063168"
+    ],
     "logo": "assets/teams/wild-woods-1-uppers.png",
-    "seasons": ["s2", "s3"],
-    "aliases": []
+    "seasons": [
+      "s2",
+      "s3"
+    ],
+    "aliases": [
+      "Muscles"
+    ]
   },
   {
     "id": "ohio",
@@ -72,9 +115,14 @@
     "abbr": "OHIO",
     "gm": "nima74",
     "conference": "bk",
-    "colors": ["#ad533b", "#f7c57a"],
+    "colors": [
+      "#ad533b",
+      "#f7c57a"
+    ],
     "logo": "assets/teams/ohio.png",
-    "seasons": ["s2"],
+    "seasons": [
+      "s2"
+    ],
     "aliases": []
   },
   {
@@ -83,21 +131,34 @@
     "abbr": "GS",
     "gm": "Pizano",
     "conference": "bk",
-    "colors": ["#0ea4e3", "#87d3ea"],
+    "colors": [
+      "#0ea4e3",
+      "#87d3ea"
+    ],
     "logo": "assets/teams/goon-squad.png",
-    "seasons": ["s2", "s3"],
+    "seasons": [
+      "s2",
+      "s3"
+    ],
     "aliases": []
   },
   {
     "id": "petalburg-koopa-troopas",
     "name": "Petalburg Koopa Troopas",
     "abbr": "PKT",
-    "together": ["Koopa Troopas"],
+    "together": [
+      "Koopa Troopas"
+    ],
     "gm": "Krokacondor",
     "conference": "mk",
-    "colors": ["#ff6011", "#004aad"],
+    "colors": [
+      "#ff6011",
+      "#004aad"
+    ],
     "logo": "assets/teams/petalburg-koopa-troopas-icon.png",
-    "seasons": ["s3"],
+    "seasons": [
+      "s3"
+    ],
     "formerly": "new-new-new-york-mets",
     "aliases": []
   },
@@ -107,11 +168,18 @@
     "abbr": "OH2",
     "gm": "nima74",
     "conference": "bk",
-    "colors": ["#81c3d5", "#175989"],
+    "colors": [
+      "#81c3d5",
+      "#175989"
+    ],
     "logo": "assets/teams/ohio-2.png",
-    "seasons": ["s3"],
+    "seasons": [
+      "s3"
+    ],
     "formerly": "ohio",
-    "aliases": []
+    "aliases": [
+      "Bows"
+    ]
   },
   {
     "id": "flipside-flappers",
@@ -122,9 +190,14 @@
       "sunnyleemur"
     ],
     "conference": "mk",
-    "colors": ["#52de8c", "#f08ee2"],
+    "colors": [
+      "#52de8c",
+      "#f08ee2"
+    ],
     "logo": "assets/teams/flipside-flappers-square.png",
-    "seasons": ["s3"],
+    "seasons": [
+      "s3"
+    ],
     "aliases": []
   },
   {
@@ -133,9 +206,14 @@
     "abbr": "BBB",
     "gm": "Daxx",
     "conference": "bk",
-    "colors": ["#3f7d33", "#f2c94c"],
+    "colors": [
+      "#3f7d33",
+      "#f2c94c"
+    ],
     "logo": "assets/teams/bean-bean-brigade.png",
-    "seasons": ["s3"],
+    "seasons": [
+      "s3"
+    ],
     "aliases": []
   }
 ]
