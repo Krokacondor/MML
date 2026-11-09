@@ -201,7 +201,10 @@ export function parseGame(sheets) {
     const name = info.names[infoIdx] || block.label || `Team ${infoIdx + 1}`;
     if (runs !== score) warnings.push(`${name}: the score is ${score} but the batters' runs add up to ${runs}.`);
     if (block.rows.length !== 9) warnings.push(`${name}: ${block.rows.length} batters listed (a lineup is usually 9).`);
-    return { name, label: block.label, score, user: info.users[infoIdx] || '', line: lineIdx >= 0 ? info.lines[lineIdx] : [], block };
+    const line = lineIdx >= 0 ? info.lines[lineIdx] : [];
+    const innings = line.reduce((n, v) => n + (parseInt(v, 10) || 0), 0);
+    if (line.length && innings !== score) warnings.push(`${name}: the score is ${score} but the runs by inning add up to ${innings}.`);
+    return { name, label: block.label, score, user: info.users[infoIdx] || '', line, block };
   };
   const away = makeSide(sides[0]);
   const home = makeSide(sides[1]);
@@ -228,8 +231,15 @@ export function parseGame(sheets) {
   });
   if (pitching.length) {
     for (const [t, side, opp] of [['a', away, home], ['h', home, away]]) {
-      const allowed = pitching.filter((r) => r.t === t).reduce((n, r) => n + (r.r || 0), 0);
+      const mine = pitching.filter((r) => r.t === t);
+      const total = (rows, k) => rows.reduce((n, r) => n + (r[k] || 0), 0);
+      const allowed = total(mine, 'r');
       if (allowed !== opp.score) warnings.push(`${side.name} pitchers allowed ${allowed} runs but ${opp.name} scored ${opp.score}.`);
+      const hits = total(opp.block.rows, 'h');
+      if (total(mine, 'h') !== hits) warnings.push(`${side.name} pitchers allowed ${total(mine, 'h')} hits but ${opp.name}'s batters have ${hits}.`);
+      const outs = total(mine, 'outs');
+      const most = 3 * opp.line.filter((v) => v !== 'X').length;
+      if (most && outs > most) warnings.push(`${side.name} pitchers got ${outs} outs, but ${opp.name} only batted ${most / 3} innings.`);
     }
   }
   if (unknown.size) {

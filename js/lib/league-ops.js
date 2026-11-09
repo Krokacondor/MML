@@ -14,13 +14,30 @@ export const TEAM_COLORS = [
 
 const key = (s) => String(s ?? '').toLowerCase().replace(/[^a-z0-9]+/g, '');
 
-// Finds the league team a name from a game file refers to. Earlier names win.
+// Finds the league team a name from a game file refers to. A team's own name
+// beats another team's alias; otherwise earlier names win.
 export function matchTeam(teams, ...names) {
-  for (const name of names.map(key).filter(Boolean)) {
-    const hit = teams.find((t) => [t.name, ...(t.aliases || [])].some((a) => key(a) === name));
-    if (hit) return hit;
+  const keys = names.map(key).filter(Boolean);
+  for (const own of [true, false]) {
+    for (const name of keys) {
+      const hit = teams.find((t) => (own ? [t.name] : t.aliases || []).some((a) => key(a) === name));
+      if (hit) return hit;
+    }
   }
   return null;
+}
+
+// Finds the team a game file's lineup belongs to: the one whose season players
+// (a Map of team id -> Set of player slugs) include most of its batters.
+export function matchByPlayers(teams, players, batters) {
+  let best = null;
+  let most = 0;
+  for (const t of teams) {
+    const mine = players.get(t.id);
+    const n = mine ? batters.filter((p) => mine.has(slug(p))).length : 0;
+    if (n > most) [best, most] = [t, n];
+  }
+  return most >= Math.ceil(batters.length / 2) ? best : null;
 }
 
 export function makeTeam(teams, name, label) {
@@ -40,11 +57,36 @@ export function makeTeam(teams, name, label) {
 }
 
 // Remembers the names a game file used for a team, so the next file matches by itself.
-export function learnAliases(team, ...names) {
+// A name belongs to one team only: another team's own name is never learned, and
+// a name that moves (the game names a team after its captain) leaves its old team.
+export function learnAliases(teams, team, ...names) {
   for (const name of names) {
-    if (!name || [team.name, ...(team.aliases || [])].some((a) => key(a) === key(name))) continue;
+    if (!name || teams.some((t) => t !== team && key(t.name) === key(name))) continue;
+    for (const t of teams) if (t !== team && t.aliases) t.aliases = t.aliases.filter((a) => key(a) !== key(name));
+    if ([team.name, ...(team.aliases || [])].some((a) => key(a) === key(name))) continue;
     (team.aliases ||= []).push(name);
   }
+}
+
+// The scheduled series between two teams: in the given week, or else the first
+// week they meet without a game saved yet. Gives { week, teams, home, stadium, ... }.
+export function findSeries(season, a, b, week) {
+  const meet = (x, y) => [x, y].includes(a) && [x, y].includes(b);
+  const saved = (w) => (season.games || []).some((g) => g.week === w && meet(g.away.team, g.home.team));
+  for (const w of season.schedule || []) {
+    if (week ? w.week !== Number(week) : saved(w.week)) continue;
+    const series = (w.series || []).find((s) => meet(...s.teams));
+    if (series) return { week: w.week, ...series };
+  }
+  return null;
+}
+
+// The game itself doesn't care who is home: the schedule's home team only picks
+// the stadium. So a stored game's sides follow the schedule, not the file, and
+// this swaps them when the two disagree. Each team keeps its own line and stats.
+export function swapSides(game) {
+  const flip = (r) => ({ ...r, t: r.t === 'a' ? 'h' : r.t === 'h' ? 'a' : r.t });
+  return { ...game, away: game.home, home: game.away, batting: game.batting.map(flip), pitching: game.pitching.map(flip) };
 }
 
 export function nextGameId(season) {

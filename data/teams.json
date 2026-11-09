@@ -15,9 +15,7 @@
       "s3"
     ],
     "aliases": [
-      "Monsters",
-      "Flipside Flappers",
-      "Knights"
+      "Monsters"
     ]
   },
   {
@@ -74,8 +72,6 @@
       "s3"
     ],
     "aliases": [
-      "Glitzville Glamours",
-      "Rookies",
       "Fireballs"
     ]
   },
@@ -95,8 +91,6 @@
       "s3"
     ],
     "aliases": [
-      "Sarasaland Sandstorm",
-      "Fireballs",
       "Rookies"
     ]
   },
@@ -154,9 +148,7 @@
       "s3"
     ],
     "aliases": [
-      "Monkeys",
-      "Bean Bean Brigade",
-      "Wilds"
+      "Monkeys"
     ]
   },
   {
@@ -218,9 +210,7 @@
       "s3"
     ],
     "aliases": [
-      "Knights",
-      "Star Road Superstars",
-      "Monsters"
+      "Knights"
     ]
   },
   {
@@ -238,9 +228,7 @@
       "s3"
     ],
     "aliases": [
-      "Wilds",
-      "Goon Squad",
-      "Monkeys"
+      "Wilds"
     ]
   }
 ]

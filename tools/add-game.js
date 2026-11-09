@@ -12,7 +12,7 @@ import zlib from 'node:zlib';
 import { fileURLToPath } from 'node:url';
 import { readXlsx, readCsv } from '../js/lib/xlsx-lite.js';
 import { parseGame } from '../js/lib/parse-game.js';
-import { matchTeam, makeTeam, learnAliases, nextGameId, toStoredGame, serializeSeason, pretty, todayISO } from '../js/lib/league-ops.js';
+import { matchTeam, makeTeam, learnAliases, findSeries, swapSides, nextGameId, toStoredGame, serializeSeason, pretty, todayISO } from '../js/lib/league-ops.js';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
@@ -57,7 +57,7 @@ const resolve = (side) => {
     teams.push(team);
     console.log(`New team created: ${team.name}`);
   }
-  learnAliases(team, side.name, side.label);
+  learnAliases(teams, team, side.name, side.label);
   return team;
 };
 const away = resolve(parsed.away);
@@ -69,12 +69,16 @@ if (season.games.some((g) => g.fp === parsed.fp) && !force) {
   console.error('This game is already in the season (same teams, score and stats). Use --force to add it anyway.');
   process.exit(1);
 }
-const game = toStoredGame(parsed, { id: nextGameId(season), date, week, type, awayTeam: away.id, homeTeam: home.id });
+// Home and away come from the schedule (home only picks the stadium), not the file.
+const series = findSeries(season, away.id, home.id, week);
+const stored = toStoredGame(parsed, { id: nextGameId(season), date, week: week || series?.week, type, awayTeam: away.id, homeTeam: home.id });
+const game = series?.home === away.id ? swapSides(stored) : stored;
 season.games.push(game);
 
 await fs.writeFile(path.join(ROOT, 'data/teams.json'), pretty(teams));
 await fs.writeFile(path.join(ROOT, seasonFile), serializeSeason(season));
 
-console.log(`Added ${game.id}: ${away.name} ${game.away.score}, ${home.name} ${game.home.score} (${date})`);
+const nameOf = (id) => teams.find((t) => t.id === id).name;
+console.log(`Added ${game.id}: ${nameOf(game.away.team)} ${game.away.score}, ${nameOf(game.home.team)} ${game.home.score} (${date})`);
 console.log(`  ${parsed.batting.length} batters, ${parsed.pitching.length} pitchers`);
 for (const w of warnings) console.log('  Note: ' + w);

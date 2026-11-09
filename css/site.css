@@ -264,7 +264,7 @@ select, input, button, textarea { font: inherit; color: inherit; border-radius: 
 .portrait.has-full .mug { display: none; }
 
 /* home plate, used for rank numbers */
-.plate { position: relative; flex: none; display: grid; place-items: center; width: 38px; height: 42px; background: var(--ink); clip-path: polygon(0 0, 100% 0, 100% 62%, 50% 100%, 0 62%); }
+.plate { position: relative; flex: none; display: grid; place-items: center; width: 38px; height: 42px; background: var(--text); clip-path: polygon(0 0, 100% 0, 100% 62%, 50% 100%, 0 62%); }
 .plate::before { content: ''; position: absolute; inset: 3px; background: var(--card); clip-path: inherit; }
 .plate b { position: relative; margin-top: -6px; font: 400 18px/1 var(--display); }
 
@@ -399,13 +399,13 @@ i.sp { font-style: normal; }
 
 /* ---- Home -------------------------------------------------------------- */
 
-.hero { --red-text: var(--red); position: relative; color: var(--ink); overflow: hidden; margin-top: 24px; padding: 26px 26px 30px; background: var(--sun); border: var(--edge); box-shadow: var(--drop); }
+.hero { position: relative; color: var(--ink); overflow: hidden; margin-top: 24px; padding: 26px 26px 30px; background: var(--sun); border: var(--edge); box-shadow: var(--drop); }
 .hero::before {
   content: ''; position: absolute; left: 21%; top: 66%; width: 260vmax; height: 260vmax; transform: translate(-50%, -50%); pointer-events: none;
   background: repeating-conic-gradient(rgba(255, 248, 226, .36) 0 6deg, transparent 6deg 12deg);
 }
 .hero > * { position: relative; }
-.hero__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 14px 24px; }
+.hero__head { --red-text: var(--red); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: flex-end; gap: 14px 24px; }
 .hero h1 { font-size: clamp(38px, 6.5vw, 66px); text-shadow: 4px 4px 0 var(--chalk); }
 .hero .chips { flex-basis: 100%; }
 .hero__stat { display: flex; align-items: center; gap: 12px; margin: 18px 0 16px; font: 700 20px/1 var(--cond); letter-spacing: 3px; }
@@ -416,7 +416,7 @@ i.sp { font-style: normal; }
 /* Keep the #1 card about as tall as the four beside it, so their spacing stays even. */
 .leader--top .portrait__full { max-height: 170px; }
 .leader {
-  display: flex; align-items: center; gap: 12px; padding: 4px 18px 4px 22px; text-decoration: none;
+  display: flex; align-items: center; gap: 12px; padding: 4px 18px 4px 22px; text-decoration: none; color: var(--text);
   background: linear-gradient(90deg, var(--c) 12px, var(--card) 12px); border: var(--edge); box-shadow: 4px 4px 0 var(--line);
   transition: transform .12s, box-shadow .12s;
 }

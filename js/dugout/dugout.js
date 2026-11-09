@@ -8,7 +8,7 @@ import { parseGame } from '../lib/parse-game.js';
 import { markdown } from '../lib/markdown.js';
 import { fmtIP } from '../lib/statdefs.js';
 import { loadLeague } from '../lib/load.js';
-import { GAME_TYPES, matchTeam, makeTeam, learnAliases, nextGameId, toStoredGame, serializeSeason, pretty, todayISO, isMii, STADIUMS, TIME_ICON, stadiumLabel, gmsOf, gmLabel } from '../lib/league-ops.js';
+import { GAME_TYPES, matchTeam, matchByPlayers, makeTeam, learnAliases, findSeries, swapSides, nextGameId, toStoredGame, serializeSeason, pretty, todayISO, isMii, STADIUMS, TIME_ICON, stadiumLabel, gmsOf, gmLabel } from '../lib/league-ops.js';
 import { GitHubRepo, LocalRepo, updateJson } from './github.js';
 import { seal, unseal } from './vault.js';
 
@@ -213,7 +213,7 @@ async function tabUpload(el) {
     const files = [...fileList]; // copied, because clearing the input empties its list
     if (!files.length) return;
     work(null, async () => {
-      showPreview($('[data-preview]', el), await readGameFiles(files), known);
+      await showPreview($('[data-preview]', el), await readGameFiles(files), known);
       input.value = '';
       return `Read ${files.map((f) => f.name).join(', ')}. Check it over, then save it.`;
     });
@@ -231,13 +231,17 @@ async function tabUpload(el) {
   };
 }
 
-function showPreview(el, { game, warnings }, known) {
+async function showPreview(el, { game, warnings }, known) {
   const names = [...new Set([...game.batting, ...game.pitching].map((r) => r.p))];
   const fresh = known?.slugs.size ? names.filter((name) => !known.slugs.has(slug(known.canon(name)))) : [];
-  const teamPick = (key, label) => {
+  const seasons = {};
+  const seasonData = async (id) => (seasons[id] ||= await readJson(`data/seasons/${id}.json`, { games: [] }));
+  const players = seasonPlayers(await seasonData(S.league.currentSeason));
+  // The file's two sides are just two teams: its lineups say which, its names are the fallback.
+  const teamPick = (key, t) => {
     const side = game[key];
-    const hit = matchTeam(S.teams, side.name, side.label);
-    return html`<label>${label} <small>file says "${side.name}"</small>
+    const hit = matchByPlayers(S.teams, players, game.batting.filter((r) => r.t === t).map((r) => r.p)) || matchTeam(S.teams, side.name, side.label);
+    return html`<label>Team for "${side.name}"
       <select name="${key}">
         ${options(S.teams.map((t) => [t.id, t.name]), hit?.id)}
         <option value="+new" ${hit ? '' : 'selected'}>New team: ${side.name}</option>
@@ -256,13 +260,14 @@ function showPreview(el, { game, warnings }, known) {
       <h3>${game.away.name} ${game.away.score}, ${game.home.name} ${game.home.score}</h3>
       <p class="hint">${[game.stadium, ...Object.entries(game.settings).map(([k, v]) => `${k}: ${v}`)].filter(Boolean).join(' / ')}</p>
       <div class="grid">
-        ${teamPick('away', 'Away team')}
-        ${teamPick('home', 'Home team')}
+        ${teamPick('away', 'a')}
+        ${teamPick('home', 'h')}
         <label>Season<select name="season">${seasonOptions(S.league.currentSeason)}</select></label>
         <label>Date played<input type="date" name="date" value="${todayISO()}" required></label>
         <label>Week <small>optional</small><input type="number" name="week" min="1" max="99" placeholder="for example 1"></label>
         <label>Game type<select name="type">${options(Object.entries(GAME_TYPES), 'regular')}</select></label>
       </div>
+      <p class="hint" data-sched></p>
       ${warnings.length
         ? html`<div class="warn"><b>Worth a look before saving:</b><ul>${warnings.map((w) => html`<li>${w}</li>`)}</ul></div>`
         : html`<p class="good">The file adds up: hits, runs and the score all agree.</p>`}
@@ -288,7 +293,28 @@ function showPreview(el, { game, warnings }, known) {
     el.innerHTML = '';
     say('');
   };
-  $('form', el).onsubmit = (e) => {
+  // Says which scheduled game this is, and fills in its week unless one was typed.
+  const form = $('form', el);
+  let typedWeek = false;
+  const showSchedule = async () => {
+    const f = fields(form);
+    const teamName = (id) => S.teams.find((t) => t.id === id)?.name;
+    const series = f.away !== f.home ? findSeries(await seasonData(f.season), f.away, f.home, typedWeek && f.week) : null;
+    if (series && !typedWeek) form.elements.week.value = series.week;
+    const where = series && stadiumLabel(series);
+    const fileStadium = (game.stadium || '').split(' - ')[0];
+    $('[data-sched]', el).textContent = !series
+      ? (typedWeek ? 'These two teams don\'t play each other that week' : 'These two teams have no unplayed game on the schedule')
+        + ', so the game is saved the way the file has it. Check the teams and week.'
+      : `Schedule: Week ${series.week}, ${teamName(series.teams.find((t) => t !== series.home))} at ${teamName(series.home)}${where ? ` (${where})` : ''}. It is saved that way round, whatever order the file uses.`
+        + (series.stadium && fileStadium && slug(fileStadium) !== slug(series.stadium) ? ` The file says it was played at ${fileStadium}.` : '');
+  };
+  form.oninput = (e) => {
+    if (e.target.name === 'week') typedWeek = Boolean(e.target.value);
+    showSchedule().catch((err) => say(err.message, 'bad'));
+  };
+  await showSchedule();
+  form.onsubmit = (e) => {
     e.preventDefault();
     const f = fields(e.target);
     work(e.submitter, async () => {
@@ -300,10 +326,11 @@ function showPreview(el, { game, warnings }, known) {
 }
 
 async function saveGame(parsed, f) {
-  if (f.away !== '+new' && f.away === f.home) throw new Error('Away and home are set to the same team.');
+  if (f.away !== '+new' && f.away === f.home) throw new Error('Both of the file\'s teams are set to the same team.');
   const meta = S.league.seasons.find((s) => s.id === f.season);
   const path = `data/seasons/${f.season}.json`;
-  const twin = (await readJson(path, { games: [] })).games?.find((g) => g.fp === parsed.fp);
+  const current = await readJson(path, { games: [] });
+  const twin = current.games?.find((g) => g.fp === parsed.fp);
   if (twin && !confirm(`This looks the same as game ${twin.id} (${twin.date}), which is already saved. Save it again anyway?`)) {
     throw new Error('Not saved: this game is already in the season.');
   }
@@ -314,19 +341,37 @@ async function saveGame(parsed, f) {
       const side = parsed[key];
       let team = f[key] === '+new' ? matchTeam(teams, side.name) : teams.find((t) => t.id === f[key]);
       if (!team) teams.push((team = makeTeam(teams, side.name, side.label)));
-      learnAliases(team, side.name, side.label);
+      learnAliases(teams, team, side.name, side.label);
       ids[key] = team.id;
     }
-  }, `Teams for ${parsed.away.name} at ${parsed.home.name}`);
+  }, `Teams for ${parsed.away.name} and ${parsed.home.name}`);
 
+  // Home and away come from the schedule (home only picks the stadium), not the file.
+  const series = findSeries(current, ids.away, ids.home, f.week);
+  const flip = series?.home === ids.away;
+  const [away, home] = flip ? [parsed.home, parsed.away] : [parsed.away, parsed.home];
   let saved;
   await updateJson(S.repo, path, { id: f.season, name: meta.name, games: [] }, (season) => {
     season.id ||= f.season;
     season.games ||= [];
-    saved = toStoredGame(parsed, { id: nextGameId(season), date: f.date, week: f.week, type: f.type, awayTeam: ids.away, homeTeam: ids.home });
+    const game = toStoredGame(parsed, { id: nextGameId(season), date: f.date, week: f.week || series?.week, type: f.type, awayTeam: ids.away, homeTeam: ids.home });
+    saved = flip ? swapSides(game) : game;
     season.games.push(saved);
-  }, `Add game: ${parsed.away.name} ${parsed.away.score}, ${parsed.home.name} ${parsed.home.score}`, serializeSeason);
+  }, `Add game: ${away.name} ${away.score}, ${home.name} ${home.score}`, serializeSeason);
   return `Saved as game ${saved.id}.${whenLive()}`;
+}
+
+// A season's players by team (Map of team id -> Set of slugs), for telling which
+// team a game file's lineup is: saved lineups and subs, draft picks and moves.
+// A Mii counts under its shirt label and its name.
+function seasonPlayers(season) {
+  const out = new Map();
+  for (const t of S.teams) {
+    const saved = (season.rosters || []).find((r) => r.team === t.id);
+    const names = [...rosterOf(season, t.id), ...(saved ? [...saved.lineup.map((l) => l.p), ...saved.bench] : [])];
+    out.set(t.id, new Set(names.flatMap((p) => [slug(p), slug(season.miiNames?.[p] || p)])));
+  }
+  return out;
 }
 
 // ---- Games already saved ---------------------------------------------------
