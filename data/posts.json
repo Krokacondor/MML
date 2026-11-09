@@ -1,5 +1,17 @@
 [
   {
+    "id": "2026-11-09-donkey-kong",
+    "date": "2026-11-09",
+    "by": {
+      "kind": "player",
+      "name": "Donkey Kong"
+    },
+    "team": "bean-bean-brigade",
+    "image": "assets/posts/2026-11-09-donkey-kong-mw9susai.png",
+    "width": 1044,
+    "height": 530
+  },
+  {
     "id": "2026-11-09-pablo-sanchez",
     "date": "2026-11-09",
     "by": {
