@@ -1,5 +1,18 @@
 [
   {
+    "id": "2026-11-09-pablo-sanchez",
+    "date": "2026-11-09",
+    "by": {
+      "kind": "player",
+      "name": "Pablo Sanchez"
+    },
+    "team": "petalburg-koopa-troopas",
+    "image": "assets/posts/2026-11-09-pablo-sanchez-mw9if1oj.png",
+    "width": 596,
+    "height": 303,
+    "text": "¡He mejorado muchísimo desde el año pasado! ¡Ojalá esta semana consigamos una gran victoria!"
+  },
+  {
     "id": "2026-11-02-mr-bean",
     "date": "2026-11-02",
     "by": {
