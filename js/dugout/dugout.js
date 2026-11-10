@@ -213,7 +213,9 @@ async function tabUpload(el) {
     const files = [...fileList]; // copied, because clearing the input empties its list
     if (!files.length) return;
     work(null, async () => {
-      await showPreview($('[data-preview]', el), await readGameFiles(files), known);
+      // The stat program names its files "Bows vs Knights - 2026-11-09 21-30-24.xlsx".
+      const played = files.map((f) => /\b(\d{4}-\d{2}-\d{2})\b/.exec(f.name)?.[1]).find(Boolean);
+      await showPreview($('[data-preview]', el), await readGameFiles(files), known, played);
       input.value = '';
       return `Read ${files.map((f) => f.name).join(', ')}. Check it over, then save it.`;
     });
@@ -231,12 +233,14 @@ async function tabUpload(el) {
   };
 }
 
-async function showPreview(el, { game, warnings }, known) {
-  const names = [...new Set([...game.batting, ...game.pitching].map((r) => r.p))];
-  const fresh = known?.slugs.size ? names.filter((name) => !known.slugs.has(slug(known.canon(name)))) : [];
+async function showPreview(el, { game, warnings }, known, played) {
   const seasons = {};
   const seasonData = async (id) => (seasons[id] ||= await readJson(`data/seasons/${id}.json`, { games: [] }));
-  const players = seasonPlayers(await seasonData(S.league.currentSeason));
+  const current = await seasonData(S.league.currentSeason);
+  const players = seasonPlayers(current);
+  // A Mii's shirt ("Red Mii (F)") counts as the Mii who wears it this season.
+  const names = [...new Set([...game.batting, ...game.pitching].map((r) => r.p))];
+  const fresh = known?.slugs.size ? names.filter((name) => !known.slugs.has(slug(known.canon(current.miiNames?.[name] || name)))) : [];
   // The file's two sides are just two teams: its lineups say which, its names are the fallback.
   const teamPick = (key, t) => {
     const side = game[key];
@@ -263,7 +267,7 @@ async function showPreview(el, { game, warnings }, known) {
         ${teamPick('away', 'a')}
         ${teamPick('home', 'h')}
         <label>Season<select name="season">${seasonOptions(S.league.currentSeason)}</select></label>
-        <label>Date played<input type="date" name="date" value="${todayISO()}" required></label>
+        <label>Date played<input type="date" name="date" value="${played || todayISO()}" required></label>
         <label>Week <small>optional</small><input type="number" name="week" min="1" max="99" placeholder="for example 1"></label>
         <label>Game type<select name="type">${options(Object.entries(GAME_TYPES), 'regular')}</select></label>
       </div>

@@ -14,7 +14,11 @@
     { "id": "mk", "name": "Mushroom Conference", "logo": "assets/conferences/mushroom-kingdom.png" },
     { "id": "bk", "name": "Bowser Conference", "logo": "assets/conferences/bowser-kingdom.png" }
   ],
-  "playerAliases": { "Red Koopa Troopa": "Red Koopa", "Kritter": "Green Kritter" },
+  "playerAliases": {
+    "Red Koopa Troopa": "Red Koopa", "Kritter": "Green Kritter",
+    "Paratroopa": "Red Paratroopa", "Magikoopa": "Blue Magikoopa", "Shy Guy": "Red Shy Guy",
+    "Dark Bones": "Red Dry Bones", "Dry Bones": "Gray Dry Bones", "Koopa Troopa": "Green Koopa"
+  },
   "leadersCount": 5,
   "eraInnings": 9,
   "qualifiers": {
