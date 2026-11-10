@@ -229,6 +229,14 @@ export function parseGame(sheets) {
     if (!t) t = home.block.rows.some((r) => r.p === row.p) && !away.block.rows.some((r) => r.p === row.p) ? 'h' : 'a';
     return { t, ...row };
   });
+  // The stat program writes 0 for a bottom of the last inning that was never played.
+  // When the team batting last was ahead and only batted 3 outs short, it's an X.
+  const outsOn = (t) => pitching.filter((r) => r.t === t).reduce((n, r) => n + (r.outs || 0), 0);
+  const end = home.line.length - 1;
+  if (end > 0 && home.score > away.score && home.line[end] === 0 && outsOn('a') === 3 * end) {
+    home.line = [...home.line.slice(0, end), 'X'];
+  }
+
   if (pitching.length) {
     for (const [t, side, opp] of [['a', away, home], ['h', home, away]]) {
       const mine = pitching.filter((r) => r.t === t);
