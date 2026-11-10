@@ -1,5 +1,18 @@
 [
   {
+    "id": "2026-11-10-king-k-rool-2",
+    "date": "2026-11-10",
+    "by": {
+      "kind": "player",
+      "name": "King K. Rool"
+    },
+    "team": "wild-woods-1-uppers",
+    "image": "assets/posts/2026-11-10-king-k-rool-2-mwb8z6ki.png",
+    "width": 596,
+    "height": 394,
+    "spoiler": true
+  },
+  {
     "id": "2026-11-10-king-k-rool",
     "date": "2026-11-10",
     "by": {
