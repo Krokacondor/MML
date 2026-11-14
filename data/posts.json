@@ -1,5 +1,17 @@
 [
   {
+    "id": "2026-11-14-wiggler",
+    "date": "2026-11-14",
+    "by": {
+      "kind": "player",
+      "name": "Wiggler"
+    },
+    "team": "wild-woods-1-uppers",
+    "image": "assets/posts/2026-11-14-wiggler-mwgv2fvp.png",
+    "width": 1200,
+    "height": 609
+  },
+  {
     "id": "2026-11-12-glitzville-glamours-official",
     "date": "2026-11-12",
     "by": {
