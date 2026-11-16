@@ -88,7 +88,13 @@ export function buildStats(games, { totals = [], tracked = null, canon = (name) 
       const { entry, own, sums } = appearance(row);
       entry.bat = row;
       for (const target of sums) addInto(target.bat, row, BAT_KEYS);
-      if (row.pos) for (const target of own) target.pos[row.pos] = (target.pos[row.pos] || 0) + 1;
+      const start = startingPosition(row.pos);
+      if (start) {
+        for (const target of own) {
+          target.pos[start] = (target.pos[start] || 0) + 1;
+          (target.posLast ||= {})[start] = `${game.date || ''}|${game.id}`;
+        }
+      }
     }
     for (const row of game.pitching || []) {
       const { entry, own, sums } = appearance(row);
@@ -137,11 +143,15 @@ export function isQualified(rec, stats, league, kind) {
   return (rec.bat.pa || 0) >= (q.paPerTeamGame ?? 1) * teamGames;
 }
 
-// Positions played, most common first: "SS, 2B".
+// Where a player started a game. Files list positions in the order played
+// ("LF, P, SS" started in left field). Only starts count as a player's positions,
+// so a fielder who comes in to pitch keeps their pitching stats but isn't called a pitcher.
+export const startingPosition = (pos) => String(pos || '').split(',')[0].trim();
+
+// The positions a player started at, the most recent first: "2B, LF".
 export const positions = (rec) =>
-  Object.entries(rec.pos || {})
-    .sort((a, b) => b[1] - a[1])
-    .map((x) => x[0]);
+  Object.keys(rec.pos || {})
+    .sort((a, b) => String(rec.posLast?.[b] || '').localeCompare(String(rec.posLast?.[a] || '')) || rec.pos[b] - rec.pos[a]);
 
 // Who a position's vote sends to the All-Star team: the top "seats" vote-getters,
 // plus anyone tied with the last of them. A pick can instead name its All-Stars
@@ -270,6 +280,9 @@ export function buildLeague({ league, teams = [], players = {}, articles = [], a
         addInto(total.bat, rec.bat, BAT_KEYS);
         addInto(total.pit, rec.pit, PIT_KEYS);
         for (const [pos, n] of Object.entries(rec.pos)) total.pos[pos] = (total.pos[pos] || 0) + n;
+        for (const [pos, at] of Object.entries(rec.posLast || {})) {
+          if (at > ((total.posLast ||= {})[pos] || '')) total.posLast[pos] = at;
+        }
 
         // Team history, in order: a new stint starts whenever the team changes.
         for (const teamId of rec.teams) {

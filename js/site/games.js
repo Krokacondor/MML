@@ -1,6 +1,6 @@
 import { html, slug } from '../lib/html.js';
 import { BAT_KEYS, viewsFor, colsFor } from '../lib/statdefs.js';
-import { scheduleProgress } from '../lib/aggregate.js';
+import { scheduleProgress, startingPosition } from '../lib/aggregate.js';
 import { stadiumLabel } from '../lib/league-ops.js';
 import { teamVars, pennant, playerCell, teamCell, lineScore, scoreCard, tabbedStats, renderTable, fmtDate, notFound, runs, finalWord, confBadge, useMiiColors } from './ui.js';
 import { spoil, eye } from './spoilers.js';
@@ -128,7 +128,7 @@ export function gameView(ctx, id) {
     mount(root) {
       if (!hasBox) return;
       for (const [t] of sides) {
-        const rows = (game.batting || []).filter((r) => r.t === t).map((r) => ({ name: r.p, slug: slug(r.p), pos: r.pos || '', bat: r, tracked }));
+        const rows = (game.batting || []).filter((r) => r.t === t).map((r) => ({ name: r.p, slug: slug(r.p), pos: startingPosition(r.pos), bat: r, tracked }));
         tabbedStats(root.querySelector(`[data-box="${t}"]`), {
           tracked,
           views: viewsFor(tracked).filter((v) => v !== 'pitching'),
