@@ -605,6 +605,8 @@ a.post__who:hover b { text-decoration: underline; }
 .bcard__facts dt { font-weight: 700; font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--red-text); }
 .bcard__facts dd { margin: 0; text-align: right; }
 .bio { margin: 0; }
+/* Text people type (stories, posts, bios): a long run with no spaces breaks instead of spilling out. */
+.story, .clip__paper, .post, .bio { overflow-wrap: anywhere; }
 .stints { display: grid; gap: 9px; margin: 0; padding: 0; list-style: none; }
 .stints li { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 4px 14px; font: 600 17px/1.2 var(--cond); }
 .stints li > span { color: var(--ink-soft); }
