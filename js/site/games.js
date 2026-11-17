@@ -128,7 +128,7 @@ export function gameView(ctx, id) {
     mount(root) {
       if (!hasBox) return;
       for (const [t] of sides) {
-        const rows = (game.batting || []).filter((r) => r.t === t).map((r) => ({ name: r.p, slug: slug(r.p), pos: startingPosition(r.pos), bat: r, tracked }));
+        const rows = (game.batting || []).filter((r) => r.t === t).map((r) => ({ name: model.canon(r.p), slug: slug(model.canon(r.p)), pos: startingPosition(r.pos), bat: r, tracked }));
         tabbedStats(root.querySelector(`[data-box="${t}"]`), {
           tracked,
           views: viewsFor(tracked).filter((v) => v !== 'pitching'),
@@ -141,7 +141,7 @@ export function gameView(ctx, id) {
           foot: () => ({ label: 'Team totals', row: { bat: total(rows.map((r) => r.bat), BAT_KEYS), tracked } }),
         });
       }
-      const pitchers = (game.pitching || []).map((r) => ({ name: r.p, team: teamOf[r.t], pit: r, tracked }));
+      const pitchers = (game.pitching || []).map((r) => ({ name: model.canon(r.p), team: teamOf[r.t], pit: r, tracked }));
       renderTable(root.querySelector('[data-pitching]'), {
         lead: [
           { id: 'name', label: 'Pitcher', cell: (r) => playerCell(r.name) },
