@@ -74,7 +74,8 @@
     "name": "Blue Noki",
     "bats": "Left",
     "throws": "Right",
-    "type": "Balanced"
+    "type": "Balanced",
+    "nickname": "Blue Hope"
   },
   "blue-pianta": {
     "name": "Blue Pianta",
