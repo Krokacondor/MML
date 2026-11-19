@@ -91,13 +91,15 @@
     "name": "Blue Toad",
     "bats": "Right",
     "throws": "Right",
-    "type": "Speed"
+    "type": "Speed",
+    "nickname": "Boad"
   },
   "blue-yoshi": {
     "name": "Blue Yoshi",
     "bats": "Left",
     "throws": "Right",
-    "type": "Speed"
+    "type": "Speed",
+    "nickname": "Boshi"
   },
   "boo": {
     "name": "Boo",
@@ -114,7 +116,8 @@
     "name": "Boomerang Bro",
     "bats": "Right",
     "throws": "Right",
-    "type": "Power"
+    "type": "Power",
+    "nickname": "Boomer"
   },
   "bowser": {
     "name": "Bowser",
@@ -192,7 +195,8 @@
     "name": "Fire Bro",
     "bats": "Right",
     "throws": "Right",
-    "type": "Power"
+    "type": "Power",
+    "nickname": "Big Papi"
   },
   "funky-kong": {
     "name": "Funky Kong",
@@ -246,13 +250,15 @@
     "name": "Green Noki",
     "bats": "Left",
     "throws": "Right",
-    "type": "Balanced"
+    "type": "Balanced",
+    "nickname": "Myrtle"
   },
   "green-paratroopa": {
     "name": "Green Paratroopa",
     "bats": "Left",
     "throws": "Right",
-    "type": "Balanced"
+    "type": "Balanced",
+    "nickname": "Cloud"
   },
   "green-shy-guy": {
     "name": "Green Shy Guy",
@@ -264,7 +270,8 @@
     "name": "Green Toad",
     "bats": "Right",
     "throws": "Right",
-    "type": "Speed"
+    "type": "Speed",
+    "nickname": "Goad"
   },
   "grimace": {
     "bats": "Right",
@@ -313,7 +320,8 @@
     "name": "Light Blue Yoshi",
     "bats": "Left",
     "throws": "Right",
-    "type": "Speed"
+    "type": "Speed",
+    "nickname": "Le Yoshi"
   },
   "lightning-mcqueen": {
     "bats": "Right",
@@ -406,19 +414,22 @@
     "name": "Pink Yoshi",
     "bats": "Left",
     "throws": "Right",
-    "type": "Speed"
+    "type": "Speed",
+    "nickname": "Poshi"
   },
   "purple-toad": {
     "name": "Purple Toad",
     "bats": "Right",
     "throws": "Right",
-    "type": "Speed"
+    "type": "Speed",
+    "nickname": "Poad"
   },
   "red-dry-bones": {
     "name": "Red Dry Bones",
     "bats": "Left",
     "throws": "Left",
-    "type": "Balanced"
+    "type": "Balanced",
+    "nickname": "Dark Bones"
   },
   "red-koopa": {
     "name": "Red Koopa",
@@ -442,19 +453,22 @@
     "name": "Red Noki",
     "bats": "Left",
     "throws": "Right",
-    "type": "Balanced"
+    "type": "Balanced",
+    "nickname": "Red Rascal"
   },
   "red-paratroopa": {
     "name": "Red Paratroopa",
     "bats": "Left",
     "throws": "Right",
-    "type": "Balanced"
+    "type": "Balanced",
+    "nickname": "Sephiroth"
   },
   "red-pianta": {
     "name": "Red Pianta",
     "bats": "Right",
     "throws": "Right",
-    "type": "Speed"
+    "type": "Speed",
+    "nickname": "The Chuckster"
   },
   "red-shy-guy": {
     "name": "Red Shy Guy",
@@ -466,13 +480,15 @@
     "name": "Red Toad",
     "bats": "Right",
     "throws": "Right",
-    "type": "Speed"
+    "type": "Speed",
+    "nickname": "Road"
   },
   "red-yoshi": {
     "name": "Red Yoshi",
     "bats": "Left",
     "throws": "Right",
-    "type": "Speed"
+    "type": "Speed",
+    "nickname": "Master Roshi"
   },
   "rosalina": {
     "bats": "Left",
@@ -588,18 +604,21 @@
     "name": "Yellow Toad",
     "bats": "Right",
     "throws": "Right",
-    "type": "Speed"
+    "type": "Speed",
+    "nickname": "Yoad"
   },
   "yellow-yoshi": {
     "name": "Yellow Yoshi",
     "bats": "Left",
     "throws": "Right",
-    "type": "Speed"
+    "type": "Speed",
+    "nickname": "Ya-yoshi"
   },
   "yoshi": {
     "name": "Yoshi",
     "bats": "Left",
     "throws": "Right",
-    "type": "Speed"
+    "type": "Speed",
+    "nickname": "THE Yoshi"
   }
 }

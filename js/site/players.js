@@ -177,6 +177,7 @@ export function playerView(ctx, id) {
         <div class="bcard" style="${teamVars(team)}">
           <div class="bcard__art">${portrait(P.name, 96)}${posList[0] ? html`<span class="bcard__pos">${posList[0]}</span>` : ''}</div>
           <h1 class="bcard__name">${pname(P.name)}</h1>
+          ${info.nickname ? html`<p class="bcard__nick">“${info.nickname}”</p>` : ''}
           ${rings.length
             ? html`<p class="rings">${rings.map((r) => {
                 const label = `${r.season.name} World Series ${r.won ? 'champion' : 'runner-up'}`;

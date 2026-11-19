@@ -1085,6 +1085,7 @@ async function tabPlayers(el) {
               <label>Throws<select name="throws">${options([['', 'Not set'], ['Right', 'Right'], ['Left', 'Left']], p.throws || '')}</select></label>
               <label>Type <small>for example Power, Speed, Technique, Balanced</small><input name="type" value="${p.type || ''}"></label>
             </div>
+            <label>Nickname <small>what the commentators call them, shown under the name on their page</small><input name="nickname" value="${p.nickname || ''}"></label>
             <label>Scouting report<textarea name="bio" rows="5">${p.bio || ''}</textarea></label>
             <button class="btn">Save player</button>
           </form>`

@@ -600,6 +600,8 @@ a.post__who:hover b { text-decoration: underline; }
 .bcard__art .mug { --c: var(--chalk); --on: var(--ink); }
 .bcard__pos { position: absolute; right: 10px; bottom: 10px; padding: 7px 10px 5px; font: 400 20px/1 var(--display); background: var(--ink); color: var(--sun); }
 .bcard__name { margin: 16px 6px 10px; font-size: 34px; overflow-wrap: anywhere; }
+/* What the commentators call them, set in the Dugout. */
+.bcard__nick { margin: -4px 6px 14px; font: 400 27px/1.1 var(--script); color: var(--red-text); transform: rotate(-2deg); transform-origin: left; overflow-wrap: anywhere; }
 .bcard__facts { margin: 0; padding: 0 6px 4px; }
 .bcard__facts div { display: flex; justify-content: space-between; align-items: center; gap: 12px; padding: 7px 0; border-top: 2px dashed rgba(var(--hair), .28); font: 600 17px/1.2 var(--cond); }
 .bcard__facts dt { font-weight: 700; font-size: 14px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--red-text); }
