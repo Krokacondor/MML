@@ -20,7 +20,8 @@
     "name": "Baby Luigi",
     "bats": "Left",
     "throws": "Right",
-    "type": "Speed"
+    "type": "Speed",
+    "nickname": "Green ************"
   },
   "baby-mario": {
     "name": "Baby Mario",
