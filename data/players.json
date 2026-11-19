@@ -406,7 +406,8 @@
     "name": "Petey Piranha",
     "bats": "Left",
     "throws": "Right",
-    "type": "Power"
+    "type": "Power",
+    "nickname": "Peter"
   },
   "phi": {
     "bats": "Left",
