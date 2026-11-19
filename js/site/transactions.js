@@ -49,6 +49,14 @@ export function finishOf(model, season, name) {
   return null;
 }
 
+// Where the draft and the season's moves leave a player: a team id, '' once
+// released to free agency, or undefined when neither one mentions them.
+export function teamByMoves(model, season, name) {
+  let team = pickOf(model, season, name)?.team;
+  for (const m of season.moves) if (same(model, m.p, name)) team = m.to || '';
+  return team;
+}
+
 // The World Series result from its games: { winner, runnerUp } team ids, or null.
 export function worldSeries(season) {
   const games = season.games.filter((g) => g.type === 'playoffs' && /world series/i.test(g.round || '') && !g.notPlayed);

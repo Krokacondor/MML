@@ -163,7 +163,11 @@
     {"deal":3,"when":"Pre Week 4","p":"Green Paratroopa","from":"bean-bean-brigade","to":"petalburg-koopa-troopas"},
     {"deal":3,"when":"Pre Week 4","p":"Waluigi","from":"petalburg-koopa-troopas","to":"bean-bean-brigade"},
     {"deal":3,"when":"Pre Week 4","p":"Goomba","from":"petalburg-koopa-troopas","to":"bean-bean-brigade"},
-    {"deal":3,"when":"Pre Week 4","p":"Green Koopa","from":"petalburg-koopa-troopas","to":"bean-bean-brigade"}
+    {"deal":3,"when":"Pre Week 4","p":"Green Koopa","from":"petalburg-koopa-troopas","to":"bean-bean-brigade"},
+    {"deal":4,"when":"Pre Week 4","p":"Baby DK","from":"bean-bean-brigade","to":""},
+    {"deal":4,"when":"Pre Week 4","p":"Green Noki","from":"bean-bean-brigade","to":""},
+    {"deal":4,"when":"Pre Week 4","p":"Purple Mii (M)","from":"","to":"bean-bean-brigade"},
+    {"deal":4,"when":"Pre Week 4","p":"Purple Mii (F)","from":"","to":"bean-bean-brigade"}
   ],
   "rosters": [
     {"team":"petalburg-koopa-troopas","captain":"Light Green Mii (M)","star":"Petey Piranha","lineup":[{"p":"Green Paratroopa","pos":"RF"},{"p":"Paragoomba","pos":"CF"},{"p":"Brown Mii (F)","pos":"LF"},{"p":"Donkey Kong","pos":"3B"},{"p":"Blooper","pos":"C"},{"p":"Light Green Mii (M)","pos":"2B"},{"p":"Light Green Mii (F)","pos":"1B"},{"p":"Petey Piranha","pos":"SS"},{"p":"King Boo","pos":"P"}],"bench":[]},

@@ -3,7 +3,7 @@ import { C, viewsFor } from '../lib/statdefs.js';
 import { positions, pitched } from '../lib/aggregate.js';
 import { mug, portrait, pennant, teamVars, teamCell, tabbedStats, tiles, gameWhen, notFound, pname } from './ui.js';
 import { spoil, eye } from './spoilers.js';
-import { pickOf, finishOf, playerStory, seasonShort, ordinal, freeAgentAtEnd, FREE_AGENT, ringsFor } from './transactions.js';
+import { pickOf, finishOf, teamByMoves, playerStory, seasonShort, ordinal, freeAgentAtEnd, FREE_AGENT, ringsFor } from './transactions.js';
 
 // Card colors for a season the player has no team in yet.
 const NO_TEAM = { id: '', name: 'N/A', abbr: '', colors: ['#7b838a', '#d3d7da'] };
@@ -15,7 +15,10 @@ export function playersView(ctx) {
   // Only the players who took part in the chosen season.
   const all = [...model.players.values()].filter((P) => P.seasons.some((x) => x.season === season)).sort((a, b) => a.name.localeCompare(b.name));
   // Released and unsigned at the end of this season: gray, no team.
+  // A signing, release or trade settles it; otherwise the team they played for.
   const teamOf = (P) => {
+    const moved = teamByMoves(model, season, P.name);
+    if (moved !== undefined) return moved ? model.team(moved) : FREE_AGENT;
     const teamId = P.seasons.find((x) => x.season === season).teamId;
     return !teamId || freeAgentAtEnd(model, season, P.name) ? FREE_AGENT : model.team(teamId);
   };
@@ -80,9 +83,11 @@ export function playerView(ctx, id) {
   const now = P.seasons.find((x) => x.season === shown);
   // The team this season: none yet when the player has no part in it.
   const finish = now ? finishOf(model, season, P.name) : null;
-  const teamId = now ? now.reg?.teamId || finish?.team || now.teamId || '' : '';
-  // Released at the end, or never on a team in a season that had a draft.
-  const freeAgent = Boolean(now) && (freeAgentAtEnd(model, season, P.name) || (!teamId && season.draft.length > 0));
+  // A signing, release or trade settles it; otherwise the team they played for.
+  const moved = now ? teamByMoves(model, season, P.name) : undefined;
+  const teamId = moved ?? (now ? now.reg?.teamId || finish?.team || now.teamId || '' : '');
+  // Released, or never on a team in a season that had a draft.
+  const freeAgent = Boolean(now) && (moved !== undefined ? !moved : freeAgentAtEnd(model, season, P.name) || (!teamId && season.draft.length > 0));
   const team = freeAgent ? FREE_AGENT : teamId ? model.team(teamId) : NO_TEAM;
   // The player's other seasons, each a link that switches the site to it.
   const others = P.seasons.filter((x) => x.season !== season);
