@@ -117,7 +117,7 @@ export const isMii = (name, players = {}) => / Mii \([MF]\)$/.test(name) || Bool
 // The game's stadiums and whether each is played by day, at night, or both.
 // A week's games each pick one, and no stadium is used twice in a week.
 export const STADIUMS = [
-  ['Bowser Castle', ['night']],
+  ["Bowser's Castle", ['night']],
   ['Bowser Jr. Playroom', ['day']],
   ['Daisy Cruiser', ['day', 'night']],
   ['DK Jungle', ['day', 'night']],
