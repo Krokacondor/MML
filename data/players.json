@@ -27,7 +27,7 @@
     "name": "Baby Mario",
     "bats": "Right",
     "throws": "Right",
-    "type": "Speed"
+    "type": "Balanced"
   },
   "baby-peach": {
     "name": "Baby Peach",
