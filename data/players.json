@@ -527,7 +527,8 @@
   "toa-tokuchi": {
     "bats": "Right",
     "throws": "Right",
-    "type": "Balanced"
+    "type": "Balanced",
+    "nickname": "Kuchi"
   },
   "toadette": {
     "name": "Toadette",
