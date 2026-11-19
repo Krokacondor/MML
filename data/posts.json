@@ -1,5 +1,18 @@
 [
   {
+    "id": "2026-11-19-green-koopa",
+    "date": "2026-11-19",
+    "by": {
+      "kind": "player",
+      "name": "Green Koopa"
+    },
+    "team": "bean-bean-brigade",
+    "image": "assets/posts/2026-11-19-green-koopa-mwnsc6om.png",
+    "width": 512,
+    "height": 216,
+    "text": "Well.  Dream short lived."
+  },
+  {
     "id": "2026-11-16-nightmare",
     "date": "2026-11-16",
     "by": {
