@@ -355,7 +355,8 @@
     "name": "Monty Mole",
     "bats": "Left",
     "throws": "Right",
-    "type": "Speed"
+    "type": "Speed",
+    "nickname": "Monty \"Macklemore\" Mole"
   },
   "mr-bean": {
     "bats": "Right",
