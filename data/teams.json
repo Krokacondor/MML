@@ -176,8 +176,6 @@
     ],
     "formerly": "new-new-new-york-mets",
     "aliases": [
-      "Spitballs",
-      "Waluigi Spitballs",
       "DK Wilds",
       "Wilds"
     ]
@@ -238,6 +236,9 @@
     "seasons": [
       "s3"
     ],
-    "aliases": []
+    "aliases": [
+      "Waluigi Spitballs",
+      "Spitballs"
+    ]
   }
 ]
